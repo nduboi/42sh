@@ -14,7 +14,6 @@ int add_var(char *name, char *val, list_t **env)
 {
     list_t *node = *env;
     var_t *temp = NULL;
-    char *cpy = NULL;
 
     if (!val) {
         val = "";

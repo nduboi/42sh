@@ -12,6 +12,7 @@
 
 int main(int argc, char **argv, char **env)
 {
+    (void) argv;
     if (argc != 1) {
         return 84;
     }

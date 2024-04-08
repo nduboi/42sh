@@ -50,7 +50,6 @@ int change_directory(char *path, infos_t *infos, char **oldpwd)
 char *home_path(env_t *envs)
 {
     char *path = NULL;
-    char *temp = NULL;
 
     path = get_env_var("HOME", envs->env);
     if (!path) {

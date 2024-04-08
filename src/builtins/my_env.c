@@ -25,8 +25,6 @@ void display_list(list_t *node)
 
 int my_env(char **args, infos_t *infos)
 {
-    int index = 0;
-
     if (args[1]) {
         write(2, "env: No arguments needed.\n", 26);
         handle_exit_status(WRITE_STATUS, 1);

@@ -73,7 +73,6 @@ void parse_input(char *input, infos_t *infos)
 {
     list_t **cmds = find_semi_colons(input);
     list_t *node = *cmds;
-    char *token = NULL;
     int in = dup(STDIN_FILENO);
     int out = dup(STDOUT_FILENO);
 

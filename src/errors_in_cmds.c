@@ -11,18 +11,6 @@
 #include <string.h>
 #include <errno.h>
 
-static int count_char_in_str(char *str, char c)
-{
-    int result = 0;
-
-    for (int i = 0; str[i]; i++) {
-        if (str[i] == c) {
-            result += 1;
-        }
-    }
-    return result;
-}
-
 static bool got_name(char *cmd, char *str, int *i)
 {
     if (cmd[*i] == '<' || cmd[*i] == '>') {
@@ -43,7 +31,7 @@ static bool missing_name(char *cmd)
     char *str = NULL;
     int i = 0;
 
-    for (i; cmd[i]; i++) {
+    for (; cmd[i]; i++) {
         str = my_malloc(sizeof(char) * (my_strlen(cmd) + 1));
         if (got_name(cmd, str, &i)) {
             continue;
@@ -104,7 +92,7 @@ static bool no_cmd(char *cmd, int count)
     int i = 0;
     char *token = NULL;
 
-    for (i; cmd[i]; i++) {
+    for (; cmd[i]; i++) {
         skip_redirs(cmd, &i);
         str[my_strlen(str)] = cmd[i];
     }
@@ -157,24 +145,41 @@ static bool not_good_cmd(char *temp, int count)
     return false;
 }
 
-bool errors_in_cmd(char *cmd)
+static bool handle_error_cmd(char *cmd, int len, int count)
 {
-    int len = count_tokens(cmd, "|");
     char *temp = NULL;
     int j = 0;
-    int count = count_char_in_str(cmd, '|');
 
     for (int i = 0; i < len; i++) {
         temp = my_malloc(sizeof(char) * (my_strlen(cmd) + 1));
-        for (j; cmd[j] && cmd[j] != '|'; j++) {
+        for (; cmd[j] && cmd[j] != '|'; j++) {
             temp[my_strlen(temp)] = cmd[j];
         }
         j++;
-        if (not_good_cmd(temp, count))
+        if (not_good_cmd(temp, count)) {
+            handle_exit_status(WRITE_STATUS, 1);
             return true;
+        }
         free(temp);
     }
+    return false;
+}
+
+bool errors_in_cmd(char *cmd)
+{
+    int len = count_tokens(cmd, "|");
+    int count = count_char_in_str(cmd, '|');
+
+    if (ambigous_redirect(cmd)) {
+        handle_exit_status(WRITE_STATUS, 1);
+        return true;
+    }
+    if (handle_error_cmd(cmd, len, count)) {
+        handle_exit_status(WRITE_STATUS, 1);
+        return true;
+    }
     if (len != count + 1) {
+        handle_exit_status(WRITE_STATUS, 1);
         null_cmd_message();
         return true;
     }

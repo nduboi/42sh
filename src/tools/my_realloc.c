@@ -12,6 +12,6 @@ void *my_realloc(void *ptr, size_t size)
     unsigned char *dest = my_malloc(size);
     unsigned char *src = (unsigned char *) ptr;
 
-    my_strcpy(dest, src);
+    my_strcpy((char *) dest, (char *) src);
     return (void *) dest;
 }

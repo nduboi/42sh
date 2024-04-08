@@ -25,6 +25,7 @@ SRC	=	src/builtins/my_unsetenv.c	\
 		src/tools/my_malloc.c	\
 		src/tools/my_strstr.c	\
 		src/tools/num_fcts.c	\
+		src/tools/count_char.c	\
 		src/handle_redirections.c	\
 		src/error_messages.c	\
 		src/errors_in_cmds.c	\
@@ -35,6 +36,7 @@ SRC	=	src/builtins/my_unsetenv.c	\
 		src/handle_fd.c	\
 		src/exe_com.c	\
 		src/my_sh.c	\
+		src/handle_ambigous_redirect.c	\
 		src/add_history.c	\
 
 TEST_SRC	=	tests/test_chained_lists.c \
@@ -65,7 +67,7 @@ TEST_FLAGS	=	--coverage -lcriterion
 
 INCLUDE	=	-I ./include
 
-CFLAGS	+=	$(INCLUDE)
+CFLAGS	+=	$(INCLUDE) -Wall -Wextra -Werror
 
 DEBUG	=	-g
 

@@ -37,7 +37,6 @@ char *find_path(var_t *var, char *command)
     char *path = my_strdup(var->val);
     char *token = strtok(path, ":");
     char *result = malloc(1);
-    int len = my_strlen(command);
 
     do {
         free(result);
@@ -102,12 +101,18 @@ int execute(char *path, char **args, char **arr_env)
         free_double_array(arr_env);
         manage_errors(args[0], errno);
     }
+    return 0;
 }
 
 static bool not_permitted(char *path, DIR *dir)
 {
-    return (access(path, F_OK) == 0 &&
-        (access(path, X_OK) < 0 || (dir && my_strstr(path, "/"))));
+    if (access(path, F_OK) == 0 &&
+        (access(path, X_OK) < 0 || (dir && my_strstr(path, "/")))) {
+        closedir(dir);
+        return true;
+    }
+    closedir(dir);
+    return false;
 }
 
 int exe_cmd(char **args, infos_t *infos)
@@ -122,7 +127,6 @@ int exe_cmd(char **args, infos_t *infos)
     path = !path ? args[0] : path;
     args[0] = args[0][0] == '~' ? path : args[0];
     dir = opendir(path);
-    closedir(dir);
     if (not_permitted(path, dir)) {
         write(2, path, my_strlen(path));
         write(2, ": Permission denied.\n", 21);

@@ -21,7 +21,7 @@ void handle_cmd(char *input, infos_t *infos)
     if (!args[0]) {
         return;
     }
-    for (index; index < 7 && my_strcmp(args[0], commands[index]); index++);
+    for (; index < 7 && my_strcmp(args[0], commands[index]); index++);
     fcts_ptrs[index](args, infos);
     free(args);
     if (index < 7 && handle_exit_status(GET_STATUS, 0) != 0

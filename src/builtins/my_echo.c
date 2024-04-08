@@ -58,8 +58,6 @@ void display_args(char **args, list_t **env)
 
 int my_echo(char **args, infos_t *infos)
 {
-    int index = 1;
-
     if (!args[1]) {
         write(1, "\n", 1);
         handle_exit_status(WRITE_STATUS, 0);

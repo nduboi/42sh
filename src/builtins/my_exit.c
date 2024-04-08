@@ -25,8 +25,6 @@ int good_number(char *nbr)
 void exit_number(char **args)
 {
     int nbr = 0;
-    int pid = 0;
-    int wstatus = 0;
 
     if (!good_number(args[1])) {
         write(2, "exit: Badly formed number.\n", 27);
@@ -52,4 +50,5 @@ int my_exit(char **args, infos_t *infos)
         return 0;
     }
     exit_number(args);
+    return 0;
 }

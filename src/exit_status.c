@@ -21,6 +21,7 @@ int handle_exit_status(int action, int nbr)
     if (action == GET_STATUS) {
         return exit_status;
     }
+    return 0;
 }
 
 void handle_signal(int wstatus)

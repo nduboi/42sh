@@ -14,6 +14,7 @@
 
 void handler(int num)
 {
+    (void) num;
     write(1, "\b\b\033[K\n$> ", 9);
 }
 

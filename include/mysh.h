@@ -82,6 +82,7 @@ void error_message(char *str, int errnum);
 void handle_signal(int wstatus);
 int handle_exit_status(int action, int nbr);
 void handle_redirections(char *input, infos_t *infos);
+bool ambigous_redirect(char *src);
 void restart_fds(int in, int out);
 
 // chained list functions
@@ -106,6 +107,7 @@ void *my_memset(void *ptr, int val, size_t len);
 void free_double_array(char **array);
 void free_chained_list(list_t **begin);
 void free_infos(infos_t *infos);
+int count_char_in_str(char *str, char c);
 
 // history
 void add_history(infos_t *info, char *line);
