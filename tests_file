@@ -1,0 +1,1019 @@
+[01]
+NAME="Nothing"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo ''
+[01-END]
+
+[02]
+NAME="Exec two command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ;  HOME='/home/roussierenoa'"
+CLEAN=""
+TESTS=
+  echo 'ls /etc'
+  echo 'cat /etc/resolv.conf'
+[02-END]
+
+[03]
+NAME="Testing with /usr/bin PATH"
+SETUP="export TERM=xterm ; PATH='/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'pwd'
+[03-END]
+
+[04]
+NAME="Testing with /bin PATH"
+SETUP="export TERM=xterm ; PATH='/bin'"
+CLEAN=""
+TESTS=
+  echo 'pwd'
+[04-END]
+
+[05]
+NAME="run commands"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat /etc/resolv.conf'
+  sleep 0.5
+  echo 'ls -l /etc'
+  sleep 0.5
+  echo 'pwd'
+[05-END]
+
+[06]
+NAME="setenv and unsetenv"
+SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
+CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
+TESTS=
+  echo 'unsetenv HOSTTYPE'
+  echo 'unsetenv VENDOR'
+  echo 'unsetenv OSTYPE'
+  echo 'unsetenv MACHTYPE'
+  echo 'unsetenv SHLVL'
+  echo 'unsetenv PWD'
+  echo 'unsetenv LOGNAME'
+  echo 'unsetenv USER'
+  echo 'unsetenv GROUP'
+  echo 'unsetenv HOST'
+  echo 'unsetenv REMOTEHOST'
+  echo 'unsetenv _'
+  echo 'unsetenv LS_COLORS'
+  echo 'unsetenv NOTE'
+  echo 'setenv titi'
+  echo 'setenv tata coucou'
+  echo 'env'
+  echo '/usr/bin/env'
+  echo 'setenv var1 val1'
+  echo 'setenv var2 val2'
+[06-END]
+
+[07]
+NAME="builtin cd"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd ..'
+  echo 'ls -l'
+  echo 'cd /usr'
+  echo 'ls -l'
+[07-END]
+
+[08]
+NAME="many tab and space"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo -e "\t\t    ls\t     \t-l    \t\t  \t -a /usr   \t\t"
+[08-END]
+
+[10]
+NAME="LAUNCH own cd empty command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ;  HOME='/home/roussierenoa'"
+CLEAN=""
+TESTS=
+  echo "cd"
+  echo "pwd"
+[10-END]
+
+[11]
+NAME="LAUNCH own cd - command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ;  HOME='/home/roussierenoa'"
+CLEAN=""
+TESTS=
+  echo "cd"
+  echo "cd -"
+  echo "pwd"
+[11-END]
+
+[12]
+NAME="LAUNCH own cd to unknow command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ;  HOME='/home/roussierenoa'"
+CLEAN=""
+TESTS=
+  echo "cd zfbzfbzf"
+  echo "env"
+  echo "pwd"
+[12-END]
+
+[13]
+NAME="LAUNCH own cd to folder command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ;  HOME='/home/roussierenoa'"
+CLEAN=""
+TESTS=
+  echo "cd"
+  echo "cd Project"
+  echo "env"
+  echo "pwd"
+[13-END]
+
+[14]
+NAME="LAUNCH own cd to unknow command and try to execute another command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ;  HOME='/home/roussierenoa'"
+CLEAN=""
+TESTS=
+  echo "cd fafafaffhahfhfahafhafhfhafbfhgaffh"
+  echo "pwd"
+  echo "env"
+  echo "exit"
+[14-END]
+
+[15]
+NAME="LAUNCH own cd - to unknow folder"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ;  HOME='/home/roussierenoa'"
+CLEAN=""
+TESTS=
+  echo "cd -"
+  echo "pwd"
+  echo "env"
+  echo "exit"
+[15-END]
+
+[16]
+NAME="Segmentation fault"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ;  HOME='/home/roussierenoa'"
+CLEAN=""
+TESTS=
+  echo "tests/segfault"
+[16-END]
+
+[17]
+NAME="Floating point exception"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ;  HOME='/home/roussierenoa'"
+CLEAN=""
+TESTS=
+  echo "tests/div_zero"
+[17-END]
+
+[18]
+NAME="Abort"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ;  HOME='/home/roussierenoa'"
+CLEAN=""
+TESTS=
+  echo "tests/abort"
+[18-END]
+
+[19]
+NAME="HOME DID'NT ACCESSIBLE"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ;  HOME='/home/roussierenoa'"
+CLEAN=""
+TESTS=
+  echo "setenv HOME qdqdjqd"
+  echo "cd"
+[19-END]
+
+[20]
+NAME="HOME DID'NT EXIST"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "unsetenv HOME"
+  echo "cd"
+  echo "pwd"
+[20-END]
+
+[21]
+NAME="Tabulation and space"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "  ls"
+  echo " ls"
+[21-END]
+
+[22]
+NAME="Tabulation and space"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "  ls -l -a"
+  echo " ls -l -a"
+[22-END]
+
+[23]
+NAME="Setenv normal"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "setenv noa noa"
+[23-END]
+
+[24]
+NAME="Setenv with one argument"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "setenv noa"
+[24-END]
+
+[25]
+NAME="Setenv with a lot of argument"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "setenv noa noa noa noa noa"
+[25-END]
+
+[26]
+NAME="unsetenv with one argument correct"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "setenv noa"
+  echo "unsetenv noa"
+[26-END]
+
+[27]
+NAME="unsetenv with one argument incorrect"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "setenv noa"
+  echo "unsetenv nqqdqdoa"
+[27-END]
+
+[28]
+NAME="unsetenv with nothing"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "unsetenv"
+[28-END]
+
+[29]
+NAME="setenv with nothing"
+SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
+CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
+TESTS=
+  echo 'unsetenv HOSTTYPE'
+  echo 'unsetenv VENDOR'
+  echo 'unsetenv OSTYPE'
+  echo 'unsetenv MACHTYPE'
+  echo 'unsetenv SHLVL'
+  echo 'unsetenv PWD'
+  echo 'unsetenv LOGNAME'
+  echo 'unsetenv USER'
+  echo 'unsetenv GROUP'
+  echo 'unsetenv HOST'
+  echo 'unsetenv REMOTEHOST'
+  echo 'unsetenv _'
+  echo 'unsetenv LS_COLORS'
+  echo 'unsetenv NOTE'
+  echo "setenv"
+[29-END]
+
+[30]
+NAME="Try to execute a folder not a executable file"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "/bin"
+[30-END]
+
+[31]
+NAME="Try to execute a file who's the permission are denied"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "./tests/no_exec_file"
+[31-END]
+
+[32]
+NAME="Exit"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'exit 45'
+[32-END]
+
+[33]
+NAME="cd home"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd'
+  echo 'pwd'
+[33-END]
+
+[34]
+NAME="cd minus"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd'
+  echo 'cd -'
+  echo 'pwd'
+[34-END]
+
+[35]
+NAME="touch / mkdir"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'mkdir newdir'
+  echo 'cd newdir'
+  echo 'touch newfile'
+  echo 'touch Newfile'
+  echo 'touch aewfile'
+  echo 'touch Aewfile'
+  echo 'touch zewfile'
+  echo 'touch Zewfile'
+  echo 'pwd'
+  echo 'ls -l'
+  echo 'rm newfile'
+  echo 'rm Newfile'
+  echo 'rm aewfile'
+  echo 'rm Aewfile'
+  echo 'rm zewfile'
+  echo 'rm Zewfile'
+  echo 'cd ..'
+  echo 'rmdir newdir'
+[35-END]
+
+[36]
+NAME="cd error"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr'
+  echo 'cd ezmlivypimgeaouvgzjv'
+[36-END]
+
+[37]
+NAME="cd error 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd ezmlivypimgeaouvgzjv'
+[37-END]
+
+[38]
+NAME="exit error"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'exit blablzoeuy'
+  echo 'exit 3 ezouvẑo'
+[38-END]
+
+[39]
+NAME="exit error 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'exit 3 ezouvẑo'
+[39-END]
+
+[40]
+NAME="sub-sub-shell"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'bash'
+  echo 'exit 3'
+  echo 'echo $?'
+[40-END]
+
+[41]
+NAME="sub-sub-shell 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'tcsh'
+  echo 'exit 3'
+  echo 'echo $?'
+[41-END]
+
+[42]
+NAME="sub-sub-shell 3"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo './mysh'
+  echo 'exit 3'
+  echo 'echo $?'
+[42-END]
+
+[43]
+NAME="sub-sub-shell 4"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo './mysh'
+  echo 'exit'
+  echo 'echo $?'
+[43-END]
+
+[44]
+NAME="Echo the last returned value 1"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls nofilehere'
+  echo 'echo $?'
+[44-END]
+
+[45]
+NAME="Echo the last returned value 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls'
+  echo 'echo $?'
+[45-END]
+
+[46]
+NAME="Echo the defined environement variable"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'setenv noa tests'
+  echo 'echo $noa'
+[46-END]
+
+[47]
+NAME="Echo the undefined environement variable"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo $adbadbad'
+[47-END]
+
+[48]
+NAME="Echo the first value"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo $?'
+[48-END]
+
+[49]
+NAME="Set Path null and try to exec command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'setenv PATH'
+  echo 'ls'
+[49-END]
+
+[50]
+NAME="Cd to a file"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd /bin/ls'
+[50-END]
+
+[51]
+NAME="Exec a file on the wrong archi"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo './tests/bin-macos.bin'
+[51-END]
+
+[52]
+NAME="Exec segfault without coredump"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'sudo ./tests/send_no_coredump'
+[52-END]
+
+[53]
+NAME="setenv with authorized _at start"
+SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
+CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
+TESTS=
+  echo 'unsetenv HOSTTYPE'
+  echo 'unsetenv VENDOR'
+  echo 'unsetenv OSTYPE'
+  echo 'unsetenv MACHTYPE'
+  echo 'unsetenv SHLVL'
+  echo 'unsetenv PWD'
+  echo 'unsetenv LOGNAME'
+  echo 'unsetenv USER'
+  echo 'unsetenv GROUP'
+  echo 'unsetenv HOST'
+  echo 'unsetenv REMOTEHOST'
+  echo 'unsetenv _'
+  echo 'unsetenv LS_COLORS'
+  echo 'unsetenv NOTE'
+  echo "setenv _noa /dev:bin"
+  echo "env"
+[53-END]
+
+[54]
+NAME="setenv with noauthorized -at start"
+SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
+CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
+TESTS=
+  echo 'unsetenv HOSTTYPE'
+  echo 'unsetenv VENDOR'
+  echo 'unsetenv OSTYPE'
+  echo 'unsetenv MACHTYPE'
+  echo 'unsetenv SHLVL'
+  echo 'unsetenv PWD'
+  echo 'unsetenv LOGNAME'
+  echo 'unsetenv USER'
+  echo 'unsetenv GROUP'
+  echo 'unsetenv HOST'
+  echo 'unsetenv REMOTEHOST'
+  echo 'unsetenv _'
+  echo 'unsetenv LS_COLORS'
+  echo 'unsetenv NOTE'
+  echo "setenv -tests *tests"
+  echo "env"
+[54-END]
+
+[55]
+NAME="setenv with authorized value and name"
+SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
+CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
+TESTS=
+  echo 'unsetenv HOSTTYPE'
+  echo 'unsetenv VENDOR'
+  echo 'unsetenv OSTYPE'
+  echo 'unsetenv MACHTYPE'
+  echo 'unsetenv SHLVL'
+  echo 'unsetenv PWD'
+  echo 'unsetenv LOGNAME'
+  echo 'unsetenv USER'
+  echo 'unsetenv GROUP'
+  echo 'unsetenv HOST'
+  echo 'unsetenv REMOTEHOST'
+  echo 'unsetenv _'
+  echo 'unsetenv LS_COLORS'
+  echo 'unsetenv NOTE'
+  echo "setenv noa /dev:bin"
+  echo "env"
+[55-END]
+
+[56]
+NAME="setenv with noauthorized name with equal"
+SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
+CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
+TESTS=
+  echo 'unsetenv HOSTTYPE'
+  echo 'unsetenv VENDOR'
+  echo 'unsetenv OSTYPE'
+  echo 'unsetenv MACHTYPE'
+  echo 'unsetenv SHLVL'
+  echo 'unsetenv PWD'
+  echo 'unsetenv LOGNAME'
+  echo 'unsetenv USER'
+  echo 'unsetenv GROUP'
+  echo 'unsetenv HOST'
+  echo 'unsetenv REMOTEHOST'
+  echo 'unsetenv _'
+  echo 'unsetenv LS_COLORS'
+  echo 'unsetenv NOTE'
+  echo "setenv noa noa=noa"
+  echo "env"
+[56-END]
+
+[57]
+NAME="setenv with uthorized value with equal"
+SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
+CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
+TESTS=
+  echo 'unsetenv HOSTTYPE'
+  echo 'unsetenv VENDOR'
+  echo 'unsetenv OSTYPE'
+  echo 'unsetenv MACHTYPE'
+  echo 'unsetenv SHLVL'
+  echo 'unsetenv PWD'
+  echo 'unsetenv LOGNAME'
+  echo 'unsetenv USER'
+  echo 'unsetenv GROUP'
+  echo 'unsetenv HOST'
+  echo 'unsetenv REMOTEHOST'
+  echo 'unsetenv _'
+  echo 'unsetenv LS_COLORS'
+  echo 'unsetenv NOTE'
+  echo "setenv no=a noa"
+  echo "env"
+[57-END]
+
+[58]
+NAME="Exec multiple commands"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls - la; pwd; cd ~; pwd '
+[58-END]
+
+[59]
+NAME="Exec multiple commands error"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo ';ls - la; pwd; cd ~; pwd; '
+[59-END]
+
+[60]
+NAME="Handle error with redirections"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls > grep | ls'
+[60-END]
+
+[61]
+NAME="Handle error with redirections second_part"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls | grep >>'
+[61-END]
+
+[62]
+NAME="Handle error with pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls | grep |'
+[62-END]
+
+[63]
+NAME="Handle error with pipe with space"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls | grep | '
+[63-END]
+
+[64]
+NAME="Handle error with pipe with space and final redirection"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls | grep > '
+[64-END]
+
+[65]
+NAME="Handle error with redirections with space"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls > grep > '
+[65-END]
+
+[66]
+NAME="Handle error with redirections start with pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '>ls > grep '
+[66-END]
+
+[67]
+NAME="Handle error with redirections start with pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '|ls > grep '
+[67-END]
+
+[68]
+NAME="Handle error with redirections middle left pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls | cat < noa'
+[68-END]
+
+
+[69]
+NAME="Handle error with redirections middle left pipe 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls | cat | grep tty < noa'
+[69-END]
+
+[70]
+NAME="Handle error with redirections alone left pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '<'
+[70-END]
+
+[71]
+NAME="Handle error with redirections alone left pipe_space"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '          <             '
+[71-END]
+
+[72]
+NAME="Handle error with redirections alone right pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '>'
+[72-END]
+
+[73]
+NAME="Handle error with redirections alone right pipe_space"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '                    >          '
+[73-END]
+
+
+[74]
+NAME="Exec command in pipe 1"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -la /dev | grep tty | grep vcsu | grep 67'
+[74-END]
+
+[75]
+NAME="Exec command in pipe 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo noa | cat -e | cat -e | cat -e'
+[75-END]
+
+[76]
+NAME="Handle error with double chev"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '<>'
+[76-END]
+
+[77]
+NAME="Handle error with chev and pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '<|'
+[77-END]
+
+[78]
+NAME="Handle error with chev and pipe 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '|<'
+[78-END]
+
+[79]
+NAME="Handle error with chev and pipe 3"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '>|'
+[79-END]
+
+[80]
+NAME="Handle error with chev and pipe 4"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '|>'
+[80-END]
+
+[81]
+NAME="Handle error with chev and pipe 5"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '<|>'
+[81-END]
+
+[82]
+NAME="Handle error with chev and pipe 6"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls > noa << EOF'
+[82-END]
+
+[83]
+NAME="Handle error with chev and pipe 7"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls | grep tty >> noa << EOF'
+[83-END]
+
+
+[84]
+NAME="Handle error with chev and pipe 8"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls | grep tty << noa >> EOF'
+[84-END]
+
+[85]
+NAME="Handle error with chev and pipe 9"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls >> noa << EOF'
+[85-END]
+
+[86]
+NAME="Handle error with chev and pipe 10"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls >> noa >> EOF'
+[86-END]
+
+[87]
+NAME="Handle error with chev and pipe 11"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls > noa > EOF'
+[87-END]
+
+[88]
+NAME="Handle error with chev and pipe 12"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls << noa << EOF'
+[88-END]
+
+[89]
+NAME="Handle error with chev and pipe 13"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls < noa < EOF'
+[89-END]
+
+[90]
+NAME="Exec command with redirection 1"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls > noa; cat noa'
+[90-END]
+
+[91]
+NAME="Exec command with redirection 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls > noa2 < noa; cat noa2'
+[91-END]
+
+[92]
+NAME="Exec command with redirection 3"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls | wc -l > noa4; cat noa4'
+[92-END]
+
+[93]
+NAME="Exec command with redirection 4"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat < noa4'
+[93-END]
+
+[94]
+NAME="Exec command with redirection 5"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls > noa5 includes; cat noa5'
+[94-END]
+
+[95]
+NAME="Exec command with redirection 6"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat < noa5 > noa6; cat noa6'
+[95-END]
+
+[96]
+NAME="Exec command with redirection 6"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls | grep noa | wc -l > noa7; cat noa7'
+[96-END]
+
+[97]
+NAME="Exec command with redirection 7"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat > noa_f < noa; cat noa_f'
+[97-END]
+
+[98]
+NAME="Exec command with redirection 8"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat noa_f < noa_f'
+[98-END]
+
+[99]
+NAME="Exec command with redirection 9"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls | cd > noa'
+[99-END]
+
+[100]
+NAME="Exec command with redirection 9"
+SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
+CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
+TESTS=
+  echo 'unsetenv HOSTTYPE'
+  echo 'unsetenv VENDOR'
+  echo 'unsetenv OSTYPE'
+  echo 'unsetenv MACHTYPE'
+  echo 'unsetenv SHLVL'
+  echo 'unsetenv PWD'
+  echo 'unsetenv LOGNAME'
+  echo 'unsetenv USER'
+  echo 'unsetenv GROUP'
+  echo 'unsetenv HOST'
+  echo 'unsetenv REMOTEHOST'
+  echo 'unsetenv _'
+  echo 'unsetenv LS_COLORS'
+  echo 'unsetenv NOTE'
+  echo 'ls | env'
+[100-END]
+
+[101]
+NAME="Exec command with redirection 10"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo noa > noa_file101; cat noa_file101'
+[101-END]
+
+[102]
+NAME="Exec command with redirection 11"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat < noa_file101 | grep noa | wc -l > noa_file102; cat noa_file102'
+[102-END]
+
+[103]
+NAME="Exec command with redirection 12"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat < noa_file102 | grep 1 | wc -l | grep 1 | wc -l | grep 1 | wc -l | grep 1 | wc -l | grep 1 | wc -l | grep 1 | wc -l > noa_file103; cat noa_file103'
+[103-END]
+
+[104]
+NAME="Exec command with redirection 13"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat noa_file103 > noa_file103'
+[104-END]
+
+[105]
+NAME="Exec command with redirection 14"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat noa_file103 >> noa_file103'
+[105-END]
