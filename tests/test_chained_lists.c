@@ -12,7 +12,7 @@ Test(add_node, adding_node_in_chained_list)
 {
     list_t *tail = NULL;
     list_t **begin = malloc(sizeof(list_t *));
-    var_t *data;
+    var_t *data = NULL;
 
     *begin = NULL;
     add_node(begin, data);
@@ -24,7 +24,7 @@ Test(delete_node, deleting_node_in_beginning_of_chained_list)
 {
     list_t *tail = NULL;
     list_t **begin = malloc(sizeof(list_t *));
-    var_t *data;
+    var_t *data = NULL;
 
     *begin = NULL;
     add_node(begin, data);
@@ -36,7 +36,7 @@ Test(delete_node, deleting_node_in_middle_of_chained_list)
 {
     list_t *tail = NULL;
     list_t **begin = malloc(sizeof(list_t *));
-    var_t *data;
+    var_t *data = NULL;
 
     *begin = NULL;
     add_node(begin, data);
@@ -47,10 +47,8 @@ Test(delete_node, deleting_node_in_middle_of_chained_list)
 
 Test(chained_list_size, get_size_of_list)
 {
-    list_t *tail = NULL;
     list_t **begin = malloc(sizeof(list_t *));
-    var_t *data;
-    int len;
+    var_t *data = NULL;
 
     *begin = NULL;
     add_node(begin, data);
@@ -60,7 +58,6 @@ Test(chained_list_size, get_size_of_list)
 
 Test(chained_list_to_normal, transform_chained_list_to_list)
 {
-    list_t *tail = NULL;
     list_t **begin = malloc(sizeof(list_t *));
     var_t *data = malloc(sizeof(var_t));
     char **result;
@@ -75,7 +72,6 @@ Test(chained_list_to_normal, transform_chained_list_to_list)
 
 Test(find_node, find_a_present_node)
 {
-    list_t *tail = NULL;
     list_t **begin = malloc(sizeof(list_t *));
     list_t *node;
     var_t *data = malloc(sizeof(var_t));
@@ -90,7 +86,6 @@ Test(find_node, find_a_present_node)
 
 Test(find_node, find_an_absent_node)
 {
-    list_t *tail = NULL;
     list_t **begin = malloc(sizeof(list_t *));
     list_t *node;
     var_t *data = malloc(sizeof(var_t));
