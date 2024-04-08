@@ -101,4 +101,7 @@ sandwich: re
 	make clean
 	clear
 
-.PHONY	=	all clean fclean sandwich coverage
+code_line:
+	find ./src -name '*.c' | xargs wc -l
+
+.PHONY	=	all clean fclean sandwich coverage code_line
