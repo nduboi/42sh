@@ -32,6 +32,22 @@ Test(add_history, add_multiple_nodes)
     cr_assert_eq(info.history->next->next->next, NULL);
 }
 
+Test(my_history, clear_history)
+{
+    char **arr = malloc(sizeof(char *) * 3);
+    infos_t info;
+
+    arr[0] = strdup("history");
+    arr[1] = strdup("-c");
+    arr[2] = NULL;
+    info.history = NULL;
+    add_history(&info, "history 6");
+    add_history(&info, "history 7");
+    add_history(&info, "history 8");
+    add_history(&info, "history 9");
+    cr_assert_eq(my_history(arr, &info), 0);
+}
+
 Test(my_history, display_simple)
 {
     infos_t info;
