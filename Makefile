@@ -98,6 +98,11 @@ unit_tests: $(SRC) $(TEST_SRC)
 tests_run: unit_tests
 	./$(TEST_NAME)
 
+tester: all
+	./tester.sh
+	rm -rf noa*
+	rm -rf salut
+
 coverage: tests_run
 	gcovr --exclude tests/
 	gcovr --exclude tests/ --branches
@@ -109,4 +114,4 @@ sandwich: re
 code_line:
 	find ./src -name '*.c' | xargs wc -l
 
-.PHONY	=	all clean fclean sandwich coverage code_line
+.PHONY	=	all clean fclean sandwich coverage code_line tester
