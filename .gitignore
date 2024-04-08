@@ -8,3 +8,5 @@ errors/
 unit_tests
 segfault.c
 a.out
+*.o
+*.a
