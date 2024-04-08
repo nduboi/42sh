@@ -1,8 +1,6 @@
 mysh
 vgcore*
 coding-style-reports.log
-tester.sh
-test_file
 tester_README
 errors/
 *gcda
