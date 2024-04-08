@@ -28,10 +28,21 @@ void free_chained_list(list_t **begin)
     free(begin);
 }
 
+void free_history(history_t *h)
+{
+    if (h == NULL)
+        return;
+    free_history(h->next);
+    free(h->hour);
+    free(h->line);
+    free(h);
+}
+
 void free_infos(infos_t *infos)
 {
     free_chained_list(infos->envs->env);
     free_chained_list(infos->envs->env_cpy);
+    free_history(infos->history);
     free(infos->envs);
     free(infos);
 }

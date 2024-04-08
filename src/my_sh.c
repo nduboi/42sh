@@ -79,6 +79,7 @@ void input_loop(infos_t *infos)
             write(1, "$> ", 3);
         }
         input = get_input(infos);
+        add_history(infos, input);
         parse_input(input, infos);
     }
 }
@@ -90,6 +91,7 @@ int my_sh(char **env)
     infos->envs = malloc(sizeof(env_t));
     infos->envs->env = copy_env(env);
     infos->envs->env_cpy = copy_env(env);
+    infos->history = NULL;
     if (!infos->envs->env || !infos->envs->env_cpy) {
         return -1;
     }

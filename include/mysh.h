@@ -5,8 +5,19 @@
 ** mysh
 */
 
+#include <stdio.h>
 #include <stdlib.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <stdint.h>
+#include <errno.h>
+#include <string.h>
+#include <sys/stat.h>
 #include <stdbool.h>
+#include <time.h>
 
 #ifndef MYSH_H_
     #define MYSH_H_
@@ -33,9 +44,17 @@ typedef struct commands_s {
     list_t **semi_colons;
 } commands_t;
 
+typedef struct history_s {
+    int id;
+    char *hour;
+    char *line;
+    struct history_s *next;
+} history_t;
+
 typedef struct infos_s {
     env_t *envs;
     bool isatty;
+    history_t *history;
 } infos_t;
 
 // string and numerical functions
@@ -87,5 +106,9 @@ void *my_memset(void *ptr, int val, size_t len);
 void free_double_array(char **array);
 void free_chained_list(list_t **begin);
 void free_infos(infos_t *infos);
+
+// history
+void add_history(infos_t *info, char *line);
+int my_history(char **args, infos_t *info);
 
 #endif /* !MYSH_H_ */

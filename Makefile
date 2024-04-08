@@ -13,6 +13,7 @@ SRC	=	src/builtins/my_unsetenv.c	\
 		src/builtins/my_cd.c	\
 		src/builtins/my_env.c	\
 		src/builtins/my_echo.c \
+		src/builtins/my_history.c	\
 		src/tools/chained_lists.c	\
 		src/tools/my_strsignal.c	\
 		src/tools/string_fcts.c	\
@@ -34,6 +35,7 @@ SRC	=	src/builtins/my_unsetenv.c	\
 		src/handle_fd.c	\
 		src/exe_com.c	\
 		src/my_sh.c	\
+		src/add_history.c	\
 
 TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_my_strcpy.c \
@@ -42,7 +44,8 @@ TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_string_fcts.c \
 				tests/test_error_messages.c \
 				tests/test_my_strsignal.c \
-				tests/test_my_strstr.c
+				tests/test_my_strstr.c	\
+				tests/test_history.c	\
 
 SRC_OBJ	=	$(SRC:%.c=%.o)
 
@@ -52,7 +55,7 @@ TEST_OBJ	=	$(TEST_SRC:%.c=%.o)
 
 OBJ	=	$(SRC_OBJ) $(MAIN_OBJ)
 
-NAME	=	mysh
+NAME	=	42sh
 
 TEST_NAME	=	unit_tests
 
