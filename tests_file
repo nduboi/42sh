@@ -1017,3 +1017,116 @@ CLEAN=""
 TESTS=
   echo 'cat noa_file103 >> noa_file103'
 [105-END]
+
+[106]
+NAME="missing name redirection '>' "
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls >'
+  echo 'grep <'
+[106-END]
+
+[107]
+NAME="missing name redirection '>>' "
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls >>'
+[107-END]
+
+[108]
+NAME="missing name redirection '<' "
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'grep <'
+[108-END]
+
+[109]
+NAME="invalid name redirection '>' "
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls > sa|<l<u'
+[109-END]
+
+[110]
+NAME="invalid name redirection '>>' "
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls >> |oui|'
+[110-END]
+
+[111]
+NAME="invalid name redirection '<' "
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'grep < <oui>'
+[111-END]
+
+[112]
+NAME="missplaced '>' redirection"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -la | grep oui | grep o > salut | wc -l'
+[112-END]
+
+[113]
+NAME="missplaced '>>' redirection"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -la >> salut | grep oui | wc -l'
+[113-END]
+
+[114]
+NAME="missplaced '<' redirection 1"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -la | grep oui | grep o < salut | wc -l'
+[114-END]
+
+[115]
+NAME="missplaced '<' redirection 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -la | grep oui < salut'
+[115-END]
+
+[116]
+NAME="Invalid null command 1"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '   |   '
+[116-END]
+
+[117]
+NAME="Invalid null command 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo ' ls  |   '
+[117-END]
+
+[118]
+NAME="Invalid null command 3"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '     |     ls'
+[118-END]
+
+[119]
+NAME="Invalid null command 4"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo ' ls  |   grep oui | |'
+[119-END]
