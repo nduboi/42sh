@@ -112,5 +112,6 @@ int count_char_in_str(char *str, char c);
 // history
 void add_history(infos_t *info, char *line);
 int my_history(char **args, infos_t *info);
+void free_history(history_t *h);
 
 #endif /* !MYSH_H_ */

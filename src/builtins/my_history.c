@@ -15,14 +15,20 @@ static int my_perror(char *line, int ret)
 
 int print_history(history_t *tmp, bool data, int times)
 {
+    char **arr = NULL;
+
     if (tmp == NULL)
         return (0);
     if (times > 0)
         print_history(tmp->next, data, times - 1);
     if (data == false)
-        printf("%6i %-5s %s\n", tmp->id, tmp->hour, tmp->line);
-    else
-        printf("%s\n", tmp->line);
+        printf("%6i %-5s ", tmp->id, tmp->hour);
+    arr = str_to_word_array(tmp->line);
+    printf("%s", arr[0]);
+    for (int i = 1; arr[i] != NULL; i++) {
+        printf(" %s", arr[i]);
+    }
+    printf("\n");
     return (0);
 }
 
@@ -37,6 +43,13 @@ int only_numbers(char *av)
     return (1);
 }
 
+static int reset_history(infos_t *info)
+{
+    free_history(info->history);
+    info->history = NULL;
+    return (0);
+}
+
 int my_history(char **args, infos_t *info)
 {
     history_t *tmp = info->history;
@@ -44,6 +57,8 @@ int my_history(char **args, infos_t *info)
 
     if (len > 3)
         return (my_perror("history: Too many arguments.\n", 1));
+    if (len == 2 && strcmp(args[1], "-c") == 0)
+        return (reset_history(info));
     if (len == 1)
         return (print_history(tmp, false, 100));
     if (len == 2 && strcmp(args[1], "-h") == 0)
