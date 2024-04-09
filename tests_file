@@ -1130,3 +1130,93 @@ CLEAN=""
 TESTS=
   echo ' ls  |   grep oui | |'
 [119-END]
+
+[120]
+NAME="simple alias"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias yolo ls'
+  echo 'yolo'
+[120-END]
+
+[121]
+NAME="try display one alias"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias yolo ls'
+  echo 'alias yolo'
+[121-END]
+
+[122]
+NAME="try display one alias which doesn't exist"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias yolo ls'
+  echo 'alias yol'
+[122-END]
+
+[123]
+NAME="change value of one alias"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias yolo ls'
+  echo 'yolo'
+  echo 'alias yolo pwd'
+  echo 'yolo'
+  echo 'alias'
+[123-END]
+
+[124]
+NAME="alias with arguments"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias yolo ls -l'
+  echo 'yolo'
+[124-END]
+
+[125]
+NAME="alias with arguments and path"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias yolo ls -l'
+  echo 'yolo /dev'
+[125-END]
+
+[126]
+NAME="alias with arguments and path and display"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias yolo ls -l'
+  echo 'yolo /dev'
+  echo 'alias lala pwd'
+  echo 'lala'
+  echo 'alias'
+[126-END]
+
+[127]
+NAME="strange alias"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias "yolo t" ls'
+  echo 'yolo t /dev'
+  echo 'ls'
+  echo 'alias lala pwd'
+  echo 'lala'
+  echo 'alias'
+[127-END]
+
+[128]
+NAME="just add an alias"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias yolo ls'
+[128-END]

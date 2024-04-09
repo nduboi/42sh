@@ -38,6 +38,13 @@ SRC	=	src/builtins/my_unsetenv.c	\
 		src/my_sh.c	\
 		src/handle_ambigous_redirect.c	\
 		src/add_history.c	\
+		src/builtins/my_alias.c \
+		src/tools/my_strcat_s.c \
+		src/tools/delete_char.c \
+		src/builtins/display_all_alias.c \
+		src/builtins/add_alias.c \
+		src/builtins/display_alias.c \
+		src/check_if_is_an_alias.c \
 
 TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_my_strcpy.c \
@@ -67,7 +74,7 @@ TEST_FLAGS	=	--coverage -lcriterion
 
 INCLUDE	=	-I ./include
 
-CFLAGS	+=	$(INCLUDE) -Wall -Wextra -Werror
+CFLAGS	+=	$(INCLUDE) -Wall -Wextra -Werror -g
 
 DEBUG	=	-g
 

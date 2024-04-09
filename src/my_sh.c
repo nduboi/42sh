@@ -93,6 +93,7 @@ int my_sh(char **env)
     infos->envs->env = copy_env(env);
     infos->envs->env_cpy = copy_env(env);
     infos->history = NULL;
+    infos->alias = NULL;
     if (!infos->envs->env || !infos->envs->env_cpy) {
         return -1;
     }

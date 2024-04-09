@@ -30,6 +30,12 @@ typedef struct var_s {
     char *val;
 } var_t;
 
+typedef struct alias_s {
+    char *base_command;
+    char *new_command;
+    struct alias_s *next;
+} alias_t;
+
 typedef struct list_s {
     void *data;
     struct list_s *next;
@@ -55,6 +61,7 @@ typedef struct infos_s {
     env_t *envs;
     bool isatty;
     history_t *history;
+    alias_t *alias;
 } infos_t;
 
 // string and numerical functions
@@ -99,6 +106,10 @@ int my_echo(char **args, infos_t *infos);
 int my_exit(char **args, infos_t *infos);
 int my_setenv(char **args, infos_t *infos);
 int my_unsetenv(char **args, infos_t *infos);
+int my_alias(char **args, infos_t *infos);
+void display_alias(char **args, infos_t *infos);
+void add_alias(char **args, infos_t *infos);
+void display_all_alias(infos_t *infos);
 
 // tools
 void *my_malloc(size_t size);
@@ -108,10 +119,14 @@ void free_double_array(char **array);
 void free_chained_list(list_t **begin);
 void free_infos(infos_t *infos);
 int count_char_in_str(char *str, char c);
+char *my_strcat_s(char *str1, char *str2);
+void delete_char(char *str, char c);
 
 // history
 void add_history(infos_t *info, char *line);
 int my_history(char **args, infos_t *info);
 void free_history(history_t *h);
+
+char **check_if_is_an_alias(char **args, infos_t *infos);
 
 #endif /* !MYSH_H_ */

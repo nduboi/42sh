@@ -10,3 +10,4 @@ segfault.c
 a.out
 *.o
 *.a
+42sh
