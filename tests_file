@@ -1220,3 +1220,19 @@ CLEAN=""
 TESTS=
   echo 'alias yolo ls'
 [128-END]
+
+[129]
+NAME="Start command without enviromenent variables"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls'
+[129-END]
+
+[130]
+NAME="Start command without enviromenent variables"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'laffafas'
+[130-END]

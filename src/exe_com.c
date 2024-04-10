@@ -50,6 +50,17 @@ char *find_path(var_t *var, char *command)
     return result;
 }
 
+static list_t *force_path(void)
+{
+    list_t *node = malloc(sizeof(list_t));
+
+    node->data = malloc(sizeof(var_t));
+    ((var_t *) node->data)->val = my_strdup(
+        "/bin:/usr/bin:/usr/sbin:/usr/local/bin");
+    node->next = NULL;
+    return node;
+}
+
 char *get_path(char *cmd, list_t **env)
 {
     char *result = NULL;
@@ -65,7 +76,7 @@ char *get_path(char *cmd, list_t **env)
     }
     node = find_node(env, "PATH");
     if (!node) {
-        return NULL;
+        node = force_path();
     }
     result = find_path(node->data, cmd);
     return result;
