@@ -101,6 +101,29 @@ static void handle_ands(char *cmd, infos_t *infos, int fds[2])
     }
 }
 
+static void handle_ors(char *cmd, infos_t *infos, int fds[2])
+{
+    char *cmd2 = NULL;
+    int pid = 0;
+    int wstatus = 0;
+
+    if (!my_strstr(cmd, "||")) {
+        return handle_ands(cmd, infos, fds);
+    }
+    cmd2 = my_strstr(cmd, "||") + 2;
+    cmd[cmd2 - cmd - 2] = '\0';
+    pid = fork();
+    if (pid == 0) {
+        handle_ors(cmd, infos, fds);
+        exit(handle_exit_status(GET_STATUS, 0));
+    }
+    wait(&wstatus);
+    handle_signal(wstatus);
+    if (handle_exit_status(GET_STATUS, 0) != 0) {
+        handle_ors(cmd2, infos, fds);
+    }
+}
+
 void parse_input(char *input, infos_t *infos)
 {
     list_t **semi_colons = chained_tokens(input, ";");
@@ -109,7 +132,7 @@ void parse_input(char *input, infos_t *infos)
     int out = dup(STDOUT_FILENO);
 
     while (node) {
-        handle_ands(node->data, infos, ((int[2]){in, out}));
+        handle_ors(node->data, infos, ((int[2]){in, out}));
         node = node->next;
     }
     close(in);
