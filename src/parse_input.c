@@ -56,32 +56,60 @@ void parse_cmd(char *data, infos_t *infos)
     }
 }
 
-static list_t **find_semi_colons(char *input)
+static list_t **chained_tokens(char *input, char *delim)
 {
-    list_t **semi_colons = malloc(sizeof(list_t *));
-    char *token = strtok_r(input, ";", &input);
+    list_t **list = malloc(sizeof(list_t *));
+    char *token = strtok_r(input, delim, &input);
 
-    *semi_colons = NULL;
+    *list = NULL;
     while (token) {
-        add_node(semi_colons, token);
-        token = strtok_r(input, ";", &input);
+        add_node(list, token);
+        token = strtok_r(input, delim, &input);
     }
-    return semi_colons;
+    return list;
+}
+
+static void exec_and_cmd(char *cmd, infos_t *infos, int fds[2])
+{
+    if (!errors_in_cmd(cmd)) {
+        parse_cmd(cmd, infos);
+        wait(NULL);
+        restart_fds(fds[0], fds[1]);
+    }
+}
+
+static void handle_ands(char *cmd, infos_t *infos, int fds[2])
+{
+    char *cmd2 = NULL;
+    int pid = 0;
+    int wstatus = 0;
+
+    if (!my_strstr(cmd, "&&")) {
+        return exec_and_cmd(cmd, infos, fds);
+    }
+    cmd2 = my_strstr(cmd, "&&") + 2;
+    cmd[cmd2 - cmd - 2] = '\0';
+    pid = fork();
+    if (pid == 0) {
+        handle_ands(cmd, infos, fds);
+        exit(handle_exit_status(GET_STATUS, 0));
+    }
+    wait(&wstatus);
+    handle_signal(wstatus);
+    if (handle_exit_status(GET_STATUS, 0) == 0) {
+        handle_ands(cmd2, infos, fds);
+    }
 }
 
 void parse_input(char *input, infos_t *infos)
 {
-    list_t **cmds = find_semi_colons(input);
-    list_t *node = *cmds;
+    list_t **semi_colons = chained_tokens(input, ";");
+    list_t *node = *semi_colons;
     int in = dup(STDIN_FILENO);
     int out = dup(STDOUT_FILENO);
 
     while (node) {
-        if (!errors_in_cmd(node->data)) {
-            parse_cmd(node->data, infos);
-            wait(NULL);
-            restart_fds(in, out);
-        }
+        handle_ands(node->data, infos, ((int[2]){in, out}));
         node = node->next;
     }
     close(in);
