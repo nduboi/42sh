@@ -1236,3 +1236,131 @@ CLEAN=""
 TESTS=
   echo 'laffafas'
 [130-END]
+
+[200]
+NAME="Simple && with working condition"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls && echo good'
+[200-END]
+
+[201]
+NAME="Simple && with not working condition"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls ilslkdgn && echo good'
+[201-END]
+
+[202]
+NAME="Multiple &&, all working condition"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls && echo good && env && tree'
+[202-END]
+
+[203]
+NAME="Multiple &&, one false condition"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls ÎEGKDK && echo good && env && tree'
+[203-END]
+
+[204]
+NAME="Simple && with nothing before"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '&& echo good'
+[204-END]
+
+[205]
+NAME="Simple && with nothing after"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls &&'
+[205-END]
+
+[206]
+NAME="Simple &&, bad condition, with nothing after"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls sdg &&'
+[206-END]
+
+[207]
+NAME="Simple && with nothing"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '&&'
+[207-END]
+
+[208]
+NAME="Simple || with working condition"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls ^LKDNF || echo good'
+[208-END]
+
+[209]
+NAME="Simple || with not working condition"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls || echo good'
+[209-END]
+
+[210]
+NAME="Multiple ||, all working condition"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls dv oskoqnd || echo $ojdng || ls hfhhf || tree'
+[210-END]
+
+[211]
+NAME="Multiple ||, one false condition"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls || LS ôqjqENGF || piodo || tree'
+[211-END]
+
+[212]
+NAME="Simple || with nothing before"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '|| echo good'
+[212-END]
+
+[213]
+NAME="Simple || with nothing after"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls zG ||'
+[213-END]
+
+[214]
+NAME="Simple ||, bad condition, with nothing after"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls ||'
+[214-END]
+
+[215]
+NAME="Simple || with nothing"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '||'
+[215-END]

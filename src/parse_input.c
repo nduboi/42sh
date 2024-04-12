@@ -71,12 +71,6 @@ static list_t **chained_tokens(char *input, char *delim)
 
 static void exec_and_cmd(char *cmd, infos_t *infos, int fds[2])
 {
-    char *empty_cmd = my_malloc(sizeof(char) * 2);
-
-    empty_cmd[0] = ' ';
-    if (!cmd[0]) {
-        cmd = empty_cmd;
-    }
     if (!errors_in_cmd(cmd)) {
         parse_cmd(cmd, infos);
         wait(NULL);
