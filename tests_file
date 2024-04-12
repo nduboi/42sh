@@ -1364,3 +1364,51 @@ CLEAN=""
 TESTS=
   echo '||'
 [215-END]
+
+[216]
+NAME="&& and ||"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls && ls iÙLKZNRG || ls'
+[216-END]
+
+[217]
+NAME="&& and || not working"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls && ls || ls'
+[217-END]
+
+[218]
+NAME="&& not working and ||"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls iisdg && ls iknZRG || ls'
+[218-END]
+
+[219]
+NAME="|| and &&"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls onqsdg || ls && ls'
+[219-END]
+
+[220]
+NAME="|| and && not working"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls onqsdg || ls lJKNDG && ls'
+[220-END]
+
+[221]
+NAME="|| not working and &&"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls || ls && ls'
+[221-END]
