@@ -23,7 +23,8 @@ void display_all_alias(infos_t *infos)
     while (temp != NULL) {
         if (has_space(temp->new_command)) {
             printf("%s\t(%s)\n", temp->base_command, temp->new_command);
-            return;
+            temp = temp->next;
+            continue;
         }
         printf("%s\t%s\n", temp->base_command, temp->new_command);
         temp = temp->next;

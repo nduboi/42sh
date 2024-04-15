@@ -110,6 +110,7 @@ int my_alias(char **args, infos_t *infos);
 void display_alias(char **args, infos_t *infos);
 void add_alias(char **args, infos_t *infos);
 void display_all_alias(infos_t *infos);
+int my_unalias(char **args, infos_t *infos);
 
 // tools
 void *my_malloc(size_t size);

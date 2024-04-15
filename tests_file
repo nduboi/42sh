@@ -1412,3 +1412,40 @@ CLEAN=""
 TESTS=
   echo 'ls || ls && ls'
 [221-END]
+
+
+[222]
+NAME="unalias an alias"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias yolo ls'
+  echo 'yolo'
+  echo 'unalias yolo'
+[222-END]
+
+[223]
+NAME="unalias multiple alias"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias yolo ls'
+  echo 'alias lala pwd'
+  echo 'alias'
+  echo 'unalias yolo lala'
+  echo 'alias'
+[223-END]
+
+[224]
+NAME="unalias multiple alias bis"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias yolo ls'
+  echo 'alias lala pwd'
+  echo 'alias lili ls -l'
+  echo 'alias'
+  echo 'unalias yolo lala'
+  echo 'alias'
+  echo 'lili'
+[224-END]
