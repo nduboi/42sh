@@ -22,11 +22,13 @@ static void copy_in_list(list_t **copy, char **env, int size)
 {
     var_t *var = NULL;
     char *temp = NULL;
+    char *dup = NULL;
 
     for (int i = 0; i < size; i++) {
+        dup = my_strdup(env[i]);
         var = malloc(sizeof(var_t));
-        var->name = strtok_r(env[i], "=", &env[i]);
-        temp = strtok_r(env[i], "", &env[i]);
+        var->name = strtok_r(dup, "=", &dup);
+        temp = strtok_r(dup, "", &dup);
         if (temp) {
             var->val = temp;
         } else {
