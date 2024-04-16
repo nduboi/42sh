@@ -74,12 +74,14 @@ void input_loop(infos_t *infos)
     char *input = NULL;
 
     while (1) {
-        if (infos->isatty) {
-            write(1, "$> ", 3);
-        }
+        if (infos->isatty)
+            write_prompt(infos->envs);
         input = get_input(infos);
-        add_history(infos, input);
-        parse_input(input, infos);
+        input = check_exclamation(input, infos);
+        if (input != NULL) {
+            add_history(infos, input);
+            parse_input(input, infos);
+        }
     }
 }
 

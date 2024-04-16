@@ -1,0 +1,70 @@
+name: Verif
+
+env:
+  EXECUTABLES: "42sh"
+
+on:
+  push
+
+jobs:
+
+  check_coding_style:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/epitech/coding-style-checker:latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Run coding style
+        run: check.sh $(pwd) $(pwd)
+
+      - name: Check error
+        run: |
+          while IFS= read -r line; do
+            file=$(echo "$line" | cut -d ':' -f 1)
+            line_number=$(echo "$line" | cut -d ':' -f 2)
+            error_message=$(echo "$line" | cut -d ':' -f 3-)
+            echo "::error file=$file,line=$line_number::Coding style error: $error_message"
+          done < coding-style-reports.log
+
+      - name: Exit if found
+        run: |
+          if [ -s coding-style-reports.log ]; then
+            echo "Coding style error"
+            exit 1
+          fi
+
+  check_program_compilation:
+    runs-on: ubuntu-latest
+    needs: check_coding_style
+    container:
+      image: epitechcontent/epitest-docker
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: make
+        timeout-minutes: 2
+        run: make
+
+      - name: clean
+        run: make clean
+
+      - name: verif exec
+        run: |
+          IFS=',' read -ra EXEC_ARR <<< "$EXECUTABLES"
+          for line in "${EXEC_ARR[@]}"; do
+            if [ ! -x "$line" ]; then
+              echo $line" is not executable"
+              exit 1
+            fi
+          done

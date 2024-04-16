@@ -176,3 +176,47 @@ Test(my_history, wrong_arg4)
     add_history(&info, "history foo foo");
     cr_assert_eq(my_history(arr, &info), 1);
 }
+
+Test(check_exclamation, no_mark)
+{
+    char *input = strdup("ls -la");
+    infos_t info;
+
+    info.history = NULL;
+    input = check_exclamation(input, &info);
+    cr_assert_str_eq(input, "ls -la");
+}
+
+Test(check_exclamation, double_without_prev)
+{
+    char *input = strdup("!!");
+    infos_t info;
+
+    info.history = NULL;
+    input = check_exclamation(input, &info);
+    cr_assert_eq(input, NULL);
+}
+
+Test(check_exclamation, double_with_prev)
+{
+    char *input = strdup("!!");
+    infos_t info;
+
+    info.history = malloc(sizeof(history_t) * 1);
+    info.history->line = strdup("ls");
+    info.history->next = NULL;
+    input = check_exclamation(input, &info);
+    cr_assert_str_eq(input, "ls");
+}
+
+Test(check_exclamation, middle_with_prev)
+{
+    char *input = strdup("ls !! -a");
+    infos_t info;
+
+    info.history = malloc(sizeof(history_t) * 1);
+    info.history->line = strdup("-l");
+    info.history->next = NULL;
+    input = check_exclamation(input, &info);
+    cr_assert_str_eq(input, "ls -l -a");
+}

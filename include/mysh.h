@@ -125,10 +125,16 @@ int count_char_in_str(char *str, char c);
 char *my_strcat_s(char *str1, char *str2);
 void delete_char(char *str, char c);
 
+// Custom prompt
+
+void write_prompt(env_t *env);
+char *get_env_var(char *key, list_t **env);
+
 // history
 void add_history(infos_t *info, char *line);
 int my_history(char **args, infos_t *info);
 void free_history(history_t *h);
+char *check_exclamation(char *input, infos_t *info);
 
 char **check_if_is_an_alias(char **args, infos_t *infos);
 
