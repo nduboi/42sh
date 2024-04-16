@@ -22,7 +22,7 @@ int good_number(char *nbr)
     return 1;
 }
 
-void exit_number(char **args)
+void exit_number(char **args, infos_t *infos)
 {
     int nbr = 0;
 
@@ -32,6 +32,7 @@ void exit_number(char **args)
         return;
     }
     nbr = my_getnbr(args[1]);
+    free_infos(infos);
     free(args);
     exit(nbr);
 }
@@ -44,11 +45,11 @@ int my_exit(char **args, infos_t *infos)
         handle_exit_status(WRITE_STATUS, 1);
         return -1;
     }
-    free_infos(infos);
     if (args[1] == NULL) {
+        free_infos(infos);
         exit(handle_exit_status(GET_STATUS, 0));
         return 0;
     }
-    exit_number(args);
+    exit_number(args, infos);
     return 0;
 }

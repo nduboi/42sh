@@ -58,6 +58,13 @@ TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_my_strsignal.c \
 				tests/test_my_strstr.c	\
 				tests/test_history.c	\
+				tests/test_my_cd.c	\
+				tests/test_my_echo.c	\
+				tests/test_my_env.c	\
+				tests/test_my_setenv.c	\
+				tests/test_my_unsetenv.c	\
+				tests/test_count_char.c	\
+				tests/test_my_exit.c
 
 SRC_OBJ	=	$(SRC:%.c=%.o)
 
@@ -77,7 +84,7 @@ TEST_FLAGS	=	--coverage -lcriterion
 
 INCLUDE	=	-I ./include
 
-CFLAGS	+=	$(INCLUDE) -Wall -Wextra -Werror -g
+CFLAGS	+=	$(INCLUDE) -Wall -Wextra -Werror
 
 DEBUG	=	-g
 
