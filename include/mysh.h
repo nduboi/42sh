@@ -78,11 +78,13 @@ int my_nbrlen(int nbr);
 void my_putnbr(int nbr);
 int count_tokens(char *str, char *sep);
 char *my_strstr(char *hay, char *needle);
+bool only_char_in_str(char *str, char c);
 
 // my shell functions
 int my_sh(char **env);
 void parse_input(char *input, infos_t *infos);
-bool errors_in_cmd(char *cmd);
+bool errors_in_input(char *str);
+bool errors_in_pipes_and_redirs(char *cmd);
 void handle_cmd(char *input, infos_t *infos);
 int exe_cmd(char **args, infos_t *infos);
 void error_message(char *str, int errnum);

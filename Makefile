@@ -46,6 +46,8 @@ SRC	=	src/builtins/my_unsetenv.c	\
 		src/builtins/display_alias.c \
 		src/check_if_is_an_alias.c \
 		src/builtins/my_unalias.c \
+		src/ands_ors_errors.c \
+		src/tools/only_char_in_str.c
 
 TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_my_strcpy.c \

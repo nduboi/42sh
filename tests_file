@@ -1258,7 +1258,7 @@ NAME="Multiple &&, all working condition"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
-  echo 'ls && echo good && env && tree'
+  echo 'ls && ls && ls && echo good'
 [202-END]
 
 [203]
@@ -1266,7 +1266,7 @@ NAME="Multiple &&, one false condition"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
-  echo 'ls ÎEGKDK && echo good && env && tree'
+  echo 'ls ÎEGKDK && echo good && ls && ls'
 [203-END]
 
 [204]
@@ -1322,7 +1322,7 @@ NAME="Multiple ||, all working condition"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
-  echo 'ls dv oskoqnd || echo $ojdng || ls hfhhf || tree'
+  echo 'ls dv oskoqnd || echo $ojdng || ls hfhhf || ls'
 [210-END]
 
 [211]
@@ -1330,7 +1330,7 @@ NAME="Multiple ||, one false condition"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
-  echo 'ls || LS ôqjqENGF || piodo || tree'
+  echo 'ls || LS ôqjqENGF || piodo || ls'
 [211-END]
 
 [212]
@@ -1413,7 +1413,6 @@ TESTS=
   echo 'ls || ls && ls'
 [221-END]
 
-
 [222]
 NAME="unalias an alias"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -1449,3 +1448,123 @@ TESTS=
   echo 'alias'
   echo 'lili'
 [224-END]
+
+[225]
+NAME="Simple && with working condition and redir"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls > noa && echo good > noa'
+[225-END]
+
+[226]
+NAME="Simple && with not working redir"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls ilslkdgn > && echo good'
+[226-END]
+
+[227]
+NAME="Multiple &&, all working condition but bad pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls && ls && ls && echo good |'
+[227-END]
+
+[228]
+NAME="Simple || with working condition and redir"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls ^LKDNF || echo good > noa'
+[228-END]
+
+[229]
+NAME="Simple || with not working redir"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls || echo good >'
+[229-END]
+
+[230]
+NAME="Multiple ||, all working condition but bad pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls dv oskoqnd || echo $ojdng || ls hfhhf || ls |'
+[230-END]
+
+[231]
+NAME="Simple || with nothing before but spaces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '   || echo good'
+[231-END]
+
+[232]
+NAME="Simple || with nothing after but spaces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls zG ||  '
+[232-END]
+
+[233]
+NAME="Simple ||, bad condition, with nothing after but spaces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls ||  '
+[233-END]
+
+[234]
+NAME="Simple || with nothing but spaces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '  ||  '
+[234-END]
+
+[235]
+NAME="&& and || with bad redir"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls && ls iÙLKZNRG || ls <'
+[235-END]
+
+[236]
+NAME="Simple && with nothing before but spaces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '   && echo good'
+[236-END]
+
+[237]
+NAME="Simple && with nothing after but spaces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls &&  '
+[237-END]
+
+[238]
+NAME="Simple &&, bad condition, with nothing after but spaces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls vsd  &&  '
+[238-END]
+
+[239]
+NAME="Simple && with nothing but spaces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '  &&  '
+[239-END]

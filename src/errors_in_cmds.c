@@ -165,7 +165,7 @@ static bool handle_error_cmd(char *cmd, int len, int count)
     return false;
 }
 
-bool errors_in_cmd(char *cmd)
+bool errors_in_pipes_and_redirs(char *cmd)
 {
     int len = count_tokens(cmd, "|");
     int count = count_char_in_str(cmd, '|');

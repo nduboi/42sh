@@ -71,11 +71,16 @@ static list_t **chained_tokens(char *input, char *delim)
 
 static void exec_and_cmd(char *cmd, infos_t *infos, int fds[2])
 {
-    if (!errors_in_cmd(cmd)) {
-        parse_cmd(cmd, infos);
-        wait(NULL);
-        restart_fds(fds[0], fds[1]);
+    char *new_cmd = NULL;
+
+    if (!*cmd) {
+        new_cmd = my_malloc(sizeof(char) * 2);
+        new_cmd[0] = ' ';
+        cmd = new_cmd;
     }
+    parse_cmd(cmd, infos);
+    wait(NULL);
+    restart_fds(fds[0], fds[1]);
 }
 
 static void handle_ands(char *cmd, infos_t *infos, int fds[2])
@@ -88,7 +93,8 @@ static void handle_ands(char *cmd, infos_t *infos, int fds[2])
         return exec_and_cmd(cmd, infos, fds);
     }
     cmd2 = my_strstr(cmd, "&&") + 2;
-    cmd[cmd2 - cmd - 2] = '\0';
+    cmd[cmd2 - cmd - 2] = ' ';
+    cmd[cmd2 - cmd - 1] = '\0';
     pid = fork();
     if (pid == 0) {
         handle_ands(cmd, infos, fds);
@@ -96,7 +102,7 @@ static void handle_ands(char *cmd, infos_t *infos, int fds[2])
     }
     wait(&wstatus);
     handle_signal(wstatus);
-    if (handle_exit_status(GET_STATUS, 0) == 0) {
+    if (handle_exit_status(GET_STATUS, 0) == 0 || only_char_in_str(cmd, ' ')) {
         handle_ands(cmd2, infos, fds);
     }
 }
@@ -111,7 +117,8 @@ static void handle_ors(char *cmd, infos_t *infos, int fds[2])
         return handle_ands(cmd, infos, fds);
     }
     cmd2 = my_strstr(cmd, "||") + 2;
-    cmd[cmd2 - cmd - 2] = '\0';
+    cmd[cmd2 - cmd - 2] = ' ';
+    cmd[cmd2 - cmd - 1] = '\0';
     pid = fork();
     if (pid == 0) {
         handle_ors(cmd, infos, fds);
@@ -127,13 +134,14 @@ static void handle_ors(char *cmd, infos_t *infos, int fds[2])
 void parse_input(char *input, infos_t *infos)
 {
     list_t **semi_colons = chained_tokens(input, ";");
-    list_t *node = *semi_colons;
     int in = dup(STDIN_FILENO);
     int out = dup(STDOUT_FILENO);
 
-    while (node) {
+    for (list_t *node = *semi_colons; node; node = node->next) {
+        if (errors_in_input(my_strdup(node->data))) {
+            continue;
+        }
         handle_ors(node->data, infos, ((int[2]){in, out}));
-        node = node->next;
     }
     close(in);
     close(out);
