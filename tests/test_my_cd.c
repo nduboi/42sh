@@ -25,10 +25,10 @@ Test(my_cd, home_path)
     infos.envs->env = malloc(sizeof(list_t *));
     *infos.envs->env = NULL;
     data.name = "HOME";
-    data.val = "/home/alban";
+    data.val = "/home";
     add_node(infos.envs->env, &data);
     my_cd(args, &infos);
-    cr_assert_str_eq(getcwd(NULL, 0), "/home/alban");
+    cr_assert_str_eq(getcwd(NULL, 0), "/home");
 }
 
 Test(my_cd, home_path_with_tilde)
@@ -41,10 +41,10 @@ Test(my_cd, home_path_with_tilde)
     infos.envs->env = malloc(sizeof(list_t *));
     *infos.envs->env = NULL;
     data.name = "HOME";
-    data.val = "/home/alban";
+    data.val = "/home";
     add_node(infos.envs->env, &data);
     my_cd(args, &infos);
-    cr_assert_str_eq(getcwd(NULL, 0), "/home/alban");
+    cr_assert_str_eq(getcwd(NULL, 0), "/home");
 }
 
 Test(my_cd, oldpwd)
@@ -62,14 +62,14 @@ Test(my_cd, oldpwd)
 
 Test(my_cd, normal_cd)
 {
-    char *args[3] = {"cd", "/home/alban", NULL};
+    char *args[3] = {"cd", "/home", NULL};
     infos_t infos;
 
     infos.envs = malloc(sizeof(env_t));
     infos.envs->env = malloc(sizeof(list_t *));
     *infos.envs->env = NULL;
     my_cd(args, &infos);
-    cr_assert_str_eq(getcwd(NULL, 0), "/home/alban");
+    cr_assert_str_eq(getcwd(NULL, 0), "/home");
 }
 
 Test(my_cd, bad_dir)
@@ -95,10 +95,10 @@ Test(my_cd, home_not_in_first_env)
     *infos.envs->env = NULL;
     *infos.envs->env_cpy = NULL;
     data.name = "HOME";
-    data.val = "/home/alban";
+    data.val = "/home";
     add_node(infos.envs->env_cpy, &data);
     my_cd(args, &infos);
-    cr_assert_str_eq(getcwd(NULL, 0), "/home/alban");
+    cr_assert_str_eq(getcwd(NULL, 0), "/home");
 }
 
 Test(my_cd, home_not_in_env)
@@ -128,8 +128,8 @@ Test(my_cd, home_far_in_env)
     blank_data.val = "bar";
     add_node(infos.envs->env, &blank_data);
     data.name = "HOME";
-    data.val = "/home/alban";
+    data.val = "/home";
     add_node(infos.envs->env, &data);
     my_cd(args, &infos);
-    cr_assert_str_eq(getcwd(NULL, 0), "/home/alban");
+    cr_assert_str_eq(getcwd(NULL, 0), "/home");
 }
