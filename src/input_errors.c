@@ -62,12 +62,12 @@ static bool errors_in_parenthesis(char *cmd)
             count_close += 1;
         }
         if (count_close > count_open) {
-            write(2, "Too many )'s\n", 13);
+            write(2, "Too many )'s.\n", 14);
             return true;
         }
     }
     if (count_open > count_close) {
-        write(2, "Too many ('s\n", 13);
+        write(2, "Too many ('s.\n", 14);
         return true;
     }
     return false;
