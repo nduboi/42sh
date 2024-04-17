@@ -124,6 +124,7 @@ void free_infos(infos_t *infos);
 int count_char_in_str(char *str, char c);
 char *my_strcat_s(char *str1, char *str2);
 void delete_char(char *str, char c);
+list_t **chained_tokens(char *input, char *delim);
 
 // Custom prompt
 

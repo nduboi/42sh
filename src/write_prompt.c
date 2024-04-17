@@ -17,9 +17,11 @@ void write_prompt(env_t *env)
     while (dir && my_strstr(dir, "/")) {
         dir = my_strstr(dir, "/") + 1;
     }
+    printf("\033[31m");
     printf("[%s", (user == NULL ? "user" : user));
     printf("@%s", (hostname == NULL ? "hostname" : hostname));
     printf(" %s]$ ", (dir == NULL ? "pwd" : dir));
+    printf("\033[0m");
     if (pwd != NULL)
         free(pwd);
 }

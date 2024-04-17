@@ -56,19 +56,6 @@ void parse_cmd(char *data, infos_t *infos)
     }
 }
 
-static list_t **chained_tokens(char *input, char *delim)
-{
-    list_t **list = malloc(sizeof(list_t *));
-    char *token = strtok_r(input, delim, &input);
-
-    *list = NULL;
-    while (token) {
-        add_node(list, token);
-        token = strtok_r(input, delim, &input);
-    }
-    return list;
-}
-
 static void exec_and_cmd(char *cmd, infos_t *infos, int fds[2])
 {
     char *new_cmd = NULL;
@@ -131,18 +118,34 @@ static void handle_ors(char *cmd, infos_t *infos, int fds[2])
     }
 }
 
+static void handle_semi_colons(char *cmd, infos_t *infos, int fds[2])
+{
+    char *cmd2 = NULL;
+
+    if (!my_strstr(cmd, ";")) {
+        handle_ors(cmd, infos, fds);
+        return;
+    }
+    cmd2 = my_strstr(cmd, ";") + 1;
+    cmd[cmd2 - cmd - 1] = '\0';
+    handle_ors(cmd, infos, fds);
+    handle_semi_colons(cmd2, infos, fds);
+}
+
 void parse_input(char *input, infos_t *infos)
 {
-    list_t **semi_colons = chained_tokens(input, ";");
-    int in = dup(STDIN_FILENO);
-    int out = dup(STDOUT_FILENO);
+    int in = 0;
+    int out = 0;
+    char *copy = my_strdup(input);
+    bool errors = errors_in_input(copy);
 
-    for (list_t *node = *semi_colons; node; node = node->next) {
-        if (errors_in_input(my_strdup(node->data))) {
-            continue;
-        }
-        handle_ors(node->data, infos, ((int[2]){in, out}));
+    free(copy);
+    if (errors) {
+        return;
     }
+    in = dup(STDIN_FILENO);
+    out = dup(STDOUT_FILENO);
+    handle_semi_colons(input, infos, (int[2]) {in, out});
     close(in);
     close(out);
 }

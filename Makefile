@@ -48,7 +48,7 @@ SRC	=	src/builtins/my_unsetenv.c	\
 		src/exclamation_mark.c	\
 		src/write_prompt.c	\
 		src/builtins/my_unalias.c \
-		src/ands_ors_errors.c \
+		src/input_errors.c \
 		src/tools/only_char_in_str.c
 
 TEST_SRC	=	tests/test_chained_lists.c \
