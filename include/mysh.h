@@ -25,6 +25,30 @@
     #define WRITE_STATUS 1
     #define GET_STATUS 2
 
+typedef struct list_s {
+    void *data;
+    struct list_s *next;
+} list_t;
+
+enum link_e {
+    SM = 0,
+    AND,
+    OR,
+    PIPE
+};
+
+union type_u {
+    list_t *group;
+    char *command;
+};
+
+typedef struct parsing_s {
+    union type_u type;
+    enum link_e link;
+    int fd_in;
+    int fd_out;
+} parsing_t;
+
 typedef struct var_s {
     char *name;
     char *val;
@@ -35,11 +59,6 @@ typedef struct alias_s {
     char *new_command;
     struct alias_s *next;
 } alias_t;
-
-typedef struct list_s {
-    void *data;
-    struct list_s *next;
-} list_t;
 
 typedef struct env_s {
     list_t **env;
