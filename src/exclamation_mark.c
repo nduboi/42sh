@@ -46,6 +46,19 @@ static char *remove_in_str(char *str, int ind)
     return (new);
 }
 
+static char *last_com(char *key, infos_t *info)
+{
+    history_t *tmp = info->history;
+    int size = strlen(key) - 1;
+
+    while (tmp != NULL) {
+        if (strncmp(key, tmp->line, size) == 0)
+            return (strdup(tmp->line));
+        tmp = tmp->next;
+    }
+    return (NULL);
+}
+
 char *recall_last_command(char *str, int i, infos_t *info)
 {
     char *line = (info->history == NULL ? NULL : strdup(info->history->line));
@@ -64,6 +77,48 @@ char *recall_last_command(char *str, int i, infos_t *info)
     return (new);
 }
 
+char *get_key(char *str, int i)
+{
+    char *key = NULL;
+    int len = 0;
+    int j = i;
+
+    for (j = i; str[j] != '\0' && str[j] != ' ' && str[j] != '\t'; j++);
+    len = j - i;
+    if (len == 0)
+        return (NULL);
+    key = malloc(sizeof(char) * (len + 1));
+    key[len] = '\0';
+    for (int a = 0; a < len; a++) {
+        key[a] = str[i + a];
+    }
+    return (key);
+}
+
+char *recall_start_with(char *str, int i, infos_t *info)
+{
+    char *key = get_key(str, i + 1);
+    char *line = NULL;
+    int len = 0;
+
+    if (key == NULL)
+        return (str);
+    line = last_com(key, info);
+    if (line == NULL) {
+        dprintf(2, "%s: Event not found.\n", key);
+        return (NULL);
+    }
+    len = strlen(key);
+    str = insert_in_str(line, str, i + len + 1);
+    for (int j = 0; j < len + 1; j++) {
+        str = remove_in_str(str, i);
+    }
+    printf("%s\n", line);
+    free(line);
+    free(key);
+    return (str);
+}
+
 char *check_exclamation(char *input, infos_t *info)
 {
     char *cpy = strdup(input);
@@ -72,6 +127,10 @@ char *check_exclamation(char *input, infos_t *info)
     for (int i = 0; cpy[i] != '\0'; i++) {
         if (cpy[i] == '!' && cpy[i + 1] == '!')
             cpy = recall_last_command(cpy, i, info);
+        if (cpy == NULL)
+            return (NULL);
+        if (cpy[i] == '!' && cpy[i + 1] != '!')
+            cpy = recall_start_with(cpy, i, info);
         if (cpy == NULL)
             return (NULL);
     }

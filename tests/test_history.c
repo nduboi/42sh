@@ -220,3 +220,49 @@ Test(check_exclamation, middle_with_prev)
     input = check_exclamation(input, &info);
     cr_assert_str_eq(input, "ls -l -a");
 }
+
+Test(check_exclamation, start_with_ls_but_nothing)
+{
+    char *input = strdup("!ls");
+    infos_t info;
+
+    info.history = NULL;
+    input = check_exclamation(input, &info);
+    cr_assert_eq(input, NULL);
+}
+
+Test(check_exclamation, start_with_ls)
+{
+    char *input = strdup("!ls");
+    infos_t info;
+
+    info.history = malloc(sizeof(history_t) * 1);
+    info.history->line = strdup("ls -la");
+    info.history->next = NULL;
+    input = check_exclamation(input, &info);
+    cr_assert_str_eq(input, "ls -la");
+}
+
+Test(check_exclamation, single_mark)
+{
+    char *input = strdup("!");
+    infos_t info;
+
+    info.history = malloc(sizeof(history_t) * 1);
+    info.history->line = strdup("ls -la");
+    info.history->next = NULL;
+    input = check_exclamation(input, &info);
+    cr_assert_str_eq(input, "!");
+}
+
+Test(check_exclamation, recall_beg)
+{
+    char *input = strdup("!l -a");
+    infos_t info;
+
+    info.history = malloc(sizeof(history_t) * 1);
+    info.history->line = strdup("ls -l");
+    info.history->next = NULL;
+    input = check_exclamation(input, &info);
+    cr_assert_str_eq(input, "ls -l -a");
+}
