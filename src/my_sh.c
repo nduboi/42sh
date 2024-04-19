@@ -82,7 +82,7 @@ void input_loop(infos_t *infos)
         input = check_exclamation(input, infos);
         if (input != NULL) {
             add_history(infos, input);
-            parse_input(input, infos);
+            handle_input(input, infos);
         }
     }
 }

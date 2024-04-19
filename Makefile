@@ -7,49 +7,50 @@
 
 MAIN	=	src/main.c
 
-SRC	=	src/builtins/my_unsetenv.c	\
-		src/builtins/my_setenv.c	\
-		src/builtins/my_exit.c	\
-		src/builtins/my_cd.c	\
-		src/builtins/my_env.c	\
-		src/builtins/my_echo.c \
-		src/builtins/my_history.c	\
-		src/tools/chained_lists.c	\
-		src/tools/my_strsignal.c	\
-		src/tools/string_fcts.c	\
-		src/tools/my_realloc.c	\
-		src/tools/my_strcpy.c	\
-		src/tools/my_strdup.c	\
-		src/tools/my_strcat.c	\
-		src/tools/my_memset.c	\
-		src/tools/my_malloc.c	\
-		src/tools/my_strstr.c	\
-		src/tools/num_fcts.c	\
-		src/tools/count_char.c	\
-		src/handle_redirections.c	\
-		src/error_messages.c	\
-		src/errors_in_cmds.c	\
-		src/exit_status.c	\
-		src/parse_input.c	\
-		src/destroy_all.c	\
-		src/handle_cmd.c	\
-		src/handle_fd.c	\
-		src/exe_com.c	\
-		src/my_sh.c	\
-		src/handle_ambigous_redirect.c	\
-		src/add_history.c	\
+SRC	=	src/builtins/display_all_alias.c \
+		src/builtins/display_alias.c \
+		src/builtins/my_unsetenv.c \
+		src/builtins/my_history.c \
+		src/builtins/my_unalias.c \
+		src/builtins/my_setenv.c \
+		src/builtins/add_alias.c \
 		src/builtins/my_alias.c \
+		src/builtins/my_echo.c \
+		src/builtins/my_exit.c \
+		src/builtins/my_env.c \
+		src/builtins/my_cd.c \
+		src/tools/only_char_in_str.c \
+		src/tools/chained_lists.c \
+		src/tools/my_strsignal.c \
+		src/tools/string_fcts.c	\
+		src/tools/my_realloc.c \
+		src/tools/my_strcpy.c \
+		src/tools/my_strdup.c \
+		src/tools/my_strcat.c \
+		src/tools/my_memset.c \
+		src/tools/my_malloc.c \
+		src/tools/my_strstr.c \
+		src/tools/num_fcts.c \
+		src/tools/count_char.c \
 		src/tools/my_strcat_s.c \
 		src/tools/delete_char.c \
-		src/builtins/display_all_alias.c \
-		src/builtins/add_alias.c \
-		src/builtins/display_alias.c \
+		src/handle_ambigous_redirect.c	\
 		src/check_if_is_an_alias.c \
-		src/exclamation_mark.c	\
-		src/write_prompt.c	\
-		src/builtins/my_unalias.c \
+		src/handle_redirections.c \
+		src/exclamation_mark.c \
+		src/error_messages.c \
+		src/errors_in_cmds.c \
+		src/write_prompt.c \
 		src/input_errors.c \
-		src/tools/only_char_in_str.c
+		src/handle_input.c \
+		src/add_history.c \
+		src/exit_status.c \
+		src/parse_input.c \
+		src/destroy_all.c \
+		src/handle_cmd.c \
+		src/handle_fd.c	\
+		src/exe_com.c \
+		src/my_sh.c
 
 TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_my_strcpy.c \
@@ -66,7 +67,8 @@ TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_my_setenv.c	\
 				tests/test_my_unsetenv.c	\
 				tests/test_count_char.c	\
-				tests/test_my_exit.c
+				tests/test_my_exit.c \
+				tests/test_parse_input.c
 
 SRC_OBJ	=	$(SRC:%.c=%.o)
 

@@ -6,146 +6,166 @@
 */
 
 #include "mysh.h"
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/wait.h>
 
-static void operate_cmds(int pipe_fd, int fd, char *cmd, infos_t *infos)
+static bool in_delims(char *str, int offset)
 {
-    dup2(pipe_fd, fd);
-    close(pipe_fd);
-    handle_redirections(cmd, infos);
-    exit(handle_exit_status(GET_STATUS, 0));
-}
+    char *delims[5] = {";", "||", "|", "&&", NULL};
 
-void handle_pipe(char *token, infos_t *infos)
-{
-    int pid = 0;
-    int fd[2];
-    int pipe_status = pipe(fd);
-
-    pid = fork();
-    if (pid == -1 || pipe_status == -1) {
-        write(2, "Fork error\n", 11);
-        return;
-    }
-    if (pid == 0) {
-        close(fd[0]);
-        operate_cmds(fd[1], STDOUT_FILENO, token, infos);
-    } else {
-        close(fd[1]);
-        dup2(fd[0], STDIN_FILENO);
-        close(fd[0]);
-    }
-}
-
-void parse_cmd(char *data, infos_t *infos)
-{
-    int count = count_tokens(data, "|");
-    char *copy = my_strdup(data);
-    char *token = strtok_r(copy, "|", &copy);
-
-    for (; count; count--) {
-        if (count == 1) {
-            handle_redirections(token, infos);
-        } else {
-            handle_pipe(token, infos);
+    for (int i = 0; delims[i]; i++) {
+        if (!strncmp(str + offset, delims[i], my_strlen(delims[i]))) {
+            return true;
         }
-        token = strtok_r(copy, "|", &copy);
     }
+    return false;
 }
 
-static void exec_and_cmd(char *cmd, infos_t *infos, int fds[2])
+static parsing_t *create_node
+(enum type_e type, union content_u content, enum link_e link)
 {
-    char *new_cmd = NULL;
+    parsing_t *parsing = malloc(sizeof(parsing_t));
 
-    if (!*cmd) {
-        new_cmd = my_malloc(sizeof(char) * 2);
-        new_cmd[0] = ' ';
-        cmd = new_cmd;
-    }
-    parse_cmd(cmd, infos);
-    wait(NULL);
-    restart_fds(fds[0], fds[1]);
+    parsing->type = type;
+    parsing->content = content;
+    parsing->link = link;
+    return parsing;
 }
 
-static void handle_ands(char *cmd, infos_t *infos, int fds[2])
+static parsing_t *handle_and
+(parsing_t *grp_parse, int *i, char *input, int *off)
 {
-    char *cmd2 = NULL;
-    int pid = 0;
-    int wstatus = 0;
+    parsing_t *parsing = grp_parse;
+    union content_u content;
 
-    if (!my_strstr(cmd, "&&")) {
-        return exec_and_cmd(cmd, infos, fds);
+    if (parsing == NULL) {
+        input[*i] = '\0';
+        input[*i + 1] = '\0';
+        content.command = my_strdup(input + *off);
+        parsing = create_node(CMD, content, AND);
+    } else {
+        parsing->link = AND;
     }
-    cmd2 = my_strstr(cmd, "&&") + 2;
-    cmd[cmd2 - cmd - 2] = ' ';
-    cmd[cmd2 - cmd - 1] = '\0';
-    pid = fork();
-    if (pid == 0) {
-        handle_ands(cmd, infos, fds);
-        exit(handle_exit_status(GET_STATUS, 0));
-    }
-    wait(&wstatus);
-    handle_signal(wstatus);
-    if (handle_exit_status(GET_STATUS, 0) == 0 || only_char_in_str(cmd, ' ')) {
-        handle_ands(cmd2, infos, fds);
-    }
+    *i += 1;
+    *off = *i + 1;
+    return parsing;
 }
 
-static void handle_ors(char *cmd, infos_t *infos, int fds[2])
+static parsing_t *handle_or
+(parsing_t *grp_parse, int *i, char *input, int *off)
 {
-    char *cmd2 = NULL;
-    int pid = 0;
-    int wstatus = 0;
+    parsing_t *parsing = grp_parse;
+    union content_u content;
 
-    if (!my_strstr(cmd, "||")) {
-        return handle_ands(cmd, infos, fds);
+    if (parsing == NULL) {
+        input[*i] = '\0';
+        input[*i + 1] = '\0';
+        content.command = my_strdup(input + *off);
+        parsing = create_node(CMD, content, OR);
+    } else {
+        parsing->link = OR;
     }
-    cmd2 = my_strstr(cmd, "||") + 2;
-    cmd[cmd2 - cmd - 2] = ' ';
-    cmd[cmd2 - cmd - 1] = '\0';
-    pid = fork();
-    if (pid == 0) {
-        handle_ors(cmd, infos, fds);
-        exit(handle_exit_status(GET_STATUS, 0));
-    }
-    wait(&wstatus);
-    handle_signal(wstatus);
-    if (handle_exit_status(GET_STATUS, 0) != 0) {
-        handle_ors(cmd2, infos, fds);
-    }
+    *i += 1;
+    *off = *i + 1;
+    return parsing;
 }
 
-static void handle_semi_colons(char *cmd, infos_t *infos, int fds[2])
+static parsing_t *handle_sc
+(parsing_t *grp_parse, int *i, char *input, int *off)
 {
-    char *cmd2 = NULL;
+    parsing_t *parsing = grp_parse;
+    union content_u content;
 
-    if (!my_strstr(cmd, ";")) {
-        handle_ors(cmd, infos, fds);
-        return;
+    if (parsing == NULL) {
+        input[*i] = '\0';
+        content.command = my_strdup(input + *off);
+        parsing = create_node(CMD, content, SC);
+    } else {
+        parsing->link = SC;
     }
-    cmd2 = my_strstr(cmd, ";") + 1;
-    cmd[cmd2 - cmd - 1] = '\0';
-    handle_ors(cmd, infos, fds);
-    handle_semi_colons(cmd2, infos, fds);
+    *off = *i + 1;
+    return parsing;
 }
 
-void parse_input(char *input, infos_t *infos)
+static parsing_t *handle_pipe
+(parsing_t *grp_parse, int *i, char *input, int *off)
 {
-    int in = 0;
-    int out = 0;
-    char *copy = my_strdup(input);
-    bool errors = errors_in_input(copy);
+    parsing_t *parsing = grp_parse;
+    union content_u content;
 
-    free(copy);
-    if (errors) {
-        return;
+    if (parsing == NULL) {
+        input[*i] = '\0';
+        content.command = my_strdup(input + *off);
+        parsing = create_node(CMD, content, PIPE);
+    } else {
+        parsing->link = PIPE;
     }
-    in = dup(STDIN_FILENO);
-    out = dup(STDOUT_FILENO);
-    handle_semi_colons(input, infos, (int[2]) {in, out});
-    close(in);
-    close(out);
+    *off = *i + 1;
+    return parsing;
+}
+
+static parsing_t *handle_group(int *i, char *input, int *offset)
+{
+    parsing_t *parsing = NULL;
+    union content_u content;
+    list_t **list = malloc(sizeof(list_t *));
+    int group_offset = 0;
+
+    *list = NULL;
+    group_offset = parse_input(input + *i + 1, list);
+    content.group = list;
+    parsing = create_node(GRP, content, 0);
+    *i += group_offset;
+    *offset = *i;
+    return parsing;
+}
+
+static parsing_t *handle_end(char *input, int *i, int off)
+{
+    union content_u content;
+
+    if (input[*i] == ')') {
+        input[*i] = '\0';
+        *i += 1;
+    }
+    content.command = my_strdup(input + off);
+    return create_node(CMD, content, END);
+}
+
+static parsing_t *handle_delims_and_groups
+(int *i, char *input, int *offset, parsing_t *parsing)
+{
+    if (input[*i] == '&' && input[*i + 1] == '&')
+        return handle_and(parsing, i, input, offset);
+    if (input[*i] == '|' && input[*i + 1] == '|')
+        return handle_or(parsing, i, input, offset);
+    if (input[*i] == ';')
+        return handle_sc(parsing, i, input, offset);
+    if (input[*i] == '|' && input[*i + 1] != '|')
+        return handle_pipe(parsing, i, input, offset);
+    if (input[*i] == '(')
+        return handle_group(i, input, offset);
+    if ((!input[*i] || input[*i] == ')') && !parsing)
+        return handle_end(input, i, *offset);
+    return NULL;
+}
+
+int parse_input(char *input, list_t **list_parse)
+{
+    parsing_t *parsing = NULL;
+    int offset = 0;
+    int i = 0;
+    bool ended = false;
+    bool is_in_delims = false;
+
+    while (!ended) {
+        if (input[i] == '\0' || input[i] == ')')
+            ended = true;
+        is_in_delims = in_delims(input, i);
+        parsing = handle_delims_and_groups(&i, input, &offset, parsing);
+        if (parsing)
+            add_node(list_parse, parsing);
+        if (is_in_delims)
+            parsing = NULL;
+        i++;
+    }
+    return i;
 }

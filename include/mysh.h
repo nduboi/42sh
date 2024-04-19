@@ -30,23 +30,28 @@ typedef struct list_s {
     struct list_s *next;
 } list_t;
 
-enum link_e {
-    SM = 0,
-    AND,
-    OR,
-    PIPE
+enum type_e {
+    CMD = 0,
+    GRP
 };
 
-union type_u {
-    list_t *group;
+enum link_e {
+    SC = 0,
+    AND,
+    OR,
+    PIPE,
+    END
+};
+
+union content_u {
+    list_t **group;
     char *command;
 };
 
 typedef struct parsing_s {
-    union type_u type;
+    enum type_e type;
+    union content_u content;
     enum link_e link;
-    int fd_in;
-    int fd_out;
 } parsing_t;
 
 typedef struct var_s {
@@ -101,7 +106,8 @@ bool only_char_in_str(char *str, char c);
 
 // my shell functions
 int my_sh(char **env);
-void parse_input(char *input, infos_t *infos);
+void handle_input(char *input, infos_t *infos);
+int parse_input(char *input, list_t **list_parse);
 bool errors_in_input(char *str);
 bool errors_in_pipes_and_redirs(char *cmd);
 void handle_cmd(char *input, infos_t *infos);
@@ -143,7 +149,6 @@ void free_infos(infos_t *infos);
 int count_char_in_str(char *str, char c);
 char *my_strcat_s(char *str1, char *str2);
 void delete_char(char *str, char c);
-list_t **chained_tokens(char *input, char *delim);
 
 // Custom prompt
 
