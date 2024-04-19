@@ -108,6 +108,7 @@ bool only_char_in_str(char *str, char c);
 int my_sh(char **env);
 void handle_input(char *input, infos_t *infos);
 int parse_input(char *input, list_t **list_parse);
+void execute_commands(list_t **list_parse, infos_t *infos);
 bool errors_in_input(char *str);
 bool errors_in_pipes_and_redirs(char *cmd);
 void handle_cmd(char *input, infos_t *infos);
