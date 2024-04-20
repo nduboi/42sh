@@ -1568,3 +1568,60 @@ CLEAN=""
 TESTS=
   echo '  &&  '
 [239-END]
+
+[240]
+NAME="Display environment variable n°1"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls $PATH'
+[240-END]
+
+[241]
+NAME="Display environment variable n°2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls ${PATH}'
+[241-END]
+
+[242]
+NAME="Error with environement vaariables n°1"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls ${'
+[242-END]
+
+
+[243]
+NAME="Error with environement vaariables n°2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls $'
+[243-END]
+
+[244]
+NAME="Error with environement vaariables n°3"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls $;PATH}'Newline in variable name.
+[244-END]
+
+[245]
+NAME="Error with environement vaariables n°4"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls ${PA)TH}'
+[245-END]
+
+[246]
+NAME="Error with environement vaariables n°5"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls ${PA'
+[246-END]

@@ -150,6 +150,8 @@ void free_infos(infos_t *infos);
 int count_char_in_str(char *str, char c);
 char *my_strcat_s(char *str1, char *str2);
 void delete_char(char *str, char c);
+list_t **chained_tokens(char *input, char *delim);
+char *my_stock_nbr(int nb);
 
 // Custom prompt
 
@@ -163,5 +165,15 @@ void free_history(history_t *h);
 char *check_exclamation(char *input, infos_t *info);
 
 char **check_if_is_an_alias(char **args, infos_t *infos);
+
+//Environement var
+int parse_input_env_var(char **data, infos_t *info);
+int count_len_name_env(char *data);
+char *get_value_env_with_brakets(char *data);
+char *get_value_env(char *data);
+int count_len_before_env(char *src);
+int count_len_after_env(int k, char *data);
+void cut_in_part(char *data, char **part1, char **part2);
+void cut_in_part_brakets(char *data, char **part1, char **part2);
 
 #endif /* !MYSH_H_ */

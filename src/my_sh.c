@@ -79,6 +79,8 @@ void input_loop(infos_t *infos)
         if (infos->isatty)
             write_prompt(infos->envs);
         input = get_input(infos);
+        if (parse_input_env_var(&input, infos) == 1)
+            continue;
         input = check_exclamation(input, infos);
         if (input != NULL) {
             add_history(infos, input);

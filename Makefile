@@ -34,6 +34,10 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/tools/count_char.c \
 		src/tools/my_strcat_s.c \
 		src/tools/delete_char.c \
+		src/tools/my_stock_nbr.c	\
+		src/tools/environement_cut_part.c	\
+		src/tools/my_env_data.c	\
+		src/environement_var.c	\
 		src/handle_ambigous_redirect.c	\
 		src/check_if_is_an_alias.c \
 		src/handle_redirections.c \
@@ -88,7 +92,7 @@ TEST_FLAGS	=	--coverage -lcriterion
 
 INCLUDE	=	-I ./include
 
-CFLAGS	+=	$(INCLUDE) -Wall -Wextra -Werror
+CFLAGS	+=	$(INCLUDE) -Wall -Wextra -Werror -g
 
 DEBUG	=	-g
 
