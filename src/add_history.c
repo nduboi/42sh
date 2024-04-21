@@ -21,6 +21,15 @@ char *get_hour(char *date)
     return (ret);
 }
 
+static bool is_there_char(char *line)
+{
+    for (int i = 0; line[i] != '\0'; i++) {
+        if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
+            return (true);
+    }
+    return (false);
+}
+
 void add_history(infos_t *info, char *line)
 {
     history_t *new = malloc(sizeof(history_t) * 1);
@@ -28,6 +37,8 @@ void add_history(infos_t *info, char *line)
     time_t tm = time(NULL);
     char *date = ctime(&tm);
 
+    if (is_there_char(line) == false)
+        return;
     if (info->history != NULL) {
         if (strcmp(line, info->history->line) == 0)
             return;
