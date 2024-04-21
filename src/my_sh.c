@@ -77,7 +77,7 @@ void input_loop(infos_t *infos)
 
     while (1) {
         if (infos->isatty)
-            write(1, "$> ", 3);
+            write_prompt(infos->envs);
         input = get_input(infos);
         if (parse_input_env_var(&input, infos) == 1)
             continue;

@@ -107,18 +107,19 @@ bool only_char_in_str(char *str, char c);
 // my shell functions
 int my_sh(char **env);
 void handle_input(char *input, infos_t *infos);
-int parse_input(char *input, list_t **list_parse);
 void execute_commands(list_t **list_parse, infos_t *infos);
-bool errors_in_input(char *str);
-bool errors_in_pipes_and_redirs(char *cmd);
 void handle_cmd(char *input, infos_t *infos);
 int exe_cmd(char **args, infos_t *infos);
 void error_message(char *str, int errnum);
 void handle_signal(int wstatus);
 int handle_exit_status(int action, int nbr);
 void handle_redirections(char *input, infos_t *infos);
-bool ambigous_redirect(char *src);
 void restart_fds(int in, int out);
+
+// parsing
+int parse_input(char *input, list_t **list_parse);
+bool errors_in_parentheses(char *cmd);
+bool errors_in_parsing_list(list_t **list);
 
 // chained list functions
 void add_node(list_t **begin, void *data);
@@ -150,11 +151,9 @@ void free_infos(infos_t *infos);
 int count_char_in_str(char *str, char c);
 char *my_strcat_s(char *str1, char *str2);
 void delete_char(char *str, char c);
-list_t **chained_tokens(char *input, char *delim);
 char *my_stock_nbr(int nb);
 
 // Custom prompt
-
 void write_prompt(env_t *env);
 char *get_env_var(char *key, list_t **env);
 
@@ -166,7 +165,7 @@ char *check_exclamation(char *input, infos_t *info);
 
 char **check_if_is_an_alias(char **args, infos_t *infos);
 
-//Environement var
+// Environement var
 int parse_input_env_var(char **data, infos_t *info);
 int count_len_name_env(char *data);
 char *get_value_env_with_brakets(char *data);

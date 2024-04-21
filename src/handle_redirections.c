@@ -6,11 +6,6 @@
 */
 
 #include "mysh.h"
-#include <string.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdbool.h>
 
 static char *get_input_loop(char *str)
 {
@@ -126,14 +121,44 @@ static void skip_redir(char *input, int *i)
     }
 }
 
+static bool file_doesnt_exist(char *cmd)
+{
+    char *token = NULL;
+    char *copy = my_strdup(cmd);
+    char *pos = NULL;
+
+    for (int i = 0; copy[i]; i++) {
+        if (copy[i] == '<' && copy[i + 1] == '<') {
+            return false;
+        }
+        if (copy[i] == '<') {
+            pos = copy + i;
+            token = strtok_r(pos, " \n<>", &pos);
+            break;
+        }
+    }
+    if (token && access(token, F_OK) != 0) {
+        error_message(token, errno);
+        return true;
+    }
+    return false;
+}
+
 void handle_redirections(char *input, infos_t *infos)
 {
     char *copy = my_strdup(input);
+    char *copy_bis = my_strdup(input);
     char *cmd = my_malloc(sizeof(char) * (my_strlen(input) + 1));
     int i = 0;
     int j = 0;
 
-    find_redirs(copy);
+    if (file_doesnt_exist(copy)) {
+        free(copy);
+        handle_exit_status(WRITE_STATUS, 1);
+        return;
+    }
+    find_redirs(copy_bis);
+    free(copy_bis);
     for (i = 0; input[i]; i++) {
         skip_redir(input, &i);
         cmd[j] = input[i];

@@ -19,11 +19,21 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/builtins/my_exit.c \
 		src/builtins/my_env.c \
 		src/builtins/my_cd.c \
+		src/parsing/parentheses_errors.c \
+		src/parsing/handle_input.c \
+		src/parsing/input_errors.c \
+		src/parsing/parse_input.c \
+		src/tools/environement_cut_part.c \
 		src/tools/only_char_in_str.c \
 		src/tools/chained_lists.c \
 		src/tools/my_strsignal.c \
+		src/tools/my_stock_nbr.c \
 		src/tools/string_fcts.c	\
+		src/tools/delete_char.c \
+		src/tools/my_strcat_s.c \
+		src/tools/my_env_data.c	\
 		src/tools/my_realloc.c \
+		src/tools/count_char.c \
 		src/tools/my_strcpy.c \
 		src/tools/my_strdup.c \
 		src/tools/my_strcat.c \
@@ -31,25 +41,14 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/tools/my_malloc.c \
 		src/tools/my_strstr.c \
 		src/tools/num_fcts.c \
-		src/tools/count_char.c \
-		src/tools/my_strcat_s.c \
-		src/tools/delete_char.c \
-		src/tools/my_stock_nbr.c	\
-		src/tools/environement_cut_part.c	\
-		src/tools/my_env_data.c	\
-		src/environement_var.c	\
-		src/handle_ambigous_redirect.c	\
 		src/check_if_is_an_alias.c \
 		src/handle_redirections.c \
+		src/environement_var.c	\
 		src/exclamation_mark.c \
 		src/error_messages.c \
-		src/errors_in_cmds.c \
 		src/write_prompt.c \
-		src/input_errors.c \
-		src/handle_input.c \
 		src/add_history.c \
 		src/exit_status.c \
-		src/parse_input.c \
 		src/destroy_all.c \
 		src/handle_cmd.c \
 		src/handle_fd.c	\
@@ -123,7 +122,7 @@ unit_tests: $(SRC) $(TEST_SRC)
 tests_run: unit_tests
 	./$(TEST_NAME)
 
-tester: all
+tester: sandwich
 	./tester.sh
 	rm -rf noa*
 	rm -rf salut
