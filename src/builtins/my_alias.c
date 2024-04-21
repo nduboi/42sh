@@ -14,7 +14,7 @@ int my_alias(char **args, infos_t *infos)
     else if (my_arrlen(args) == 2) {
         display_alias(args, infos);
     } else {
-        add_alias(args, infos);
+        return add_alias(args, infos);
     }
     return (0);
 }

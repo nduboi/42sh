@@ -136,7 +136,7 @@ int my_setenv(char **args, infos_t *infos);
 int my_unsetenv(char **args, infos_t *infos);
 int my_alias(char **args, infos_t *infos);
 void display_alias(char **args, infos_t *infos);
-void add_alias(char **args, infos_t *infos);
+int add_alias(char **args, infos_t *infos);
 void display_all_alias(infos_t *infos);
 int my_unalias(char **args, infos_t *infos);
 

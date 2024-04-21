@@ -1237,6 +1237,24 @@ TESTS=
   echo 'laffafas'
 [130-END]
 
+[131]
+NAME="alias alias"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias alias ls'
+  echo 'alias'
+[131-END]
+
+[132]
+NAME="alias unalias"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias unalias ls'
+  echo 'unalias'
+[132-END]
+
 [200]
 NAME="Simple && with working condition"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"

@@ -71,13 +71,20 @@ static void add_new_alias
     infos->alias = new_element;
 }
 
-void add_alias(char **args, infos_t *infos)
+int add_alias(char **args, infos_t *infos)
 {
     int i = 1;
     char *base_command = get_base_command(args, &i);
     char *new_command = get_new_command(args, i);
 
+    if (strcmp(base_command, "alias") == 0 ||
+    strcmp(base_command, "unalias") == 0) {
+        fprintf(stderr, "%s: Too dangerous to alias that.\n", base_command);
+        handle_exit_status(WRITE_STATUS, 1);
+        return (1);
+    }
     delete_char(base_command, '"');
     delete_char(new_command, '"');
     add_new_alias(infos, base_command, new_command);
+    return (0);
 }
