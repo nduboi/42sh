@@ -150,6 +150,7 @@ int add_alias(char **args, infos_t *infos);
 void display_all_alias(infos_t *infos);
 int my_unalias(char **args, infos_t *infos);
 int my_jobs(char **args, infos_t *info);
+int my_globbing(char **args, infos_t *infos);
 int my_fg(char **args, infos_t *info);
 
 // tools

@@ -56,6 +56,7 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/my_sh.c \
 		src/builtins/my_jobs.c \
 		src/tools/add_a_job.c \
+		src/builtins/my_globbing.c	\
 		src/builtins/my_fg.c \
 		src/tools/get_nbr_lambda.c \
 
@@ -74,8 +75,9 @@ TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_my_setenv.c	\
 				tests/test_my_unsetenv.c	\
 				tests/test_count_char.c	\
-				tests/test_my_exit.c \
-				tests/test_parse_input.c
+				tests/test_my_exit.c	\
+				tests/test_parse_input.c	\
+				tests/test_globbing_function.c	\
 
 SRC_OBJ	=	$(SRC:%.c=%.o)
 
