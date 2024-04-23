@@ -1255,6 +1255,14 @@ TESTS=
   echo 'unalias'
 [132-END]
 
+[133]
+NAME="jobs when no jobs"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'jobs'
+[133-END]
+
 [200]
 NAME="Simple && with working condition"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"

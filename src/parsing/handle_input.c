@@ -49,7 +49,6 @@ static void handle_semi_colon_cmd
             handle_redirections(data->content.command, infos);
         }
     }
-    wait(NULL);
     restart_fds(fds[0], fds[1]);
     *skip = false;
 }
@@ -89,7 +88,6 @@ static void handle_end_cmd
             handle_redirections(data->content.command, infos);
         }
     }
-    wait(NULL);
     restart_fds(fds[0], fds[1]);
 }
 

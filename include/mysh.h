@@ -150,6 +150,7 @@ int add_alias(char **args, infos_t *infos);
 void display_all_alias(infos_t *infos);
 int my_unalias(char **args, infos_t *infos);
 int my_jobs(char **args, infos_t *info);
+int my_fg(char **args, infos_t *info);
 
 // tools
 void *my_malloc(size_t size);
@@ -163,6 +164,7 @@ char *my_strcat_s(char *str1, char *str2);
 void delete_char(char *str, char c);
 char *my_stock_nbr(int nb);
 void add_a_job(char *path, char **args, int pid, infos_t *infos);
+int my_get_nbr_lambda(char *str);
 
 // Custom prompt
 void write_prompt(env_t *env);

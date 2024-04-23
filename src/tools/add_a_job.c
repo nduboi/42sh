@@ -15,7 +15,7 @@ static char *concatenete_str(char **args)
     for (int i = 0; args[i] != NULL; i++) {
         len += strlen(args[i]);
     }
-    temp = my_malloc(sizeof(char) * (len + 1));
+    temp = my_malloc(sizeof(char) * (len + my_arrlen(args) + 1));
     for (int i = 0; args[i] != NULL; i++) {
         my_strcat(temp, my_strcat_s(" ", args[i]));
     }
@@ -38,14 +38,29 @@ static void put_element_at_end(infos_t *infos, jobs_t *new_element)
     }
 }
 
+static int get_last_int(infos_t *infos)
+{
+    jobs_t *current = infos->jobs;
+    int count = 0;
+
+    if (current == NULL) {
+        return (1);
+    }
+    while (current->next != NULL) {
+        count += 1;
+        current = current->next;
+    }
+    if (count == 0)
+        return (2);
+    return current->num + 1;
+}
+
 void add_a_job(char *path, char **args, int pid, infos_t *infos)
 {
-    static int num = 0;
     jobs_t *new_element = malloc(sizeof(jobs_t));
 
     new_element->command = concatenete_str(args);
-    new_element->num = num + 1;
-    num += 1;
+    new_element->num = get_last_int(infos);
     new_element->pid = pid;
     put_element_at_end(infos, new_element);
     if (strcmp(path, "/usr/bin/ls") == 0) {
