@@ -53,7 +53,9 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/handle_cmd.c \
 		src/handle_fd.c	\
 		src/exe_com.c \
-		src/my_sh.c
+		src/my_sh.c \
+		src/builtins/my_jobs.c \
+		src/tools/add_a_job.c \
 
 TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_my_strcpy.c \
@@ -91,7 +93,7 @@ TEST_FLAGS	=	--coverage -lcriterion
 
 INCLUDE	=	-I ./include
 
-CFLAGS	+=	$(INCLUDE) -Wall -Wextra -Werror -g
+CFLAGS	+=	$(INCLUDE) -Wall -Wextra -Werror
 
 DEBUG	=	-g
 

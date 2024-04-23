@@ -54,6 +54,14 @@ typedef struct parsing_s {
     enum link_e link;
 } parsing_t;
 
+typedef struct jobs_s {
+    int pid;
+    char *wd;
+    char *command;
+    int num;
+    struct jobs_s *next;
+} jobs_t;
+
 typedef struct var_s {
     char *name;
     char *val;
@@ -86,6 +94,7 @@ typedef struct infos_s {
     bool isatty;
     history_t *history;
     alias_t *alias;
+    jobs_t *jobs;
 } infos_t;
 
 // string and numerical functions
@@ -140,6 +149,7 @@ void display_alias(char **args, infos_t *infos);
 int add_alias(char **args, infos_t *infos);
 void display_all_alias(infos_t *infos);
 int my_unalias(char **args, infos_t *infos);
+int my_jobs(char **args, infos_t *info);
 
 // tools
 void *my_malloc(size_t size);
@@ -152,6 +162,7 @@ int count_char_in_str(char *str, char c);
 char *my_strcat_s(char *str1, char *str2);
 void delete_char(char *str, char c);
 char *my_stock_nbr(int nb);
+void add_a_job(char *path, char **args, int pid, infos_t *infos);
 
 // Custom prompt
 void write_prompt(env_t *env);

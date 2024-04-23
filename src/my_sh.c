@@ -98,10 +98,12 @@ int my_sh(char **env)
     infos->envs->env_cpy = copy_env(env);
     infos->history = NULL;
     infos->alias = NULL;
+    infos->jobs = NULL;
     if (!infos->envs->env || !infos->envs->env_cpy) {
         return -1;
     }
     infos->isatty = isatty(STDIN_FILENO);
+    signal(SIGTSTP, SIG_IGN);
     signal(SIGINT, handler);
     input_loop(infos);
     return 0;

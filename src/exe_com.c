@@ -15,6 +15,7 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <stdbool.h>
+#include <signal.h>
 
 static char *create_path(char *pre, char *post)
 {
@@ -93,7 +94,7 @@ static void manage_errors(char *pre, int error)
     exit(1);
 }
 
-int execute(char *path, char **args, char **arr_env)
+int execute(char *path, char **args, char **arr_env, infos_t *infos)
 {
     int pid = 0;
     int wstatus = 0;
@@ -103,11 +104,13 @@ int execute(char *path, char **args, char **arr_env)
         return -1;
     }
     if (pid > 0) {
-        waitpid(pid, &wstatus, 0);
+        waitpid(pid, &wstatus, WUNTRACED);
+        if (wstatus == 5247)
+            add_a_job(path, args, pid, infos);
         handle_signal(wstatus);
         free_double_array(arr_env);
-        return 0;
     } else {
+        signal(SIGTSTP, SIG_DFL);
         execve(path, args, arr_env);
         free_double_array(arr_env);
         manage_errors(args[0], errno);
@@ -144,5 +147,5 @@ int exe_cmd(char **args, infos_t *infos)
         handle_exit_status(WRITE_STATUS, 1);
         return -1;
     }
-    return execute(path, args, arr_env);
+    return execute(path, args, arr_env, infos);
 }
