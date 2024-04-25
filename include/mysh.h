@@ -18,108 +18,18 @@
 #include <sys/stat.h>
 #include <stdbool.h>
 #include <time.h>
+#include "struct.h"
 
 #ifndef MYSH_H_
     #define MYSH_H_
 
     #define WRITE_STATUS 1
     #define GET_STATUS 2
+    #define SIZE_TAB 14
 
     #define CHAR sizeof(char)
 
-typedef struct list_s {
-    void *data;
-    struct list_s *next;
-} list_t;
-
-enum type_e {
-    NONE_TYPE = 0,
-    CMD,
-    GRP
-};
-
-enum link_e {
-    NONE_LINK = 0,
-    SC,
-    AND,
-    OR,
-    PIPE,
-    END
-};
-
-typedef struct redirs_s {
-    bool in;
-    bool out;
-    bool d_in;
-    bool d_out;
-    char *keyword_in;
-    char *keyword_out;
-    char *keyword_d_in;
-    char *keyword_d_out;
-} redirs_t;
-
-union content_u {
-    list_t **grp;
-    char *cmd;
-};
-
-typedef struct parsing_s {
-    enum type_e type;
-    union content_u content;
-    enum link_e link;
-    char **bt;
-    redirs_t redirs;
-} parsing_t;
-
-typedef struct jobs_s {
-    int pid;
-    char *wd;
-    char *command;
-    int num;
-    struct jobs_s *next;
-} jobs_t;
-
-typedef struct var_s {
-    char *name;
-    char *val;
-} var_t;
-
-typedef struct alias_s {
-    char *base_command;
-    char *new_command;
-    struct alias_s *next;
-} alias_t;
-
-typedef struct local_var_s {
-    char *var;
-    char *val;
-    struct local_var_s *next;
-} local_var_t;
-
-typedef struct env_s {
-    list_t **env;
-    list_t **env_cpy;
-} env_t;
-
-typedef struct commands_s {
-    list_t **semi_colons;
-} commands_t;
-
-typedef struct history_s {
-    int id;
-    char *hour;
-    char *line;
-    struct history_s *next;
-} history_t;
-
-typedef struct infos_s {
-    env_t *envs;
-    bool isatty;
-    history_t *history;
-    alias_t *alias;
-    jobs_t *jobs;
-    local_var_t *vars;
-} infos_t;
+extern function_t functions[];
 
 // string and numerical functions
 void my_strsignal(int wstatus);
