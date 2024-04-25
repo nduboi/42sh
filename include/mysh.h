@@ -25,33 +25,50 @@
     #define WRITE_STATUS 1
     #define GET_STATUS 2
 
+    #define CHAR sizeof(char)
+
 typedef struct list_s {
     void *data;
     struct list_s *next;
 } list_t;
 
 enum type_e {
-    CMD = 0,
+    NONE_TYPE = 0,
+    CMD,
     GRP
 };
 
 enum link_e {
-    SC = 0,
+    NONE_LINK = 0,
+    SC,
     AND,
     OR,
     PIPE,
     END
 };
 
+typedef struct redirs_s {
+    bool in;
+    bool out;
+    bool d_in;
+    bool d_out;
+    char *keyword_in;
+    char *keyword_out;
+    char *keyword_d_in;
+    char *keyword_d_out;
+} redirs_t;
+
 union content_u {
-    list_t **group;
-    char *command;
+    list_t **grp;
+    char *cmd;
 };
 
 typedef struct parsing_s {
     enum type_e type;
     union content_u content;
     enum link_e link;
+    char **bt;
+    redirs_t redirs;
 } parsing_t;
 
 typedef struct jobs_s {
@@ -109,26 +126,26 @@ int my_strcmp(char *s1, char *s2);
 int my_getnbr(char *str);
 int my_nbrlen(int nbr);
 void my_putnbr(int nbr);
-int count_tokens(char *str, char *sep);
 char *my_strstr(char *hay, char *needle);
 bool only_char_in_str(char *str, char c);
 
 // my shell functions
 int my_sh(char **env);
-void handle_input(char *input, infos_t *infos);
+int handle_input(char *input, infos_t *infos);
 void execute_commands(list_t **list_parse, infos_t *infos);
 void handle_cmd(char *input, infos_t *infos);
 int exe_cmd(char **args, infos_t *infos);
 void error_message(char *str, int errnum);
 void handle_signal(int wstatus);
 int handle_exit_status(int action, int nbr);
-void handle_redirections(char *input, infos_t *infos);
 void restart_fds(int in, int out);
 
 // parsing
-int parse_input(char *input, list_t **list_parse);
+int parse_input(char *input, list_t **list_parse, infos_t *infos);
 bool errors_in_parentheses(char *cmd);
-bool errors_in_parsing_list(list_t **list);
+int add_backtick(char **input_ptr, parsing_t *node, infos_t *infos);
+int add_redir(char **input_ptr, redirs_t *red);
+void handle_redirections(parsing_t *data, infos_t *infos);
 
 // chained list functions
 void add_node(list_t **begin, void *data);
@@ -166,6 +183,7 @@ void delete_char(char *str, char c);
 char *my_stock_nbr(int nb);
 void add_a_job(char *path, char **args, int pid, infos_t *infos);
 int my_get_nbr_lambda(char *str);
+bool is_delim(char *str);
 
 // Custom prompt
 void write_prompt(env_t *env);

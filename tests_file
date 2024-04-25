@@ -1651,3 +1651,83 @@ CLEAN=""
 TESTS=
   echo 'ls ${PA'
 [246-END]
+
+[300]
+NAME="Simple backticks"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls `echo -l`'
+[300-END]
+
+[301]
+NAME="Multiple backticks"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls `echo -l` `echo -a`'
+[301-END]
+
+[302]
+NAME="Complex backticks"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls `ls | grep M`'
+[302-END]
+
+[303]
+NAME="One backtick"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls `'
+[303-END]
+
+[304]
+NAME="Empty backticks"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls ``'
+[304-END]
+
+[305]
+NAME="Only backticks"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '`echo ls`'
+[305-END]
+
+[306]
+NAME="Errors in backticks"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls `ls ÔQSIGJ`'
+[306-END]
+
+[307]
+NAME="Backticks and arguments"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls `echo -l` -a'
+[307-END]
+
+[308]
+NAME="Backticks right next to prompt"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls`echo -l`'
+[308-END]
+
+[309]
+NAME="Backticks right next to argument"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls `echo -l`-a'
+[309-END]

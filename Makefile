@@ -19,9 +19,10 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/builtins/my_exit.c \
 		src/builtins/my_env.c \
 		src/builtins/my_cd.c \
+		src/parsing/handle_redirections.c \
 		src/parsing/parentheses_errors.c \
+		src/parsing/handle_backticks.c \
 		src/parsing/handle_input.c \
-		src/parsing/input_errors.c \
 		src/parsing/parse_input.c \
 		src/tools/environement_cut_part.c \
 		src/tools/only_char_in_str.c \
@@ -41,8 +42,8 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/tools/my_malloc.c \
 		src/tools/my_strstr.c \
 		src/tools/num_fcts.c \
+		src/tools/is_delim.c \
 		src/check_if_is_an_alias.c \
-		src/handle_redirections.c \
 		src/environement_var.c	\
 		src/exclamation_mark.c \
 		src/error_messages.c \

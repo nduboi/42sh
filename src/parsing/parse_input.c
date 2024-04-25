@@ -7,165 +7,145 @@
 
 #include "mysh.h"
 
-static bool in_delims(char *str, int offset)
+static parsing_t *init_parsing_node(void)
 {
-    char *delims[5] = {";", "||", "|", "&&", NULL};
+    parsing_t *new = malloc(sizeof(parsing_t));
 
-    for (int i = 0; delims[i]; i++) {
-        if (!strncmp(str + offset, delims[i], my_strlen(delims[i]))) {
+    new->type = CMD;
+    new->content.cmd = my_malloc(sizeof(char) * 2);
+    new->content.cmd[0] = ' ';
+    new->link = NONE_LINK;
+    new->bt = NULL;
+    new->redirs.in = false;
+    new->redirs.out = false;
+    new->redirs.d_in = false;
+    new->redirs.d_out = false;
+    new->redirs.keyword_in = NULL;
+    new->redirs.keyword_out = NULL;
+    new->redirs.keyword_d_in = NULL;
+    new->redirs.keyword_d_out = NULL;
+    return new;
+}
+
+static bool is_redir(char *str)
+{
+    char *redirs[5] = {"<<", ">>", "<", ">", NULL};
+
+    for (int i = 0; redirs[i]; i++) {
+        if (!strncmp(str, redirs[i], strlen(redirs[i]))) {
             return true;
         }
     }
     return false;
 }
 
-static parsing_t *create_node
-(enum type_e type, union content_u content, enum link_e link)
+static bool null_cmd(parsing_t *data)
 {
-    parsing_t *parsing = malloc(sizeof(parsing_t));
+    bool empty_str = only_char_in_str(data->content.cmd, ' ');
+    static bool link = false;
+    bool need_check = false;
 
-    parsing->type = type;
-    parsing->content = content;
-    parsing->link = link;
-    return parsing;
-}
-
-static parsing_t *handle_and
-(parsing_t *grp_parse, int *i, char *input, int *off)
-{
-    parsing_t *parsing = grp_parse;
-    union content_u content;
-
-    if (parsing == NULL) {
-        input[*i] = '\0';
-        input[*i + 1] = '\0';
-        content.command = my_strdup(input + *off);
-        parsing = create_node(CMD, content, AND);
-    } else {
-        parsing->link = AND;
+    need_check = link;
+    link = false;
+    if (data->link == PIPE || data->link == OR) {
+        need_check = true;
+        link = true;
     }
-    *i += 1;
-    *off = *i + 1;
-    return parsing;
-}
-
-static parsing_t *handle_or
-(parsing_t *grp_parse, int *i, char *input, int *off)
-{
-    parsing_t *parsing = grp_parse;
-    union content_u content;
-
-    if (parsing == NULL) {
-        input[*i] = '\0';
-        input[*i + 1] = '\0';
-        content.command = my_strdup(input + *off);
-        parsing = create_node(CMD, content, OR);
-    } else {
-        parsing->link = OR;
+    if (data->link == AND && !empty_str)
+        link = true;
+    if (need_check && empty_str && !data->bt) {
+        write(2, "Invalid null command.\n", 22);
+        return true;
     }
-    *i += 1;
-    *off = *i + 1;
-    return parsing;
+    return false;
 }
 
-static parsing_t *handle_sc
-(parsing_t *grp_parse, int *i, char *input, int *off)
+static bool ambiguous_redir(parsing_t *data)
 {
-    parsing_t *parsing = grp_parse;
-    union content_u content;
+    static bool was_pipe = false;
 
-    if (parsing == NULL) {
-        input[*i] = '\0';
-        content.command = my_strdup(input + *off);
-        parsing = create_node(CMD, content, SC);
-    } else {
-        parsing->link = SC;
+    if (was_pipe && (data->redirs.in || data->redirs.d_in)) {
+        write(2, "Ambiguous input redirect.\n", 26);
+        return true;
     }
-    *off = *i + 1;
-    return parsing;
-}
-
-static parsing_t *handle_pipe
-(parsing_t *grp_parse, int *i, char *input, int *off)
-{
-    parsing_t *parsing = grp_parse;
-    union content_u content;
-
-    if (parsing == NULL) {
-        input[*i] = '\0';
-        content.command = my_strdup(input + *off);
-        parsing = create_node(CMD, content, PIPE);
-    } else {
-        parsing->link = PIPE;
+    if (data->link == PIPE && (data->redirs.out || data->redirs.d_out)) {
+        write(2, "Ambiguous output redirect.\n", 27);
+        return true;
     }
-    *off = *i + 1;
-    return parsing;
+    was_pipe = data->link == PIPE;
+    return false;
 }
 
-static parsing_t *handle_group(int *i, char *input, int *offset)
+static int handle_delims(char **input_ptr, parsing_t *data)
 {
-    parsing_t *parsing = NULL;
-    union content_u content;
-    list_t **list = malloc(sizeof(list_t *));
-    int group_offset = 0;
+    char *delims[6] = {NULL, ";", "&&", "||", "|", NULL};
+    char *input = *input_ptr;
 
-    *list = NULL;
-    group_offset = parse_input(input + *i + 1, list);
-    content.group = list;
-    parsing = create_node(GRP, content, 0);
-    *i += group_offset;
-    *offset = *i;
-    return parsing;
-}
-
-static parsing_t *handle_end(char *input, int *i, int off)
-{
-    union content_u content;
-
-    if (input[*i] == ')') {
-        input[*i] = '\0';
-        *i += 1;
+    if (!*input)
+        data->link = END;
+    for (enum link_e link = SC; *input && delims[link]; link++) {
+        if (!strncmp(input, delims[link], strlen(delims[link]))) {
+            data->link = link;
+            *input_ptr += strlen(delims[link]);
+            break;
+        }
     }
-    content.command = my_strdup(input + off);
-    return create_node(CMD, content, END);
+    if (ambiguous_redir(data) || null_cmd(data))
+        return -1;
+    return 0;
 }
 
-static parsing_t *handle_delims_and_groups
-(int *i, char *input, int *offset, parsing_t *parsing)
+static void add_char_to_cmd(char **input_ptr, parsing_t *parsing)
 {
-    if (input[*i] == '&' && input[*i + 1] == '&')
-        return handle_and(parsing, i, input, offset);
-    if (input[*i] == '|' && input[*i + 1] == '|')
-        return handle_or(parsing, i, input, offset);
-    if (input[*i] == ';')
-        return handle_sc(parsing, i, input, offset);
-    if (input[*i] == '|' && input[*i + 1] != '|')
-        return handle_pipe(parsing, i, input, offset);
-    if (input[*i] == '(')
-        return handle_group(i, input, offset);
-    if ((!input[*i] || input[*i] == ')') && !parsing)
-        return handle_end(input, i, *offset);
-    return NULL;
+    char *input = *input_ptr;
+    char *cmd = parsing->content.cmd;
+    int len = strlen(cmd);
+
+    cmd = realloc(cmd, sizeof(char) * (len + 2));
+    cmd[len] = *input;
+    cmd[len + 1] = '\0';
+    parsing->content.cmd = cmd;
+    *input_ptr += 1;
 }
 
-int parse_input(char *input, list_t **list_parse)
+static int handle_specificities
+(char **input_ptr, parsing_t *data, infos_t *infos)
 {
-    parsing_t *parsing = NULL;
-    int offset = 0;
-    int i = 0;
-    bool ended = false;
-    bool is_in_delims = false;
-
-    while (!ended) {
-        if (input[i] == '\0' || input[i] == ')')
-            ended = true;
-        is_in_delims = in_delims(input, i);
-        parsing = handle_delims_and_groups(&i, input, &offset, parsing);
-        if (parsing)
-            add_node(list_parse, parsing);
-        if (is_in_delims)
-            parsing = NULL;
-        i++;
+    if (**input_ptr == '`') {
+        return add_backtick(input_ptr, data, infos);
     }
-    return i;
+    if (is_redir(*input_ptr)) {
+        return add_redir(input_ptr, &data->redirs);
+    }
+    add_char_to_cmd(input_ptr, data);
+    return 0;
+}
+
+static int try_add_node(char **input, parsing_t **data, list_t **list_parse)
+{
+    if ((!**input || is_delim(*input))) {
+        if (handle_delims(input, *data) == -1) {
+            return -1;
+        }
+        add_node(list_parse, *data);
+        *data = init_parsing_node();
+    }
+    return 0;
+}
+
+int parse_input(char *input, list_t **list_parse, infos_t *infos)
+{
+    parsing_t *data = init_parsing_node();
+    char *temp = input;
+    bool end = false;
+
+    while (!end) {
+        if (!*input)
+            end = true;
+        if (try_add_node(&input, &data, list_parse) == -1)
+            return -1;
+        if (handle_specificities(&input, data, infos) == -1)
+            return -1;
+    }
+    return input - temp;
 }
