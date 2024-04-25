@@ -1731,3 +1731,95 @@ CLEAN=""
 TESTS=
   echo 'ls `echo -l`-a'
 [309-END]
+
+[310]
+NAME="set var = val"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'set var = val'
+  echo 'echo $var'
+[310-END]
+
+[311]
+NAME="set var"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'set var'
+  echo 'echo $var'
+[311-END]
+
+[312]
+NAME="set var ="
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'set var ='
+  echo 'echo $var'
+[312-END]
+
+[313]
+NAME="set var=val"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'set var=val'
+  echo 'echo $var'
+[313-END]
+
+[314]
+NAME="set var = val test foo=bar bar"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'set var=val'
+  echo 'echo $var'
+  echo 'echo $test'
+  echo 'echo $foo'
+  echo 'echo $bar'
+[314-END]
+
+[315]
+NAME="unset nothing"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'unset'
+[315-END]
+
+[316]
+NAME="unset non existing"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'unset foo'
+[316-END]
+
+[317]
+NAME="unset existing"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'set foo=bar'
+  echo 'unset foo'
+[317-END]
+
+[318]
+NAME="unset existing"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'set foo=bar'
+  echo 'unset foo'
+[318-END]
+
+[319]
+NAME="unset multiple existing"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'set foo=bar'
+  echo 'set bar=fo'
+  echo 'unset foo bar'
+[319-END]

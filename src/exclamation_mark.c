@@ -7,45 +7,6 @@
 
 #include "mysh.h"
 
-static char *insert_in_str(char *word, char *str, int start)
-{
-    int len = strlen(word) + strlen(str);
-    char *new = malloc(sizeof(char) * (len + 1));
-    int ind = 0;
-
-    for (int i = 0; i < start && str[i] != '\0'; i++) {
-        new[ind] = str[i];
-        ind++;
-    }
-    for (int i = 0; word[i] != '\0'; i++) {
-        new[ind] = word[i];
-        ind++;
-    }
-    for (int i = start; str[i] != '\0'; i++) {
-        new[ind] = str[i];
-        ind++;
-    }
-    new[len] = '\0';
-    free(str);
-    return (new);
-}
-
-static char *remove_in_str(char *str, int ind)
-{
-    char *new = malloc(sizeof(char) * (strlen(str) - 1));
-    int j = 0;
-
-    for (int i = 0; str[i] != '\0'; i++) {
-        if (i == ind)
-            continue;
-        new[j] = str[i];
-        new[j + 1] = '\0';
-        j++;
-    }
-    free(str);
-    return (new);
-}
-
 static char *last_com(char *key, infos_t *info)
 {
     history_t *tmp = info->history;

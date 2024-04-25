@@ -90,6 +90,12 @@ typedef struct alias_s {
     struct alias_s *next;
 } alias_t;
 
+typedef struct local_var_s {
+    char *var;
+    char *val;
+    struct local_var_s *next;
+} local_var_t;
+
 typedef struct env_s {
     list_t **env;
     list_t **env_cpy;
@@ -112,6 +118,7 @@ typedef struct infos_s {
     history_t *history;
     alias_t *alias;
     jobs_t *jobs;
+    local_var_t *vars;
 } infos_t;
 
 // string and numerical functions
@@ -169,6 +176,8 @@ int my_unalias(char **args, infos_t *infos);
 int my_jobs(char **args, infos_t *info);
 int my_globbing(char **args, infos_t *infos);
 int my_fg(char **args, infos_t *info);
+int my_set(char **args, infos_t *infos);
+int my_unset(char **av, infos_t *infos);
 
 // tools
 void *my_malloc(size_t size);
@@ -184,6 +193,12 @@ char *my_stock_nbr(int nb);
 void add_a_job(char *path, char **args, int pid, infos_t *infos);
 int my_get_nbr_lambda(char *str);
 bool is_delim(char *str);
+char *insert_spaces(char *str);
+char *arr_to_str(char **args);
+char *insert_in_str(char *word, char *str, int start);
+char *remove_in_str(char *str, int ind);
+int is_alpha(char c);
+int is_num(char c);
 
 // Custom prompt
 void write_prompt(env_t *env);
@@ -206,5 +221,8 @@ int count_len_before_env(char *src);
 int count_len_after_env(int k, char *data);
 void cut_in_part(char *data, char **part1, char **part2);
 void cut_in_part_brakets(char *data, char **part1, char **part2);
+
+// Local var
+char *parse_input_local_var(char *input, infos_t *infos);
 
 #endif /* !MYSH_H_ */

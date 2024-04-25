@@ -79,6 +79,7 @@ void input_loop(infos_t *infos)
         if (infos->isatty)
             write_prompt(infos->envs);
         input = get_input(infos);
+        input = parse_input_local_var(input, infos);
         if (parse_input_env_var(&input, infos) == 1)
             continue;
         input = check_exclamation(input, infos);
@@ -99,6 +100,7 @@ int my_sh(char **env)
     infos->history = NULL;
     infos->alias = NULL;
     infos->jobs = NULL;
+    infos->vars = NULL;
     if (!infos->envs->env || !infos->envs->env_cpy) {
         return -1;
     }

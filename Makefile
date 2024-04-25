@@ -59,7 +59,11 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/tools/add_a_job.c \
 		src/builtins/my_globbing.c	\
 		src/builtins/my_fg.c \
+		src/builtins/my_set.c	\
+		src/builtins/my_unset.c	\
 		src/tools/get_nbr_lambda.c \
+		src/tools/parsing.c	\
+		src/parse_local_var.c	\
 
 TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_my_strcpy.c \
