@@ -13,11 +13,11 @@ char *get_hour(char *date)
     int len = strlen(date);
 
     ret[5] = '\0';
-    ret[4] = date[len - 7];
-    ret[3] = date[len - 8];
-    ret[2] = date[len - 9];
-    ret[1] = date[len - 10];
-    ret[0] = date[len - 11];
+    ret[4] = date[len - 10];
+    ret[3] = date[len - 11];
+    ret[2] = date[len - 12];
+    ret[1] = date[len - 13];
+    ret[0] = date[len - 14];
     return (ret);
 }
 
