@@ -19,6 +19,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include "struct.h"
+#include <termios.h>
 
 #ifndef MYSH_H_
     #define MYSH_H_
@@ -134,5 +135,9 @@ void cut_in_part_brakets(char *data, char **part1, char **part2);
 
 // Local var
 char *parse_input_local_var(char *input, infos_t *infos);
+
+// Line edition
+
+char *getline_modif(void);
 
 #endif /* !MYSH_H_ */
