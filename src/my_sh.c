@@ -14,8 +14,22 @@
 
 void handler(int num)
 {
+    char *hostname = getenv("HOSTNAME");
+    char *user = getenv("USER");
+    char *pwd = getcwd(NULL, 0);
+    char *dir = pwd;
+
     (void) num;
-    write(1, "\b\b\033[K\n$a> ", 9);
+    while (dir && my_strstr(dir, "/")) {
+        dir = my_strstr(dir, "/") + 1;
+    }
+    printf("\b\b\033\n");
+    printf("\033[31m");
+    printf("[%s", (user == NULL ? "user" : user));
+    printf("@%s", (hostname == NULL ? "hostname" : hostname));
+    printf(" %s]$ ", (dir == NULL ? "pwd" : dir));
+    printf("\033[0m");
+    fflush(stdout);
 }
 
 static void copy_in_list(list_t **copy, char **env, int size)
