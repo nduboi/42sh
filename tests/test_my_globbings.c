@@ -55,3 +55,35 @@ Test(handle_globbings, handle_globbings_no_globbing, .init=redirect_all_std)
     cr_assert_str_eq("ls abcdefg", args);
 }
 
+Test(handle_globbings, handle_globbing_crochets_found, .init=redirect_all_std)
+{
+    char *args = strdup("ls [a-z]*");
+    int returns = handle_globbings(&args);
+
+    cr_assert_eq(returns, 0);
+}
+
+Test(handle_globbings, handle_globbing_crochets_empty, .init=redirect_all_std)
+{
+    char *args = strdup("ls []");
+    int returns = handle_globbings(&args);
+
+    cr_assert_eq(returns, 0);
+}
+
+Test(handle_globbings, handle_globbing_crochets_open, .init=redirect_all_std)
+{
+    char *args = strdup("ls [");
+    int returns = handle_globbings(&args);
+
+    cr_assert_eq(returns, 0);
+}
+
+Test(handle_globbings, handle_globbing_crochets_close_but_no_match, .init=redirect_all_std)
+{
+    char *args = strdup("ls [a]");
+    int returns = handle_globbings(&args);
+
+    cr_assert_eq(returns, 1);
+    cr_assert_stderr_eq_str("ls: No match.\n");
+}

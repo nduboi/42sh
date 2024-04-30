@@ -86,7 +86,7 @@ TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_my_exit.c	\
 				tests/test_parse_input.c	\
 				tests/test_globbing_function.c	\
-				tests/test_my_globbings.c	\
+				tests/test_my_globbings.c 	\
 
 SRC_OBJ	=	$(SRC:%.c=%.o)
 

@@ -1335,6 +1335,38 @@ TESTS=
   echo 'ls *.xyz'
 [142-END]
 
+[143]
+NAME="no match - multiple []"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'find src/[[].c'
+[143-END]
+
+[144]
+NAME="match [] kill"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'find tests/[a-z]il*'
+[144-END]
+
+[145]
+NAME="match []*?"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'find tests/[j-l]?ll*'
+[145-END]
+
+[146]
+NAME="error []"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls []'
+[146-END]
+
 [150]
 NAME="alias an alias"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"

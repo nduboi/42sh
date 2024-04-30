@@ -126,7 +126,6 @@ void add_history(infos_t *info, char *line);
 int my_history(char **args, infos_t *info);
 void free_history(history_t *h);
 char *check_exclamation(char *input, infos_t *info);
-
 char **check_if_is_an_alias(char **args, infos_t *infos);
 
 // Environement var
