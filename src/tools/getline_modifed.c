@@ -52,38 +52,48 @@ static char *remove_last_char_strings(char *src)
     return result;
 }
 
-static void handle_arrow(bool *action, char ch)
+static bool handle_arrow(char ch, int *cursor, char *strings)
 {
     char seq[2];
 
     if (ch == 27) {
         seq[0] = getchar();
         seq[1] = getchar();
-        if (seq[1] == '[' && seq[1] == 'C') {
+
+        if (seq[0] == '[' && seq[1] == 'C') {
             //Fleche de droite
+            if (*cursor > 0 && *cursor != 0)
+                *cursor = *cursor - 1;
         }
-        if (seq[1] == '[' && seq[1] == 'D') {
-            //Fleche de droite
+        if (seq[0] == '[' && seq[1] == 'D') {
+            //Fleche de gauche
+            *cursor = *cursor + 1;
         }
-        if (seq[1] == '[' && seq[1] == 'A') {
+        if (seq[0] == '[' && seq[1] == 'A') {
             //Fleche du haut
+            free(strings);
+            strings = my_strdup("ls");
         }
-        if (seq[1] == '[' && seq[1] == 'B') {
+        if (seq[0] == '[' && seq[1] == 'B') {
             //Fleche du bas
+            free(strings);
+            strings = my_strdup("ls");
         }
-        *action = true;
+        return true;
     }
+    return false;
 }
 
-static void handle_delete(char ch, char **strings, bool *action)
+static bool handle_delete(char ch, char **strings)
 {
     if (ch == 127) {
         if (strlen(*strings) > 0) {
             write(1, "\b \b", 3);
             *strings = remove_last_char_strings(*strings);
         }
-        *action = true;
+        return true;
     }
+    return false;
 }
 
 char *getline_modif(void)
@@ -91,17 +101,19 @@ char *getline_modif(void)
     char ch = '\0';
     char *strings = my_malloc(sizeof(char) * 1);
     bool action = false;
+    bool action_2 = false;
     struct termios old;
     struct termios new;
+    int cursor = 0;
 
     init_termios(0, &old, &new);
     while (ch != '\n') {
         ch = getchar();
         if (ch == '\n')
             break;
-        handle_delete(ch, &strings, &action);
-        handle_arrow(&action, ch);
-        if (!action)
+        action_2 = handle_delete(ch, &strings);
+        action = handle_arrow(ch, &cursor, strings);
+        if (action == false && action_2 == false)
             strings = add_char_strings(strings, ch);
         printf("\033[2K");
         printf("\r");
