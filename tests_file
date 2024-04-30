@@ -2099,3 +2099,21 @@ CLEAN=""
 TESTS=
   echo '(echo test) ; echo good'
 [338-END]
+
+[339]
+NAME="local var with brackets"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'set foo = bar'
+  echo 'echo ${foo}'
+[339-END]
+
+[340]
+NAME="local var with wrong brackets"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'set foo = bar'
+  echo 'echo ${foo'
+[340-END]

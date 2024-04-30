@@ -7,6 +7,15 @@
 
 #include "mysh.h"
 
+static bool is_there_char(char *line, char c)
+{
+    for (int i = 0; line[i] != '\0'; i++) {
+        if (line[i] == c)
+            return (true);
+    }
+    return (false);
+}
+
 char *get_local_val(char *var, infos_t *infos)
 {
     local_var_t *tmp = infos->vars;
@@ -19,12 +28,36 @@ char *get_local_val(char *var, infos_t *infos)
     return (NULL);
 }
 
+char *get_curly_var(char *str, int i)
+{
+    char *var = NULL;
+    int len = 0;
+    int j = i + 1;
+
+    if (!is_there_char(str, '}'))
+        return (str);
+    for (j = i + 1; str[j] != '\0' && str[j] != '}'; j++);
+    len = j - (i + 1);
+    if (len == 0)
+        return (NULL);
+    var = malloc(sizeof(char) * (len + 1));
+    var[len] = '\0';
+    for (int a = 0; a < len; a++) {
+        var[a] = str[i + a + 1];
+    }
+    str = remove_in_str(str, i);
+    str = remove_in_str(str, i);
+    return (var);
+}
+
 char *get_var(char *str, int i)
 {
     char *var = NULL;
     int len = 0;
     int j = i;
 
+    if (str[i] == '{')
+        return (get_curly_var(str, i));
     for (j = i; str[j] != '\0' && str[j] != ' ' && str[j] != '\t'; j++);
     len = j - i;
     if (len == 0)
