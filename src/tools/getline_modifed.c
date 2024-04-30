@@ -97,15 +97,19 @@ char *getline_modif(void)
     init_termios(0, &old, &new);
     while (ch != '\n') {
         ch = getchar();
-        write(1, &ch, 1);
         if (ch == '\n')
             break;
         handle_delete(ch, &strings, &action);
         handle_arrow(&action, ch);
         if (!action)
             strings = add_char_strings(strings, ch);
+        printf("\033[2K");
+        printf("\r");
+        fflush(stdout);
+        write(1, strings, my_strlen(strings));
         action = false;
     }
+    write(1, "\n", 1);
     reset_termios(&old);
     return strings;
 }
