@@ -15,7 +15,7 @@
 void handler(int num)
 {
     (void) num;
-    write(1, "\b\b\033[K\n$> ", 9);
+    write(1, "\b\b\033[K\n$a> ", 9);
 }
 
 static void copy_in_list(list_t **copy, char **env, int size)
