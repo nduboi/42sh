@@ -12,7 +12,6 @@ static void handle_or_cmd
 {
     (void) fds;
     if (!*skip) {
-        wait(NULL);
         handle_redirections(data, infos);
     }
     *skip = false;
@@ -25,7 +24,6 @@ static void handle_and_cmd
 {
     (void) fds;
     if (!*skip) {
-        wait(NULL);
         handle_redirections(data, infos);
     }
     *skip = false;
@@ -39,7 +37,6 @@ static void handle_semi_colon_cmd
     if (!*skip) {
         handle_redirections(data, infos);
     }
-    wait(NULL);
     restart_fds(fds[0], fds[1]);
     *skip = false;
 }
@@ -72,7 +69,6 @@ static void handle_end_cmd
     if (!*skip) {
         handle_redirections(data, infos);
     }
-    wait(NULL);
     restart_fds(fds[0], fds[1]);
 }
 
