@@ -39,6 +39,7 @@ int my_unset(char **av, infos_t *infos)
 {
     if (my_arrlen(av) == 1) {
         dprintf(2, "unset: Too few arguments.\n");
+        handle_exit_status(WRITE_STATUS, 1);
         return (1);
     }
     if (infos->vars == NULL)

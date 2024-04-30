@@ -120,6 +120,7 @@ int my_sh(char **env)
     infos->alias = NULL;
     infos->jobs = NULL;
     infos->vars = NULL;
+    infos->can_exit_job = 1;
     if (!infos->envs->env || !infos->envs->env_cpy) {
         return -1;
     }

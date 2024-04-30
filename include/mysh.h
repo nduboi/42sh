@@ -58,12 +58,16 @@ void handle_signal(int wstatus);
 int handle_exit_status(int action, int nbr);
 void restart_fds(int in, int out);
 
+
 // parsing
 int parse_input(char *input, list_t **list_parse, infos_t *infos);
-bool errors_in_parentheses(char *cmd);
+bool too_many_parenthesis(char *cmd);
 int add_backtick(char **input_ptr, parsing_t *node, infos_t *infos);
 int add_redir(char **input_ptr, redirs_t *red);
 void handle_redirections(parsing_t *data, infos_t *infos);
+bool null_cmd(parsing_t *data);
+bool ambiguous_redir(parsing_t *data);
+int handle_globbings(char **cmd);
 
 // chained list functions
 void add_node(list_t **begin, void *data);
@@ -112,6 +116,7 @@ char *insert_in_str(char *word, char *str, int start);
 char *remove_in_str(char *str, int ind);
 int is_alpha(char c);
 int is_num(char c);
+void update_exit(infos_t *infos);
 
 // Custom prompt
 void write_prompt(env_t *env);
