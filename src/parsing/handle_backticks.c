@@ -56,14 +56,15 @@ static int handle_backticks(parsing_t *data, char *buffer, infos_t *infos)
 int add_backtick(char **input_ptr, parsing_t *node, infos_t *infos)
 {
     char *input = *input_ptr + 1;
-    int len_str;
     char *buffer = my_malloc(sizeof(char));
 
+    if (node->type == GRP) {
+        write(1, "Badly placed ()'s.\n", 19);
+        return -1;
+    }
     for (; *input != '`' && *input; input++) {
-        len_str = strlen(buffer);
-        buffer = realloc(buffer, CHAR * (len_str + 2));
-        buffer[len_str] = *input;
-        buffer[len_str + 1] = '\0';
+        buffer = my_realloc(buffer, CHAR * (strlen(buffer) + 2));
+        buffer[strlen(buffer)] = *input;
     }
     if (!*input) {
         write(2, "Unmatched '`'.\n", 15);

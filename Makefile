@@ -22,6 +22,7 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/parsing/handle_redirections.c \
 		src/parsing/parentheses_errors.c \
 		src/parsing/handle_backticks.c \
+		src/parsing/parsing_errors.c \
 		src/parsing/handle_input.c \
 		src/parsing/parse_input.c \
 		src/tools/environement_cut_part.c \

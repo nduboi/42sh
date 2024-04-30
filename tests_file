@@ -957,7 +957,7 @@ TESTS=
 [99-END]
 
 [100]
-NAME="Exec command with redirection 9"
+NAME="Exec command with pipe into builtin"
 SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
 CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
 TESTS=
@@ -1895,3 +1895,156 @@ TESTS=
   echo 'set bar=fo'
   echo 'unset foo bar'
 [319-END]
+
+[320]
+NAME="multiple delimiters next to each other"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo ';;;'
+[320-END]
+
+[321]
+NAME="empty parentheses"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '()'
+[321-END]
+
+[322]
+NAME="parentheses with delimiters inside but no content"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(;)'
+[322-END]
+
+[323]
+NAME="parentheses with a command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(ls)'
+[323-END]
+
+[324]
+NAME="parentheses with multiple commands"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(ls ; echo lol; echo lol)'
+[324-END]
+
+[325]
+NAME="parentheses with pipes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(ls | cat -e)'
+[325-END]
+
+[326]
+NAME="parentheses with &&"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(tree && echo lol)'
+[326-END]
+
+[327]
+NAME="parentheses with ||"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(ls qzêoign || echo good)'
+[327-END]
+
+[328]
+NAME="parentheses in parentheses"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(echo 1 ; (echo 2))'
+[328-END]
+
+[329]
+NAME="too many ('s"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(ls qzêoign || echo good'
+[329-END]
+
+[330]
+NAME="too many )'s"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls qzêoign || echo good)'
+[330-END]
+
+[331]
+NAME="badly placed ()'s"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls (ls qzêoign || echo good)'
+[331-END]
+
+[332]
+NAME="parentheses with redirections in them"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(ls > 332 ; cat 332)'
+[332-END]
+
+[333]
+NAME="parentheses with redirections outside"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(ls ; ls -a ; echo lol) > 333'
+  echo 'cat 333'
+[333-END]
+
+[334]
+NAME="parentheses with pipes outside"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(ls ; ls -a ; echo lol) | cat -e'
+[334-END]
+
+[335]
+NAME="parentheses with pipes to builtin"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(ls ; ls -a ; echo lol) | echo lol'
+[335-END]
+
+[336]
+NAME="parentheses with && outside"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(echo test) && echo good'
+[336-END]
+
+[337]
+NAME="parentheses with || outside"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(echo test) || echo good'
+[337-END]
+
+[338]
+NAME="parentheses with ; outside"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(echo test) ; echo good'
+[338-END]

@@ -84,11 +84,15 @@ void handle_redirections(parsing_t *data, infos_t *infos)
         return;
     }
     operate_redirs(&data->redirs);
-    if (handle_globbings(&data->content.cmd) == 1) {
-        handle_exit_status(WRITE_STATUS, 1);
-        return;
+    if (data->type == CMD) {
+        if (handle_globbings(&data->content.cmd) == 1) {
+            handle_exit_status(WRITE_STATUS, 1);
+            return;
+        }
+        handle_cmd(data->content.cmd, infos);
+    } else {
+        execute_commands(data->content.grp, infos);
     }
-    handle_cmd(data->content.cmd, infos);
 }
 
 static char *get_redir(char **input_ptr)
