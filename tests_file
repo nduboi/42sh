@@ -1335,6 +1335,25 @@ TESTS=
   echo 'ls *.xyz'
 [142-END]
 
+[150]
+NAME="alias an alias"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias toto ls'
+  echo 'alias titi toto -l'
+[150-END]
+
+[151]
+NAME="alias an alias bis"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias toto ls'
+  echo 'alias titi toto -l'
+  echo 'alias tata titi -a'
+[151-END]
+
 [200]
 NAME="Simple && with working condition"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"

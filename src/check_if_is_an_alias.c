@@ -27,6 +27,7 @@ char **check_if_is_an_alias(char **args, infos_t *infos)
         if (strcmp(temp->base_command, args[0]) == 0) {
             args[0] = my_strdup(temp->new_command);
             args = str_to_word_array(get_all_str(args));
+            args = check_if_is_an_alias(args, infos);
             return args;
         }
         temp = temp->next;
