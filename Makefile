@@ -62,6 +62,7 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/builtins/my_set.c	\
 		src/builtins/my_unset.c	\
 		src/tools/get_nbr_lambda.c \
+		src/parsing/handle_globbing.c \
 		src/tools/parsing.c	\
 		src/parse_local_var.c	\
 		src/builtins/my_bg.c \
@@ -84,6 +85,7 @@ TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_my_exit.c	\
 				tests/test_parse_input.c	\
 				tests/test_globbing_function.c	\
+				tests/test_my_globbings.c	\
 
 SRC_OBJ	=	$(SRC:%.c=%.o)
 

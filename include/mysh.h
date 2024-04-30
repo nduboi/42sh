@@ -60,9 +60,11 @@ void restart_fds(int in, int out);
 // parsing
 int parse_input(char *input, list_t **list_parse, infos_t *infos);
 bool errors_in_parentheses(char *cmd);
+bool errors_in_parsing_list(list_t **list);
 int add_backtick(char **input_ptr, parsing_t *node, infos_t *infos);
 int add_redir(char **input_ptr, redirs_t *red);
 void handle_redirections(parsing_t *data, infos_t *infos);
+int handle_globbings(char **cmd);
 
 // chained list functions
 void add_node(list_t **begin, void *data);

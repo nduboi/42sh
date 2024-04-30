@@ -84,6 +84,10 @@ void handle_redirections(parsing_t *data, infos_t *infos)
         return;
     }
     operate_redirs(&data->redirs);
+    if (handle_globbings(&data->content.cmd) == 1) {
+        handle_exit_status(WRITE_STATUS, 1);
+        return;
+    }
     handle_cmd(data->content.cmd, infos);
 }
 

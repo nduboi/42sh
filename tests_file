@@ -1263,6 +1263,78 @@ TESTS=
   echo 'jobs'
 [133-END]
 
+[134]
+NAME="ls *.c"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo ls *.c'
+[134-END]
+
+[135]
+NAME="src *.c"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'find src/*.c'
+[135-END]
+
+[136]
+NAME="no match"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'find src/[b-z].c'
+[136-END]
+
+[137]
+NAME="try * with a character"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'find src/m*.c'
+[137-END]
+
+[138]
+NAME="try ? with a character"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'find src/?.c'
+[138-END]
+
+[139]
+NAME="try * with not match"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls *.q'
+[139-END]
+
+[140]
+NAME="try ? with a wildcard and a character"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls ?'
+[140-END]
+
+[141]
+NAME="try multiple wildcards (Makefile)"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls M?k*ile'
+[141-END]
+
+[142]
+NAME="try with no matches"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls *.xyz'
+[142-END]
+
 [200]
 NAME="Simple && with working condition"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
