@@ -21,6 +21,7 @@ function_t functions[] = {
     {"unalias", my_unalias},
     {"jobs", my_jobs},
     {"fg", my_fg},
+    {"bg", my_bg},
     {"glob", my_globbing},
     {"unset", my_unset},
     {"set", my_set},

@@ -7,7 +7,7 @@
 
 #include "mysh.h"
 
-static char check_temp(jobs_t *temp)
+char check_temp(jobs_t *temp)
 {
     if (temp->next != NULL && temp->next->next == NULL) {
         return '-';

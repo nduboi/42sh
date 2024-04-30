@@ -26,7 +26,7 @@
 
     #define WRITE_STATUS 1
     #define GET_STATUS 2
-    #define SIZE_TAB 14
+    #define SIZE_TAB 15
 
     #define CHAR sizeof(char)
 
@@ -89,6 +89,8 @@ int my_globbing(char **args, infos_t *infos);
 int my_fg(char **args, infos_t *info);
 int my_set(char **args, infos_t *infos);
 int my_unset(char **av, infos_t *infos);
+int my_bg(char **args, infos_t *info);
+char check_temp(jobs_t *temp);
 
 // tools
 void *my_malloc(size_t size);

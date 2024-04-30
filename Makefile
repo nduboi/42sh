@@ -65,6 +65,7 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/tools/get_nbr_lambda.c \
 		src/tools/parsing.c	\
 		src/parse_local_var.c	\
+		src/builtins/my_bg.c \
 
 TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_my_strcpy.c \
