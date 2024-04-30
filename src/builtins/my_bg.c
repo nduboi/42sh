@@ -47,6 +47,7 @@ static void finish_a_bg_job(jobs_t *current, jobs_t **jobs_ptr, infos_t *infos)
     check_temp(current), current->command);
     delete_current(current->pid, jobs_ptr);
     infos->jobs = *jobs_ptr;
+    update_exit(infos);
 }
 
 static void put_bg_element(infos_t *infos, int num)
@@ -59,7 +60,7 @@ static void put_bg_element(infos_t *infos, int num)
     while (current != NULL && current->num != num)
         current = current->next;
     if (current == NULL) {
-        fprintf(stderr, "fg: No such job.\n");
+        fprintf(stderr, "bg: No such job.\n");
         return;
     }
     kill(current->pid, SIGCONT);
@@ -96,7 +97,7 @@ static void put_bg_last_element(infos_t *infos)
 int my_bg(char **args, infos_t *info)
 {
     if (info->jobs == NULL) {
-        fprintf(stderr, "fg: No current job\n");
+        fprintf(stderr, "bg: No current job\n");
         return (0);
     }
     if (my_arrlen(args) == 1) {

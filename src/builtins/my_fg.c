@@ -61,7 +61,23 @@ static void put_fg_element(infos_t *infos, int num)
     if (status != 5247) {
         delete_current(current->pid, jobs_ptr);
         infos->jobs = *jobs_ptr;
+        update_exit(infos);
     }
+}
+
+void update_exit(infos_t *infos)
+{
+    jobs_t *temp = infos->jobs;
+    int count = 0;
+
+    while (temp != NULL) {
+        count += 1;
+        temp = temp->next;
+    }
+    if (count != 0)
+        infos->can_exit_job = 0;
+    else
+        infos->can_exit_job = 1;
 }
 
 static void put_fg_last_element(infos_t *infos)
@@ -78,6 +94,7 @@ static void put_fg_last_element(infos_t *infos)
     if (status != 5247) {
         delete_current(current->pid, jobs_ptr);
         infos->jobs = *jobs_ptr;
+        update_exit(infos);
     }
 }
 

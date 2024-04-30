@@ -100,6 +100,7 @@ typedef struct infos_s {
     alias_t *alias;
     jobs_t *jobs;
     local_var_t *vars;
+    int can_exit_job;
 } infos_t;
 
 typedef struct function_s {

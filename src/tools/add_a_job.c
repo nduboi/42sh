@@ -63,6 +63,7 @@ void add_a_job(char *path, char **args, int pid, infos_t *infos)
     new_element->num = get_last_int(infos);
     new_element->pid = pid;
     put_element_at_end(infos, new_element);
+    infos->can_exit_job = 0;
     if (strcmp(path, "/usr/bin/ls") == 0) {
         printf("\n\nSuspended (signal)\n");
         new_element->wd = my_strdup("Suspended (signal)");

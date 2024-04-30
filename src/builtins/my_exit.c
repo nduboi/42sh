@@ -37,8 +37,20 @@ void exit_number(char **args, infos_t *infos)
     exit(nbr);
 }
 
+int can_exit(infos_t *infos)
+{
+    if (infos->can_exit_job == 0) {
+        printf("There are suspended jobs.\n");
+        infos->can_exit_job = 1;
+        return (0);
+    }
+    return (1);
+}
+
 int my_exit(char **args, infos_t *infos)
 {
+    if (can_exit(infos) == 0)
+        return (-1);
     if (args[1] && (args[2]
         || ((args[1][0] < '0' || '9' < args[1][0]) && args[1][0] != '-'))) {
         write(2, "exit: Expression Syntax.\n", 25);
