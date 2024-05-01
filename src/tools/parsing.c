@@ -9,7 +9,7 @@
 
 char *remove_in_str(char *str, int ind)
 {
-    char *new = malloc(sizeof(char) * (strlen(str) - 1));
+    char *new = malloc(sizeof(char) * (strlen(str)));
     int j = 0;
 
     for (int i = 0; str[i] != '\0'; i++) {
