@@ -75,10 +75,8 @@ char *get_input(infos_t *infos)
         len = getline(&buffer, &size, stdin);
         if (buffer[len - 1] == '\n')
             buffer[len - 1] = '\0';
-    } else {
-        buffer = getline_modif(infos);
-        len = my_strlen(buffer);
-    }
+    } else
+        buffer = getline_modif(infos, &len);
     if (len == EOF) {
         if (isatty(STDIN_FILENO))
             write(1, "exit\n", 5);

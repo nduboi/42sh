@@ -89,6 +89,8 @@ static int handle_data_user(char **strings, int **data_arrow, infos_t *list)
 
     if (ch == '\n')
         return 1;
+    if (ch == 4)
+        return 2;
     action_2 = handle_delete(ch, strings);
     action = handle_arrow(ch, data_arrow, *strings, list);
     if (action == false && action_2 == false)
@@ -96,7 +98,22 @@ static int handle_data_user(char **strings, int **data_arrow, infos_t *list)
     return 0;
 }
 
-char *getline_modif(infos_t *list)
+static char *exit_getline(int return_input, char *strings,
+    struct termios *old, int *len)
+{
+    if (return_input == 1)
+        write(1, "\n", 1);
+    reset_termios(old);
+    if (return_input == 1) {
+        *len = my_strlen(strings);
+        return strings;
+    } else {
+        *len = EOF;
+        return NULL;
+    }
+}
+
+char *getline_modif(infos_t *list, int *len)
 {
     char ch = '\0';
     char *strings = my_malloc(sizeof(char) * 1);
@@ -105,15 +122,15 @@ char *getline_modif(infos_t *list)
     struct termios old;
     struct termios new;
     int *data_arrow = init_data_arrow();
+    int return_input = 0;
 
     init_termios(0, &old, &new);
     while (1) {
-        if (handle_data_user(&strings, &data_arrow, list) == 1)
+        return_input = handle_data_user(&strings, &data_arrow, list);
+        if (return_input == 1 || return_input == 2)
             break;
         write_commands(strings);
         action = false;
     }
-    write(1, "\n", 1);
-    reset_termios(&old);
-    return strings;
+    return exit_getline(return_input, strings, &old, len);
 }
