@@ -73,17 +73,15 @@ char *get_input(infos_t *infos)
 
     if (isatty(STDIN_FILENO) == 0) {
         len = getline(&buffer, &size, stdin);
-        if (buffer[len - 1] == '\n') {
+        if (buffer[len - 1] == '\n')
             buffer[len - 1] = '\0';
-        }
     } else {
-        buffer = getline_modif();
+        buffer = getline_modif(infos);
         len = my_strlen(buffer);
     }
     if (len == EOF) {
-        if (isatty(STDIN_FILENO)) {
+        if (isatty(STDIN_FILENO))
             write(1, "exit\n", 5);
-        }
         free_infos(infos);
         exit(handle_exit_status(GET_STATUS, 0));
     }

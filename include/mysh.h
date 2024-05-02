@@ -144,6 +144,8 @@ char *parse_input_local_var(char *input, infos_t *infos);
 
 // Line edition
 
-char *getline_modif(void);
+char *getline_modif(infos_t *list);
+bool handle_arrow(char ch, int **data_arrow, char *strings,
+    infos_t *list);
 
 #endif /* !MYSH_H_ */

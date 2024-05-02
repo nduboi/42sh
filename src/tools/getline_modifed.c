@@ -52,38 +52,6 @@ static char *remove_last_char_strings(char *src)
     return result;
 }
 
-static bool handle_arrow(char ch, int *cursor, char *strings)
-{
-    char seq[2];
-
-    if (ch == 27) {
-        seq[0] = getchar();
-        seq[1] = getchar();
-
-        if (seq[0] == '[' && seq[1] == 'C') {
-            //Fleche de droite
-            if (*cursor > 0 && *cursor != 0)
-                *cursor = *cursor - 1;
-        }
-        if (seq[0] == '[' && seq[1] == 'D') {
-            //Fleche de gauche
-            *cursor = *cursor + 1;
-        }
-        if (seq[0] == '[' && seq[1] == 'A') {
-            //Fleche du haut
-            free(strings);
-            strings = my_strdup("ls");
-        }
-        if (seq[0] == '[' && seq[1] == 'B') {
-            //Fleche du bas
-            free(strings);
-            strings = my_strdup("ls");
-        }
-        return true;
-    }
-    return false;
-}
-
 static bool handle_delete(char ch, char **strings)
 {
     if (ch == 127) {
@@ -96,7 +64,39 @@ static bool handle_delete(char ch, char **strings)
     return false;
 }
 
-char *getline_modif(void)
+static void write_commands(char *strings)
+{
+    printf("\033[2K");
+    printf("\r");
+    fflush(stdout);
+    write(1, strings, my_strlen(strings));
+}
+
+static int *init_data_arrow(void)
+{
+    int *data_arrow = my_malloc(sizeof(int *) * 3);
+
+    data_arrow[0] = 0;
+    data_arrow[1] = 0;
+    return data_arrow;
+}
+
+static int handle_data_user(char **strings, int **data_arrow, infos_t *list)
+{
+    char ch = getchar();
+    bool action = false;
+    bool action_2 = false;
+
+    if (ch == '\n')
+        return 1;
+    action_2 = handle_delete(ch, strings);
+    action = handle_arrow(ch, data_arrow, *strings, list);
+    if (action == false && action_2 == false)
+        *strings = add_char_strings(*strings, ch);
+    return 0;
+}
+
+char *getline_modif(infos_t *list)
 {
     char ch = '\0';
     char *strings = my_malloc(sizeof(char) * 1);
@@ -104,21 +104,13 @@ char *getline_modif(void)
     bool action_2 = false;
     struct termios old;
     struct termios new;
-    int cursor = 0;
+    int *data_arrow = init_data_arrow();
 
     init_termios(0, &old, &new);
-    while (ch != '\n') {
-        ch = getchar();
-        if (ch == '\n')
+    while (1) {
+        if (handle_data_user(&strings, &data_arrow, list) == 1)
             break;
-        action_2 = handle_delete(ch, &strings);
-        action = handle_arrow(ch, &cursor, strings);
-        if (action == false && action_2 == false)
-            strings = add_char_strings(strings, ch);
-        printf("\033[2K");
-        printf("\r");
-        fflush(stdout);
-        write(1, strings, my_strlen(strings));
+        write_commands(strings);
         action = false;
     }
     write(1, "\n", 1);
