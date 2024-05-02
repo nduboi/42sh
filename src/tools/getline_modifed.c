@@ -64,21 +64,13 @@ static bool handle_delete(char ch, char **strings)
     return false;
 }
 
-static void write_commands(char *strings)
+static void write_commands(char *strings, bool *action)
 {
     printf("\033[2K");
     printf("\r");
     fflush(stdout);
     write(1, strings, my_strlen(strings));
-}
-
-static int *init_data_arrow(void)
-{
-    int *data_arrow = my_malloc(sizeof(int *) * 3);
-
-    data_arrow[0] = 0;
-    data_arrow[1] = 0;
-    return data_arrow;
+    *action = false;
 }
 
 static int handle_data_user(char **strings, int **data_arrow, infos_t *list)
@@ -91,6 +83,8 @@ static int handle_data_user(char **strings, int **data_arrow, infos_t *list)
         return 1;
     if (ch == 4)
         return 2;
+    if (ch == 12)
+        return 3;
     action_2 = handle_delete(ch, strings);
     action = handle_arrow(ch, data_arrow, *strings, list);
     if (action == false && action_2 == false)
@@ -113,6 +107,15 @@ static char *exit_getline(int return_input, char *strings,
     }
 }
 
+static void clear_terminal(char *strings)
+{
+    printf("\033[2J");
+    printf("\033[H");
+    fflush(stdout);
+    if (strings)
+        write(1, strings, my_strlen(strings));
+}
+
 char *getline_modif(infos_t *list, int *len)
 {
     char ch = '\0';
@@ -129,8 +132,10 @@ char *getline_modif(infos_t *list, int *len)
         return_input = handle_data_user(&strings, &data_arrow, list);
         if (return_input == 1 || return_input == 2)
             break;
-        write_commands(strings);
-        action = false;
+        if (return_input == 3)
+            clear_terminal(strings);
+        else
+            write_commands(strings, &action);
     }
     return exit_getline(return_input, strings, &old, len);
 }
