@@ -76,23 +76,22 @@ static void operate_redirs(redirs_t *redirs)
     }
 }
 
-void handle_redirections(parsing_t *data, infos_t *infos)
+int handle_redirections(parsing_t *data, infos_t *infos)
 {
     if (data->redirs.in && access(data->redirs.keyword_in, F_OK) != 0) {
         error_message(data->redirs.keyword_in, errno);
         handle_exit_status(WRITE_STATUS, 1);
-        return;
+        return 1;
     }
     operate_redirs(&data->redirs);
     if (data->type == CMD) {
-        if (handle_globbings(&data->content.cmd) == 1) {
-            handle_exit_status(WRITE_STATUS, 1);
-            return;
-        }
-        handle_cmd(data->content.cmd, infos);
+        if (handle_cmd(data->content.cmd, infos) == -1)
+            return -1;
     } else {
-        execute_commands(data->content.grp, infos);
+        if (execute_commands(data->content.grp, infos) == -1)
+            return -1;
     }
+    return 0;
 }
 
 static char *get_redir(char **input_ptr)
