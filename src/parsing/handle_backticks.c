@@ -14,8 +14,9 @@ static void get_result(char **bt_args)
     size_t size = 0;
 
     while (getline(&buffer, &size, file) != -1) {
-        buffer[strlen(buffer) - 1] = ' ';
-        *bt_args = my_realloc(*bt_args, CHAR * (strlen(*bt_args) + size + 1));
+        buffer[strlen(buffer) - 1] = '\0';
+        *bt_args = my_realloc(*bt_args,
+            CHAR * (strlen(*bt_args) + strlen(buffer)));
         strcat(*bt_args, buffer);
     }
     fclose(file);
@@ -46,10 +47,13 @@ static int handle_backticks(parsing_t *data, char *buffer, infos_t *infos)
     bt_args = get_backtick_results(buffer, infos);
     if (!bt_args)
         return -1;
+    if (data->type == NONE_TYPE) {
+        data->type = CMD;
+        data->content.cmd = my_malloc(CHAR);
+    }
     data->content.cmd = my_realloc(data->content.cmd,
-        CHAR * (strlen(data->content.cmd) + strlen(bt_args) + 2));
+        CHAR * (strlen(data->content.cmd) + strlen(bt_args) + 1));
     strcat(data->content.cmd, bt_args);
-    strcat(data->content.cmd, " ");
     return 0;
 }
 

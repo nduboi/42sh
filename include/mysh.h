@@ -50,21 +50,20 @@ bool only_char_in_str(char *str, char c);
 // my shell functions
 int my_sh(char **env);
 int handle_input(char *input, infos_t *infos);
-void execute_commands(list_t **list_parse, infos_t *infos);
-void handle_cmd(char *input, infos_t *infos);
+int execute_commands(list_t **list_parse, infos_t *infos);
+int handle_cmd(char *input, infos_t *infos);
 int exe_cmd(char **args, infos_t *infos);
 void error_message(char *str, int errnum);
 void handle_signal(int wstatus);
 int handle_exit_status(int action, int nbr);
 void restart_fds(int in, int out);
 
-
 // parsing
 int parse_input(char *input, list_t **list_parse, infos_t *infos);
 bool too_many_parenthesis(char *cmd);
 int add_backtick(char **input_ptr, parsing_t *node, infos_t *infos);
 int add_redir(char **input_ptr, redirs_t *red);
-void handle_redirections(parsing_t *data, infos_t *infos);
+int handle_redirections(parsing_t *data, infos_t *infos);
 bool null_cmd(parsing_t *data);
 bool ambiguous_redir(parsing_t *data);
 int handle_globbings(char **cmd);
@@ -127,7 +126,7 @@ void add_history(infos_t *info, char *line);
 int my_history(char **args, infos_t *info);
 void free_history(history_t *h);
 char *check_exclamation(char *input, infos_t *info);
-
+char *recall_by_id(int id, infos_t *infos);
 char **check_if_is_an_alias(char **args, infos_t *infos);
 
 // Environement var

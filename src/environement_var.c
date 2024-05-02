@@ -15,7 +15,7 @@
 
 static int handle_illegal_variables(char *src)
 {
-    for (int i = 0; src[i] != '\0'; i++) {
+    for (int i = 0; src[i] != ' ' && src[i]; i++) {
         if (!((src[i] >= 'a' && src[i] <= 'z') ||
             (src[i] >= 'A' && src[i] <= 'Z') || src[i] == ')' ||
             (src[i] >= '0' && src[i] <= '9') || src[i] == '{' ||

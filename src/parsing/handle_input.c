@@ -7,48 +7,57 @@
 
 #include "mysh.h"
 
-static void handle_or_cmd
+static int handle_or_cmd
 (parsing_t *data, infos_t *infos, bool *skip, int fds[2])
 {
+    int status = 0;
+
     (void) fds;
     if (!*skip) {
-        handle_redirections(data, infos);
+        status = handle_redirections(data, infos);
     }
     *skip = false;
     if (handle_exit_status(GET_STATUS, 0) == 0)
         *skip = true;
+    return status;
 }
 
-static void handle_and_cmd
+static int handle_and_cmd
 (parsing_t *data, infos_t *infos, bool *skip, int fds[2])
 {
+    int status = 0;
+
     (void) fds;
     if (!*skip) {
-        handle_redirections(data, infos);
+        status = handle_redirections(data, infos);
     }
     *skip = false;
     if (handle_exit_status(GET_STATUS, 0) != 0)
         *skip = true;
+    return status;
 }
 
-static void handle_semi_colon_cmd
+static int handle_semi_colon_cmd
 (parsing_t *data, infos_t *infos, bool *skip, int fds[2])
 {
+    int status = 0;
+
     if (!*skip) {
-        handle_redirections(data, infos);
+        status = handle_redirections(data, infos);
     }
     restart_fds(fds[0], fds[1]);
     *skip = false;
+    return status;
 }
 
-static void handle_pipe_cmd
+static int handle_pipe_cmd
 (parsing_t *data, infos_t *infos, bool *skip, int fds[2])
 {
     int pipe_fds[2];
 
     (void) fds;
     if (*skip)
-        return;
+        return 0;
     pipe(pipe_fds);
     if (fork() == 0) {
         close(pipe_fds[0]);
@@ -61,36 +70,43 @@ static void handle_pipe_cmd
         dup2(pipe_fds[0], STDIN_FILENO);
         close(pipe_fds[0]);
     }
+    return 0;
 }
 
-static void handle_end_cmd
+static int handle_end_cmd
 (parsing_t *data, infos_t *infos, bool *skip, int fds[2])
 {
+    int status = 0;
+
     if (!*skip) {
-        handle_redirections(data, infos);
+        status = handle_redirections(data, infos);
     }
     restart_fds(fds[0], fds[1]);
+    return status;
 }
 
-void execute_commands(list_t **list_parse, infos_t *infos)
+int execute_commands(list_t **list_parse, infos_t *infos)
 {
     list_t *node = *list_parse;
     parsing_t *data = NULL;
     bool skip = false;
-    void (*fct_ptrs[6])(parsing_t *, infos_t *, bool *, int[2]) = {
+    int (*fct_ptrs[6])(parsing_t *, infos_t *, bool *, int[2]) = {
         NULL, handle_semi_colon_cmd, handle_and_cmd, handle_or_cmd,
-        handle_pipe_cmd, handle_end_cmd
-    };
+        handle_pipe_cmd, handle_end_cmd};
     int in = dup(STDIN_FILENO);
     int out = dup(STDOUT_FILENO);
+    int status = 0;
 
     while (node) {
         data = node->data;
-        fct_ptrs[data->link](data, infos, &skip, (int[2]) {in, out});
+        status = fct_ptrs[data->link](data, infos, &skip, (int[2]) {in, out});
+        if (status == -1)
+            break;
         node = node->next;
     }
     close(in);
     close(out);
+    return status;
 }
 
 int handle_input(char *input, infos_t *infos)
@@ -105,6 +121,7 @@ int handle_input(char *input, infos_t *infos)
         handle_exit_status(WRITE_STATUS, 1);
         return -1;
     }
-    execute_commands(list_parse, infos);
+    if (execute_commands(list_parse, infos) == -1)
+        return 1;
     return 0;
 }

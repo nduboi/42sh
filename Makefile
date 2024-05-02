@@ -68,6 +68,7 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/tools/parsing.c	\
 		src/parse_local_var.c	\
 		src/builtins/my_bg.c \
+		src/tools/recall_by_id.c	\
 
 TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_my_strcpy.c \
@@ -88,6 +89,7 @@ TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_parse_input.c	\
 				tests/test_globbing_function.c	\
 				tests/test_my_globbings.c	\
+				tests/test_recall_by_id.c	\
 
 SRC_OBJ	=	$(SRC:%.c=%.o)
 

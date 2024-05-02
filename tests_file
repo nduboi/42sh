@@ -1335,6 +1335,57 @@ TESTS=
   echo 'ls *.xyz'
 [142-END]
 
+[143]
+NAME="no match - multiple []"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'find src/[[].c'
+[143-END]
+
+[144]
+NAME="match [] kill"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'find tests/[a-z]il*'
+[144-END]
+
+[145]
+NAME="match []*?"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'find tests/[j-l]?ll*'
+[145-END]
+
+[146]
+NAME="error []"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls []'
+[146-END]
+
+[150]
+NAME="alias an alias"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias toto ls'
+  echo 'alias titi toto -l'
+[150-END]
+
+[151]
+NAME="alias an alias bis"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias toto ls'
+  echo 'alias titi toto -l'
+  echo 'alias tata titi -a'
+[151-END]
+
 [200]
 NAME="Simple && with working condition"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -2048,3 +2099,21 @@ CLEAN=""
 TESTS=
   echo '(echo test) ; echo good'
 [338-END]
+
+[339]
+NAME="local var with brackets"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'set foo = bar'
+  echo 'echo ${foo}'
+[339-END]
+
+[340]
+NAME="local var with wrong brackets"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'set foo = bar'
+  echo 'echo ${foo'
+[340-END]

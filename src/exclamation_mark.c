@@ -33,8 +33,8 @@ char *recall_last_command(char *str, int i, infos_t *info)
     new = remove_in_str(new, i);
     new = remove_in_str(new, i);
     free(str);
+    printf("%s\n", line);
     free(line);
-    printf("%s\n", new);
     return (new);
 }
 

@@ -92,20 +92,20 @@ char *get_input(infos_t *infos)
 
 void input_loop(infos_t *infos)
 {
+    int status = 0;
     char *input = NULL;
 
     while (1) {
         if (infos->isatty)
             write_prompt(infos->envs);
         input = get_input(infos);
-        input = parse_input_local_var(input, infos);
-        if (parse_input_env_var(&input, infos) == 1)
-            continue;
         input = check_exclamation(input, infos);
         if (input != NULL) {
             add_history(infos, input);
-            handle_input(input, infos);
+            status = handle_input(input, infos);
         }
+        if (status == 1 && !infos->isatty)
+            exit(handle_exit_status(GET_STATUS, 0));
     }
 }
 
