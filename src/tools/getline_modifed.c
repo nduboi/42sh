@@ -27,50 +27,57 @@ static void reset_termios(struct termios *old)
     tcsetattr(0, TCSANOW, old);
 }
 
-static char *add_char_strings(char *first, char cara)
+static char *add_char_strings(char *first, char cara, int *data_arrow)
 {
-    int len = strlen(first);
-    char *result = my_malloc(sizeof(char) * (len + 2));
+    char *result = my_malloc(sizeof(char) * (my_strlen(first) + 2));
     int i = 0;
 
-    for (; first[i] != '\0'; i++)
+    for (; i < (my_strlen(first) - data_arrow[0]); i++) {
         result[i] = first[i];
+    }
     result[i] = cara;
+    for (int k = my_strlen(first) - data_arrow[0]; first[k] != '\0'; k++) {
+        result[k + 1] = first[k];
+    }
     free(first);
     return result;
 }
 
-static char *remove_last_char_strings(char *src)
+static char *remove_char_strings(char *src, int cursor)
 {
     int len = strlen(src);
     char *result = my_malloc(sizeof(char) * (len));
     int i = 0;
 
-    for (; src[i + 1] != '\0'; i++)
+    if (cursor == len)
+        return src;
+    for (; i < (len - cursor - 1); i++)
         result[i] = src[i];
+    for (i++; src[i] != '\0'; i++)
+        result[i - 1] = src[i];
     free(src);
     return result;
 }
 
-static bool handle_delete(char ch, char **strings)
+static bool handle_delete(char ch, char **strings, int cursor)
 {
     if (ch == 127) {
-        if (strlen(*strings) > 0) {
-            write(1, "\b \b", 3);
-            *strings = remove_last_char_strings(*strings);
-        }
+        if (strlen(*strings) > 0)
+            *strings = remove_char_strings(*strings, cursor);
         return true;
     }
     return false;
 }
 
-static void write_commands(char *strings, bool *action)
+static void write_commands(char *strings, bool *action, int *data_action)
 {
     printf("\033[2K");
     printf("\r");
     write_prompt_without_env();
     fflush(stdout);
     write(1, strings, my_strlen(strings));
+    if (data_action[0] > 0)
+        printf("\033[%dD", data_action[0]);
     *action = false;
 }
 
@@ -86,10 +93,10 @@ static int handle_data_user(char **strings, int **data_arrow, infos_t *list)
         return 2;
     if (ch == 12)
         return 3;
-    action_2 = handle_delete(ch, strings);
+    action_2 = handle_delete(ch, strings, (*data_arrow)[0]);
     action = handle_arrow(ch, data_arrow, *strings, list);
     if (action == false && action_2 == false)
-        *strings = add_char_strings(*strings, ch);
+        *strings = add_char_strings(*strings, ch, *data_arrow);
     return 0;
 }
 
@@ -137,7 +144,7 @@ char *getline_modif(infos_t *list, int *len)
         if (return_input == 3)
             clear_terminal(strings);
         else
-            write_commands(strings, &action);
+            write_commands(strings, &action, data_arrow);
     }
     return exit_getline(return_input, strings, &old, len);
 }

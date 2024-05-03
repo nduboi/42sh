@@ -52,19 +52,24 @@ static bool handle_down_arrow(char seq[2], int **data_arrow, infos_t *list,
     return false;
 }
 
-static void handle_right_arrow(char seq[2], int **data_arrow)
+static bool handle_right_arrow(char seq[2], int **data_arrow)
 {
     if (seq[0] == '[' && seq[1] == 'C') {
         if ((*data_arrow)[0] > 0 && (*data_arrow)[0] != 0)
             (*data_arrow)[0] = (*data_arrow)[0] - 1;
+        return true;
     }
+    return false;
 }
 
-static void handle_left_arrow(char seq[2], int **data_arrow)
+static bool handle_left_arrow(char seq[2], int **data_arrow, char *src)
 {
     if (seq[0] == '[' && seq[1] == 'D') {
+        if ((*data_arrow)[0] < my_strlen(src))
         (*data_arrow)[0] = (*data_arrow)[0] + 1;
+        return true;
     }
+    return false;
 }
 
 int *init_data_arrow(void)
@@ -84,8 +89,10 @@ bool handle_arrow(char ch, int **data_arrow, char *strings,
     if (ch == 27) {
         seq[0] = getchar();
         seq[1] = getchar();
-        handle_left_arrow(seq, data_arrow);
-        handle_right_arrow(seq, data_arrow);
+        if (handle_left_arrow(seq, data_arrow, strings))
+            return true;
+        if (handle_right_arrow(seq, data_arrow))
+            return true;
         if (handle_up_arrow(seq, data_arrow, list, strings))
             return true;
         if (handle_down_arrow(seq, data_arrow, list, strings))
