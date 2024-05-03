@@ -30,7 +30,6 @@ function_t functions[] = {
 
 static int replace_args(char **input, infos_t *infos)
 {
-    *input = parse_input_local_var(*input, infos);
     if (!*input || parse_input_env_var(input, infos) == 1 ||
         handle_globbings(input) == 1) {
         handle_exit_status(WRITE_STATUS, 1);

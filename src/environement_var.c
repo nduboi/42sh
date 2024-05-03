@@ -61,12 +61,15 @@ static int check_errors_variable(char *src)
     return 0;
 }
 
-static int print_error_variable(char *value_env, char *value)
+static int print_error_variable(char **value_env, char *value, infos_t *info)
 {
-    if (!value_env) {
-        write(2, value, my_strlen(value));
-        write(2, ": Undefined variable.\n", 22);
-        return 1;
+    if (!*value_env) {
+        *value_env = get_local_val(value, info);
+        if (!*value_env) {
+            write(2, value, my_strlen(value));
+            write(2, ": Undefined variable.\n", 22);
+            return 1;
+        }
     }
     return 0;
 }
@@ -85,7 +88,7 @@ static int handle_brackets_env(char **data, int y, infos_t *info)
         value_env = my_stock_nbr(handle_exit_status(GET_STATUS, 0));
     else
         value_env = get_env_var(value, info->envs->env);
-    if (print_error_variable(value_env, value) == 1)
+    if (print_error_variable(&value_env, value, info) == 1)
         return 1;
     cut_in_part_brakets(*data, &part1, &part2);
     *data = my_strcat_s(part1, value_env);
@@ -108,7 +111,7 @@ static int handle_without_brackets_env(char **data, int y,
         value_env = my_stock_nbr(handle_exit_status(GET_STATUS, 0));
     else
         value_env = get_env_var(value, info->envs->env);
-    if (print_error_variable(value_env, value) == 1)
+    if (print_error_variable(&value_env, value, info) == 1)
         return 1;
     cut_in_part(*data, &part1, &part2);
     *data = my_strcat_s(part1, value_env);
