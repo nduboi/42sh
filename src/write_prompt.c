@@ -25,3 +25,21 @@ void write_prompt(env_t *env)
     if (pwd != NULL)
         free(pwd);
 }
+
+void write_prompt_without_env(void)
+{
+    char *hostname = getenv("HOSTNAME");
+    char *user = getenv("USER");
+    char *pwd = getcwd(NULL, 0);
+    char *dir = pwd;
+
+    while (dir && my_strstr(dir, "/")) {
+        dir = my_strstr(dir, "/") + 1;
+    }
+    printf("\033[31m");
+    printf("[%s", (user == NULL ? "user" : user));
+    printf("@%s", (hostname == NULL ? "hostname" : hostname));
+    printf(" %s]$ ", (dir == NULL ? "pwd" : dir));
+    printf("\033[0m");
+    fflush(stdout);
+}

@@ -11,12 +11,9 @@
 
 char *my_strdup(char *src)
 {
-    char *dest = NULL;
-    int length = my_strlen(src) + 1;
+    char *dest = my_malloc(sizeof(char) * (my_strlen(src) + 1));
 
-    dest = malloc(sizeof(char) * length);
-    my_memset(dest, 0, sizeof(char) * length);
-    my_strcpy(dest, src);
-    dest[length - 1] = '\0';
+    for (int i = 0; src[i] != '\0'; i++)
+        dest[i] = src[i];
     return (dest);
 }
