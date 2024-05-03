@@ -33,7 +33,7 @@ char *recall_last_command(char *str, int i, infos_t *info)
     new = remove_in_str(new, i);
     new = remove_in_str(new, i);
     free(str);
-    printf("%s\n", line);
+    write(1, line, strlen(line));
     free(line);
     return (new);
 }
@@ -74,7 +74,7 @@ char *recall_start_with(char *str, int i, infos_t *info)
     for (int j = 0; j < len + 1; j++) {
         str = remove_in_str(str, i);
     }
-    printf("%s\n", line);
+    write(1, line, strlen(line));
     free(line);
     free(key);
     return (str);
@@ -84,7 +84,6 @@ char *check_exclamation(char *input, infos_t *info)
 {
     char *cpy = strdup(input);
 
-    free(input);
     for (int i = 0; cpy[i] != '\0'; i++) {
         if (cpy[i] == '!' && cpy[i + 1] == '!')
             cpy = recall_last_command(cpy, i, info);
@@ -95,5 +94,8 @@ char *check_exclamation(char *input, infos_t *info)
         if (cpy == NULL)
             return (NULL);
     }
+    if (strcmp(input, cpy) != 0)
+        write(1, "\n", 1);
+    free(input);
     return (cpy);
 }
