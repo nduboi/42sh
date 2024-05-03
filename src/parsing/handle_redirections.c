@@ -119,6 +119,8 @@ static char *get_keyword(char **input_ptr)
     }
     while (*input && *input != ' ' && *input != '\t' && !is_delim(input)
         && *input != '<' && *input != '>') {
+        if (*input == '\\')
+            input += 1;
         len = strlen(result);
         result = realloc(result, sizeof(char) * (len + 2));
         result[len] = *input;

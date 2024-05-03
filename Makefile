@@ -142,6 +142,8 @@ tests_run: unit_tests
 tester: sandwich
 	./tester.sh
 	rm -rf noa*
+	rm -rf 332
+	rm -rf 333
 	rm -rf salut
 
 coverage: tests_run

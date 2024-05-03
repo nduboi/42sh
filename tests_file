@@ -2117,3 +2117,27 @@ TESTS=
   echo 'set foo = bar'
   echo 'echo ${foo'
 [340-END]
+
+[345]
+NAME="normal backslash inhibitor"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'touch noa\ noa'
+[345-END]
+
+[346]
+NAME="only a backslash"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '\'
+[346-END]
+
+[347]
+NAME="backslash in redirection"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo test > noa\ test'
+[347-END]
