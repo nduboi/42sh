@@ -19,6 +19,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include "struct.h"
+#include <termios.h>
 
 #ifndef MYSH_H_
     #define MYSH_H_
@@ -118,6 +119,7 @@ void update_exit(infos_t *infos);
 
 // Custom prompt
 void write_prompt(env_t *env);
+void write_prompt_without_env(void);
 char *get_env_var(char *key, list_t **env);
 
 // history
@@ -141,5 +143,12 @@ char *get_local_val(char *var, infos_t *infos);
 
 // Local var
 char *parse_input_local_var(char *input, infos_t *infos);
+
+// Line edition
+
+char *getline_modif(infos_t *list, int *len);
+bool handle_arrow(char ch, int **data_arrow, char *strings,
+    infos_t *list);
+int *init_data_arrow(void);
 
 #endif /* !MYSH_H_ */

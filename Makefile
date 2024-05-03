@@ -44,6 +44,8 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/tools/my_strstr.c \
 		src/tools/num_fcts.c \
 		src/tools/is_delim.c \
+		src/tools/getline_modifed.c	\
+		src/tools/handle_arrow_getline.c	\
 		src/check_if_is_an_alias.c \
 		src/environement_var.c	\
 		src/exclamation_mark.c \
@@ -108,7 +110,7 @@ TEST_FLAGS	=	--coverage -lcriterion
 
 INCLUDE	=	-I ./include
 
-CFLAGS	+=	$(INCLUDE) -Wall -Wextra -Werror
+CFLAGS	+=	$(INCLUDE) -g
 
 DEBUG	=	-g
 
