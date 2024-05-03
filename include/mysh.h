@@ -139,6 +139,7 @@ int count_len_before_env(char *src);
 int count_len_after_env(int k, char *data);
 void cut_in_part(char *data, char **part1, char **part2);
 void cut_in_part_brakets(char *data, char **part1, char **part2);
+char *get_local_val(char *var, infos_t *infos);
 
 // Local var
 char *parse_input_local_var(char *input, infos_t *infos);

@@ -25,6 +25,12 @@ static bool handle_up_arrow(char seq[2], int **data_arrow, infos_t *list,
     return false;
 }
 
+static void check_end_arrow_down(int **data_arrow)
+{
+    if ((*data_arrow)[1] > 0)
+        (*data_arrow)[1] = (*data_arrow)[1] - 1;
+}
+
 static bool handle_down_arrow(char seq[2], int **data_arrow, infos_t *list,
     char *strings)
 {
@@ -34,8 +40,12 @@ static bool handle_down_arrow(char seq[2], int **data_arrow, infos_t *list,
         new_command = recall_by_id((*data_arrow)[1] - 2, list);
         if (new_command)
             (*data_arrow)[1] = (*data_arrow)[1] - 1;
-        else
-            return true;
+        else {
+            check_end_arrow_down(data_arrow);
+            free(strings);
+            strings = my_strdup("");
+            return false;
+        }
         free(strings);
         strings = my_strdup(new_command);
     }

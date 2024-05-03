@@ -30,13 +30,44 @@ function_t functions[] = {
 
 static int replace_args(char **input, infos_t *infos)
 {
-    *input = parse_input_local_var(*input, infos);
     if (!*input || parse_input_env_var(input, infos) == 1 ||
         handle_globbings(input) == 1) {
         handle_exit_status(WRITE_STATUS, 1);
         return -1;
     }
     return 0;
+}
+
+static char *get_str(char **input)
+{
+    char *buffer = my_malloc(sizeof(char));
+
+    for (; **input != ' ' && **input != '\t' && **input; *input += 1) {
+        *input = **input == '\\' ? *input + 1 : *input;
+        buffer = my_realloc(buffer, CHAR * (strlen(buffer) + 2));
+        buffer[strlen(buffer)] = **input;
+    }
+    return buffer;
+}
+
+static char **input_to_array(char *input)
+{
+    char **arr = my_malloc(sizeof(char *));
+    char *buffer = NULL;
+    int size;
+
+    *arr = NULL;
+    while (*input) {
+        for (; *input == ' ' || *input == '\t'; input += 1);
+        buffer = get_str(&input);
+        size = my_arrlen(arr);
+        if (*buffer) {
+            arr = realloc(arr, sizeof(char *) * (size + 2));
+            arr[size] = buffer;
+            arr[size + 1] = NULL;
+        }
+    }
+    return arr;
 }
 
 int handle_cmd(char *input, infos_t *infos)
@@ -46,7 +77,7 @@ int handle_cmd(char *input, infos_t *infos)
 
     if (replace_args(&input, infos) == -1)
         return -1;
-    args = str_to_word_array(input);
+    args = input_to_array(input);
     if (!args[0])
         return 0;
     args = check_if_is_an_alias(args, infos);
