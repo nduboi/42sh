@@ -68,6 +68,7 @@ static void write_commands(char *strings, bool *action)
 {
     printf("\033[2K");
     printf("\r");
+    write_prompt_without_env();
     fflush(stdout);
     write(1, strings, my_strlen(strings));
     *action = false;
@@ -111,6 +112,7 @@ static void clear_terminal(char *strings)
 {
     printf("\033[2J");
     printf("\033[H");
+    write_prompt_without_env();
     fflush(stdout);
     if (strings)
         write(1, strings, my_strlen(strings));

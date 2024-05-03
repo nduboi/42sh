@@ -119,6 +119,7 @@ void update_exit(infos_t *infos);
 
 // Custom prompt
 void write_prompt(env_t *env);
+void write_prompt_without_env(void);
 char *get_env_var(char *key, list_t **env);
 
 // history
