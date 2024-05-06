@@ -46,7 +46,7 @@ static char *add_char_strings(char *first, char cara, int *data_arrow)
 static char *remove_char_strings(char *src, int cursor)
 {
     int len = strlen(src);
-    char *result = my_malloc(sizeof(char) * (len));
+    char *result = my_malloc(sizeof(char) * (len + 1));
     int i = 0;
 
     if (cursor == len)
@@ -94,7 +94,7 @@ static int handle_data_user(char **strings, int **data_arrow, infos_t *list)
     if (ch == 12)
         return 3;
     action_2 = handle_delete(ch, strings, (*data_arrow)[0]);
-    action = handle_arrow(ch, data_arrow, *strings, list);
+    action = handle_arrow(ch, data_arrow, strings, list);
     if (action == false && action_2 == false)
         *strings = add_char_strings(*strings, ch, *data_arrow);
     return 0;

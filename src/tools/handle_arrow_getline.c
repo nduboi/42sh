@@ -7,9 +7,8 @@
 
 #include "mysh.h"
 
-
 static bool handle_up_arrow(char seq[2], int **data_arrow, infos_t *list,
-    char *strings)
+    char **strings)
 {
     char *new_command = NULL;
 
@@ -19,8 +18,8 @@ static bool handle_up_arrow(char seq[2], int **data_arrow, infos_t *list,
             (*data_arrow)[1] = (*data_arrow)[1] + 1;
         else
             return true;
-        free(strings);
-        strings = my_strdup(new_command);
+        free(*strings);
+        *strings = my_strdup(new_command);
     }
     return false;
 }
@@ -32,7 +31,7 @@ static void check_end_arrow_down(int **data_arrow)
 }
 
 static bool handle_down_arrow(char seq[2], int **data_arrow, infos_t *list,
-    char *strings)
+    char **strings)
 {
     char *new_command = NULL;
 
@@ -42,12 +41,12 @@ static bool handle_down_arrow(char seq[2], int **data_arrow, infos_t *list,
             (*data_arrow)[1] = (*data_arrow)[1] - 1;
         else {
             check_end_arrow_down(data_arrow);
-            free(strings);
-            strings = my_strdup("");
+            free(*strings);
+            *strings = my_strdup("");
             return false;
         }
-        free(strings);
-        strings = my_strdup(new_command);
+        free(*strings);
+        *strings = my_strdup(new_command);
     }
     return false;
 }
@@ -62,10 +61,10 @@ static bool handle_right_arrow(char seq[2], int **data_arrow)
     return false;
 }
 
-static bool handle_left_arrow(char seq[2], int **data_arrow, char *src)
+static bool handle_left_arrow(char seq[2], int **data_arrow, char **src)
 {
     if (seq[0] == '[' && seq[1] == 'D') {
-        if ((*data_arrow)[0] < my_strlen(src))
+        if ((*data_arrow)[0] < my_strlen(*src))
         (*data_arrow)[0] = (*data_arrow)[0] + 1;
         return true;
     }
@@ -74,15 +73,14 @@ static bool handle_left_arrow(char seq[2], int **data_arrow, char *src)
 
 int *init_data_arrow(void)
 {
-    int *data_arrow = my_malloc(sizeof(int *) * 3);
+    int *data_arrow = my_malloc(sizeof(int) * 3);
 
     data_arrow[0] = 0;
     data_arrow[1] = 0;
     return data_arrow;
 }
 
-bool handle_arrow(char ch, int **data_arrow, char *strings,
-    infos_t *list)
+bool handle_arrow(char ch, int **data_arrow, char **strings, infos_t *list)
 {
     char seq[2];
 

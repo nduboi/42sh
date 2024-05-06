@@ -71,7 +71,7 @@ char *get_input(infos_t *infos)
     char *buffer = NULL;
     int len = 0;
 
-    if (isatty(STDIN_FILENO) == 0) {
+    if (infos->isatty == false) {
         len = getline(&buffer, &size, stdin);
         if (buffer[len - 1] == '\n')
             buffer[len - 1] = '\0';

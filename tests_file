@@ -1756,7 +1756,7 @@ NAME="Error with environement vaariables n°3"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
-  echo 'ls $;PATH}'Newline in variable name.
+  echo 'ls $;PATH}'
 [244-END]
 
 [245]

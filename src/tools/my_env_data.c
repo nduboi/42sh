@@ -9,7 +9,7 @@
 
 int count_len_name_env(char *data)
 {
-    int i = 2;
+    int i = 0;
     int nbr = 0;
 
     for (; data[i] != '\0'; i++) {
@@ -22,7 +22,7 @@ int count_len_name_env(char *data)
 
 char *get_value_env_with_brakets(char *data)
 {
-    char *result = my_malloc(sizeof(char) * (count_len_name_env(data) + 2));
+    char *result = my_malloc(sizeof(char) * (count_len_name_env(data) + 1));
     int status = 0;
 
     for (int i = 0; data[i] != '\0'; i++) {
@@ -37,7 +37,7 @@ char *get_value_env_with_brakets(char *data)
 
 char *get_value_env(char *data)
 {
-    char *result = my_malloc(sizeof(char) * (count_len_name_env(data) + 3));
+    char *result = my_malloc(sizeof(char) * (count_len_name_env(data) + 1));
     int status = 0;
 
     for (int i = 0; data[i] != '\0'; i++) {

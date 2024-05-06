@@ -147,7 +147,7 @@ char *parse_input_local_var(char *input, infos_t *infos);
 // Line edition
 
 char *getline_modif(infos_t *list, int *len);
-bool handle_arrow(char ch, int **data_arrow, char *strings,
+bool handle_arrow(char ch, int **data_arrow, char **strings,
     infos_t *list);
 int *init_data_arrow(void);
 
