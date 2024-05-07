@@ -111,7 +111,7 @@ TEST_FLAGS	=	--coverage -lcriterion
 
 INCLUDE	=	-I ./include
 
-CFLAGS	+=	$(INCLUDE) -g
+CFLAGS	+=	$(INCLUDE)
 
 DEBUG	=	-g
 

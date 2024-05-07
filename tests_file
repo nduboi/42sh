@@ -1386,6 +1386,26 @@ TESTS=
   echo 'alias tata titi -a'
 [151-END]
 
+[152]
+NAME="alias an existing command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias ls ls -l'
+  echo 'ls'
+[152-END]
+
+[153]
+NAME="alias an existing command and return to normal"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias ls ls -l'
+  echo 'ls'
+  echo 'unalias ls'
+  echo 'ls'
+[153-END]
+
 [200]
 NAME="Simple && with working condition"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
