@@ -43,3 +43,16 @@ void write_prompt_without_env(void)
     printf("\033[0m");
     fflush(stdout);
 }
+
+int get_nbr_line_new_prompt(void)
+{
+    char *hostname = getenv("HOSTNAME");
+    char *user = getenv("USER");
+    char *pwd = getcwd(NULL, 0);
+    char *dir = pwd;
+
+    while (dir && my_strstr(dir, "/")) {
+        dir = my_strstr(dir, "/") + 1;
+    }
+    return (my_strlen(user) + my_strlen(hostname) + my_strlen(dir) + 4);
+}

@@ -12,6 +12,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "mysh.h"
+#include <sys/ioctl.h>
 
 static void init_termios(int echo, struct termios *old, struct termios *new)
 {
@@ -71,10 +72,20 @@ static bool handle_delete(char ch, char **strings, int cursor)
 
 static void write_commands(char *strings, bool *action, int *data_action)
 {
-    printf("\033[2K");
+    struct winsize ws;
+    int len = 0;
+    int nbr_delete = 0;
+    int i = 0;
+
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws);
+    len = my_strlen(strings) + get_nbr_line_new_prompt();
+    nbr_delete = (len) / ws.ws_col;
     printf("\r");
-    write_prompt_without_env();
+    if (nbr_delete != 0)
+        printf("\033[%dA", nbr_delete);
+    printf("\033[J");
     fflush(stdout);
+    write_prompt_without_env();
     write(1, strings, my_strlen(strings));
     if (data_action[0] > 0)
         printf("\033[%dD", data_action[0]);

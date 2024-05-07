@@ -120,6 +120,7 @@ void update_exit(infos_t *infos);
 // Custom prompt
 void write_prompt(env_t *env);
 void write_prompt_without_env(void);
+int get_nbr_line_new_prompt(void);
 char *get_env_var(char *key, list_t **env);
 
 // history
