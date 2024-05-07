@@ -84,10 +84,8 @@ static int handle_brackets_env(char **data, int y, infos_t *info)
     if (check_errors_variable(&(*data)[y + 1]) == 1)
         return 1;
     value = get_value_env_with_brakets(&(*data)[y + 2]);
-    if (my_strcmp(value, "?") == 0)
-        value_env = my_stock_nbr(handle_exit_status(GET_STATUS, 0));
-    else
-        value_env = get_env_var(value, info->envs->env);
+    value = special_var(value);
+    value_env = append_env_value(value, info);
     if (print_error_variable(&value_env, value, info) == 1)
         return 1;
     cut_in_part_brakets(*data, &part1, &part2);
@@ -107,10 +105,8 @@ static int handle_without_brackets_env(char **data, int y,
     if (check_errors_variable(&(*data)[y + 1]) == 1)
         return 1;
     value = get_value_env(&(*data)[y + 1]);
-    if (my_strcmp(value, "?") == 0)
-        value_env = my_stock_nbr(handle_exit_status(GET_STATUS, 0));
-    else
-        value_env = get_env_var(value, info->envs->env);
+    value = special_var(value);
+    value_env = append_env_value(value, info);
     if (print_error_variable(&value_env, value, info) == 1)
         return 1;
     cut_in_part(*data, &part1, &part2);
@@ -123,10 +119,11 @@ static int replace_input_env_var(char **data, int y, infos_t *info)
 {
     if ((*data)[y] == '$' && my_strlen(&(*data)[y]) > 1 &&
         (*data)[y + 1] != ' ') {
-        if ((*data)[y + 1] == '{')
+        if ((*data)[y + 1] == '{') {
             return handle_brackets_env(data, y, info);
-        else
+        } else {
             return handle_without_brackets_env(data, y, info);
+        }
     }
     return 0;
 }

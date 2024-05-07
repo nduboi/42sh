@@ -131,6 +131,8 @@ char *recall_by_id(int id, infos_t *infos);
 char **check_if_is_an_alias(char **args, infos_t *infos);
 
 // Environement var
+char *special_var(char *value);
+char *append_env_value(char *value, infos_t *info);
 int parse_input_env_var(char **data, infos_t *info);
 int count_len_name_env(char *data);
 char *get_value_env_with_brakets(char *data);

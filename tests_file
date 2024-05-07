@@ -1735,7 +1735,7 @@ TESTS=
 [241-END]
 
 [242]
-NAME="Error with environement vaariables n°1"
+NAME="Error with environement variables n°1"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
@@ -1744,7 +1744,7 @@ TESTS=
 
 
 [243]
-NAME="Error with environement vaariables n°2"
+NAME="Error with environement variables n°2"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
@@ -1752,7 +1752,7 @@ TESTS=
 [243-END]
 
 [244]
-NAME="Error with environement vaariables n°3"
+NAME="Error with environement variables n°3"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
@@ -1760,7 +1760,7 @@ TESTS=
 [244-END]
 
 [245]
-NAME="Error with environement vaariables n°4"
+NAME="Error with environement variables n°4"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
@@ -1768,12 +1768,108 @@ TESTS=
 [245-END]
 
 [246]
-NAME="Error with environement vaariables n°5"
+NAME="Error with environement variables n°5"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
   echo 'ls ${PA'
 [246-END]
+
+[247]
+NAME="Display special variable term without braces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo $term'
+[247-END]
+
+[248]
+NAME="Display special variable term with braces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo ${term}'
+[248-END]
+
+[249]
+NAME="Display special variable cwd without braces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo $cwd'
+[249-END]
+
+[250]
+NAME="Display special variable cwd with braces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo ${cwd}'
+[250-END]
+
+[251]
+NAME="Display special variable path without braces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo $path'
+[251-END]
+
+[252]
+NAME="Display special variable path with braces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo ${path}'
+[252-END]
+
+[253]
+NAME="Display special variable status without braces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo $status'
+[253-END]
+
+[254]
+NAME="Display special variable status with braces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo ${status}'
+[254-END]
+
+[255]
+NAME="Display special variable home without braces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo $home'
+[255-END]
+
+[256]
+NAME="Display special variable home with braces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo ${home}'
+[256-END]
+
+[257]
+NAME="Display special variable group without braces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo $group'
+[257-END]
+
+[258]
+NAME="Display special variable group with braces"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo ${group}'
+[258-END]
 
 [300]
 NAME="Simple backticks"
@@ -2141,3 +2237,12 @@ CLEAN=""
 TESTS=
   echo 'echo test > noa\ test'
 [347-END]
+
+[348]
+NAME="checking if the path env is don't modified"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo $path'
+  echo 'ls'
+[348-END]

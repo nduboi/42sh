@@ -33,7 +33,7 @@ Test(handle_globbings, handle_globbings_no_match_star, .init=redirect_all_std)
 
 Test(handle_globbings, handle_globbings_no_match_question, .init=redirect_all_std)
 {
-    char *args = strdup("echo ?.q");
+    char *args = strdup("echo ?.qq");
 
     handle_globbings(&args);
     cr_assert_stderr_eq_str("echo: No match.\n");
