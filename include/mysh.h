@@ -48,7 +48,7 @@ char *my_strstr(char *hay, char *needle);
 bool only_char_in_str(char *str, char c);
 
 // my shell functions
-int my_sh(char **env);
+int my_sh(char **env, FILE *file);
 int handle_input(char *input, infos_t *infos);
 int execute_commands(list_t **list_parse, infos_t *infos);
 int handle_cmd(char *input, infos_t *infos);

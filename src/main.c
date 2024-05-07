@@ -10,13 +10,24 @@
 #include <stdlib.h>
 #include <string.h>
 
+FILE *get_input_file(char *name)
+{
+    FILE *file = stdin;
+    char *buffer = NULL;
+    size_t size = 0;
+
+    if (name) {
+        file = fopen(name, "r");
+        getline(&buffer, &size, file);
+    }
+    return file;
+}
+
 int main(int argc, char **argv, char **env)
 {
-    (void) argv;
-    if (argc != 1) {
-        return 84;
-    }
-    if (my_sh(env) == -1) {
+    FILE *file = get_input_file(argv[1]);
+
+    if (my_sh(env, file) == -1) {
         return 84;
     }
     return 0;

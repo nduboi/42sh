@@ -65,20 +65,20 @@ list_t **copy_env(char **env)
     return copy;
 }
 
-char *get_input(infos_t *infos)
+char *get_input(infos_t *infos, FILE *file)
 {
     size_t size = 0;
     char *buffer = NULL;
     int len = 0;
 
-    if (infos->isatty == false) {
-        len = getline(&buffer, &size, stdin);
+    if (infos->isatty == false || file != stdin) {
+        len = getline(&buffer, &size, file);
         if (buffer[len - 1] == '\n')
             buffer[len - 1] = '\0';
     } else
         buffer = getline_modif(infos, &len);
     if (len == EOF) {
-        if (isatty(STDIN_FILENO))
+        if (infos->isatty && file == stdin)
             write(1, "exit\n", 5);
         free_infos(infos);
         exit(handle_exit_status(GET_STATUS, 0));
@@ -86,15 +86,15 @@ char *get_input(infos_t *infos)
     return buffer;
 }
 
-void input_loop(infos_t *infos)
+void input_loop(infos_t *infos, FILE *file)
 {
     int status = 0;
     char *input = NULL;
 
     while (1) {
-        if (infos->isatty)
+        if (infos->isatty && file == stdin)
             write_prompt(infos->envs);
-        input = get_input(infos);
+        input = get_input(infos, file);
         input = check_exclamation(input, infos);
         if (input != NULL) {
             add_history(infos, input);
@@ -105,7 +105,7 @@ void input_loop(infos_t *infos)
     }
 }
 
-int my_sh(char **env)
+int my_sh(char **env, FILE *file)
 {
     infos_t *infos = malloc(sizeof(infos_t));
 
@@ -117,12 +117,13 @@ int my_sh(char **env)
     infos->jobs = NULL;
     infos->vars = NULL;
     infos->can_exit_job = 1;
-    if (!infos->envs->env || !infos->envs->env_cpy) {
+    if (!infos->envs->env || !infos->envs->env_cpy)
         return -1;
-    }
     infos->isatty = isatty(STDIN_FILENO);
     signal(SIGTSTP, SIG_IGN);
     signal(SIGINT, handler);
-    input_loop(infos);
+    input_loop(infos, file);
+    if (file != stdin)
+        fclose(file);
     return 0;
 }
