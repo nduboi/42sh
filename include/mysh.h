@@ -60,6 +60,7 @@ void restart_fds(int in, int out);
 
 // parsing
 int parse_input(char *input, list_t **list_parse, infos_t *infos);
+bool error_in_variables(char *input);
 bool too_many_parenthesis(char *cmd);
 int add_backtick(char **input_ptr, parsing_t *node, infos_t *infos);
 int add_redir(char **input_ptr, redirs_t *red);

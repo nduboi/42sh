@@ -13,54 +13,6 @@
 #include <signal.h>
 #include <string.h>
 
-static int handle_illegal_variables(char *src)
-{
-    for (int i = 0; src[i] != ' ' && src[i]; i++) {
-        if (!((src[i] >= 'a' && src[i] <= 'z') ||
-            (src[i] >= 'A' && src[i] <= 'Z') || src[i] == ')' ||
-            (src[i] >= '0' && src[i] <= '9') || src[i] == '{' ||
-            src[i] == '_' || src[i] == '?' || src[i] == '}')) {
-                write(2, "Illegal variable name.\n", 23);
-                return 1;
-            }
-    }
-    return 0;
-}
-
-static int handle_error_brackets(char *src, bool *bracket)
-{
-    for (int i = 0; src[i] != '\0'; i++) {
-        if (src[i] == ')') {
-            *bracket = true;
-            return 0;
-        }
-        if (src[i] == '{')
-            *bracket = true;
-        if (src[i] == '{' && my_strlen(&src[i]) == 1) {
-            write(2, "Newline in variable name.\n", 26);
-            return 1;
-        }
-        if (*bracket == true && src[i] == '}')
-            *bracket = false;
-    }
-    return 0;
-}
-
-static int check_errors_variable(char *src)
-{
-    bool bracket = false;
-
-    if (handle_illegal_variables(src) == 1)
-        return 1;
-    if (handle_error_brackets(src, &bracket) == 1)
-        return 1;
-    if (bracket == true) {
-        write(2, "Missing '}'.\n", 13);
-        return 1;
-    }
-    return 0;
-}
-
 static int print_error_variable(char **value_env, char *value, infos_t *info)
 {
     if (!*value_env) {
@@ -81,8 +33,6 @@ static int handle_brackets_env(char **data, int y, infos_t *info)
     char *part1 = my_malloc(sizeof(char));
     char *part2 = my_malloc(sizeof(char));
 
-    if (check_errors_variable(&(*data)[y + 1]) == 1)
-        return 1;
     value = get_value_env_with_brakets(&(*data)[y + 2]);
     value = special_var(value);
     value_env = append_env_value(value, info);
@@ -102,8 +52,6 @@ static int handle_without_brackets_env(char **data, int y,
     char *part1 = my_malloc(sizeof(char));
     char *part2 = my_malloc(sizeof(char));
 
-    if (check_errors_variable(&(*data)[y + 1]) == 1)
-        return 1;
     value = get_value_env(&(*data)[y + 1]);
     value = special_var(value);
     value_env = append_env_value(value, info);

@@ -9,27 +9,39 @@ MAIN	=	src/main.c
 
 SRC	=	src/builtins/display_all_alias.c \
 		src/builtins/display_alias.c \
+		src/builtins/my_globbing.c	\
 		src/builtins/my_unsetenv.c \
 		src/builtins/my_history.c \
 		src/builtins/my_unalias.c \
 		src/builtins/my_setenv.c \
 		src/builtins/add_alias.c \
 		src/builtins/my_alias.c \
+		src/builtins/my_set.c	\
+		src/builtins/my_unset.c	\
 		src/builtins/my_echo.c \
+		src/builtins/my_jobs.c \
 		src/builtins/my_exit.c \
 		src/builtins/my_env.c \
 		src/builtins/my_cd.c \
+		src/builtins/my_fg.c \
+		src/builtins/my_bg.c \
 		src/parsing/handle_redirections.c \
 		src/parsing/parentheses_errors.c \
 		src/parsing/handle_backticks.c \
+		src/parsing/handle_globbing.c \
+		src/parsing/variable_errors.c \
 		src/parsing/parsing_errors.c \
 		src/parsing/handle_input.c \
 		src/parsing/parse_input.c \
 		src/tools/environement_cut_part.c \
+		src/tools/handle_arrow_getline.c \
 		src/tools/only_char_in_str.c \
+		src/tools/getline_modifed.c	\
+		src/tools/get_nbr_lambda.c \
 		src/tools/chained_lists.c \
 		src/tools/my_strsignal.c \
 		src/tools/my_stock_nbr.c \
+		src/tools/recall_by_id.c \
 		src/tools/string_fcts.c	\
 		src/tools/delete_char.c \
 		src/tools/my_strcat_s.c \
@@ -44,33 +56,22 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/tools/my_strstr.c \
 		src/tools/num_fcts.c \
 		src/tools/is_delim.c \
-		src/tools/getline_modifed.c	\
-		src/tools/handle_arrow_getline.c	\
+		src/tools/add_a_job.c \
+		src/tools/parsing.c \
 		src/check_if_is_an_alias.c \
 		src/environement_var.c	\
 		src/exclamation_mark.c \
+		src/parse_local_var.c \
 		src/error_messages.c \
 		src/write_prompt.c \
 		src/add_history.c \
 		src/exit_status.c \
 		src/destroy_all.c \
+		src/env_values.c \
 		src/handle_cmd.c \
 		src/handle_fd.c	\
 		src/exe_com.c \
-		src/my_sh.c \
-		src/builtins/my_jobs.c \
-		src/tools/add_a_job.c \
-		src/builtins/my_globbing.c	\
-		src/builtins/my_fg.c \
-		src/builtins/my_set.c	\
-		src/builtins/my_unset.c	\
-		src/tools/get_nbr_lambda.c \
-		src/parsing/handle_globbing.c \
-		src/tools/parsing.c	\
-		src/parse_local_var.c	\
-		src/builtins/my_bg.c \
-		src/tools/recall_by_id.c	\
-		src/env_values.c 	\
+		src/my_sh.c
 
 TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_my_strcpy.c \
@@ -79,19 +80,19 @@ TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_string_fcts.c \
 				tests/test_error_messages.c \
 				tests/test_my_strsignal.c \
-				tests/test_my_strstr.c	\
-				tests/test_history.c	\
-				tests/test_my_cd.c	\
-				tests/test_my_echo.c	\
+				tests/test_my_strstr. \
+				tests/test_history. \
+				tests/test_my_cd. \
+				tests/test_my_echo. \
 				tests/test_my_env.c	\
-				tests/test_my_setenv.c	\
-				tests/test_my_unsetenv.c	\
+				tests/test_my_setenv. \
+				tests/test_my_unsetenv. \
 				tests/test_count_char.c	\
-				tests/test_my_exit.c	\
-				tests/test_parse_input.c	\
-				tests/test_globbing_function.c	\
-				tests/test_my_globbings.c	\
-				tests/test_recall_by_id.c	\
+				tests/test_my_exit. \
+				tests/test_parse_input. \
+				tests/test_globbing_function. \
+				tests/test_my_globbings. \
+				tests/test_recall_by_id.c
 
 SRC_OBJ	=	$(SRC:%.c=%.o)
 
