@@ -116,7 +116,8 @@ int handle_input(char *input, infos_t *infos)
     if (!list_parse)
         return -1;
     *list_parse = NULL;
-    if (error_in_variables(input) ||
+    if (quotes_errors(input) ||
+        error_in_variables(input) ||
         too_many_parenthesis(input) ||
         parse_input(input, list_parse, infos) == -1) {
         handle_exit_status(WRITE_STATUS, 1);

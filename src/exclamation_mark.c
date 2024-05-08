@@ -44,7 +44,7 @@ char *get_key(char *str, int i)
     int len = 0;
     int j = i;
 
-    for (j = i; str[j] != '\0' && str[j] != ' ' && str[j] != '\t'; j++);
+    for (j = i; !end_of_var(str + j); j++);
     len = j - i;
     if (len == 0)
         return (NULL);
@@ -87,12 +87,16 @@ char *check_exclamation(char *input, infos_t *info)
     for (int i = 0; cpy[i] != '\0'; i++) {
         if (cpy[i] == '!' && cpy[i + 1] == '!')
             cpy = recall_last_command(cpy, i, info);
-        if (cpy == NULL)
-            return (NULL);
+        if (!cpy)
+            break;
         if (cpy[i] == '!' && cpy[i + 1] != '!')
             cpy = recall_start_with(cpy, i, info);
-        if (cpy == NULL)
-            return (NULL);
+        if (!cpy)
+            break;
+    }
+    if (!cpy) {
+        handle_exit_status(WRITE_STATUS, 1);
+        return NULL;
     }
     if (strcmp(input, cpy) != 0)
         write(1, "\n", 1);

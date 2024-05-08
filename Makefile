@@ -31,6 +31,7 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/parsing/handle_globbing.c \
 		src/parsing/variable_errors.c \
 		src/parsing/parsing_errors.c \
+		src/parsing/quotes_errors.c \
 		src/parsing/handle_input.c \
 		src/parsing/parse_input.c \
 		src/tools/environement_cut_part.c \

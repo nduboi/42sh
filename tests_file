@@ -2266,3 +2266,75 @@ TESTS=
   echo 'echo $path'
   echo 'ls'
 [348-END]
+
+[350]
+NAME="one single quote"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "'"
+[350-END]
+
+[351]
+NAME="one double quote"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '"'
+[351-END]
+
+[352]
+NAME="param in single quotes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls '-a'"
+[352-END]
+
+[353]
+NAME="backslash in single quotes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "echo 'te\ st'"
+[353-END]
+
+[354]
+NAME="variable in single quotes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "echo '$HOME'"
+[354-END]
+
+[355]
+NAME="backslash in double quotes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo "te\ st"'
+[355-END]
+
+[356]
+NAME="variable in double quotes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo "$HOME"'
+[356-END]
+
+[357]
+NAME="! in simple quotes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "echo '!test'"
+[357-END]
+
+[358]
+NAME="! in double quotes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo "!test"'
+[358-END]

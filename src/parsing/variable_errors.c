@@ -7,12 +7,14 @@
 
 #include "mysh.h"
 
-static bool end_of_var(char *src)
+bool end_of_var(char *src)
 {
     return (*src == ' ' ||
             is_delim(src) ||
             *src == '(' ||
             *src == ')' ||
+            *src == '\'' ||
+            *src == '\"' ||
             !*src);
 }
 
@@ -44,7 +46,7 @@ static bool is_error(char *src)
 {
     if (*src == '{')
         return check_with_brackets(src + 1);
-    for (int i = 0; src[i] != ' ' && src[i]; i++) {
+    for (int i = 0; !end_of_var(src + i); i++) {
         if (!((src[i] >= 'a' && src[i] <= 'z') ||
             (src[i] >= 'A' && src[i] <= 'Z') ||
             (src[i] >= '0' && src[i] <= '9') ||

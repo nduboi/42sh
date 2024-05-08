@@ -30,7 +30,8 @@ function_t functions[] = {
 
 static int replace_args(char **input, infos_t *infos)
 {
-    if (!*input || parse_input_env_var(input, infos) == 1 ||
+    if (!*input ||
+        parse_input_env_var(input, infos) == 1 ||
         handle_globbings(input) == 1) {
         handle_exit_status(WRITE_STATUS, 1);
         return -1;
@@ -38,15 +39,19 @@ static int replace_args(char **input, infos_t *infos)
     return 0;
 }
 
-static char *get_str(char **input)
+static char *get_str(char **input, bool sq, bool dq)
 {
     char *buffer = my_malloc(sizeof(char));
 
-    for (; **input != ' ' && **input != '\t' && **input; *input += 1) {
-        *input = **input == '\\' ? *input + 1 : *input;
+    for (; **input; *input += 1) {
+        if ((**input == ' ' && !sq && !dq) ||
+            (**input == '\'' && sq || **input == '\"' && dq))
+            break;
+        *input = (**input == '\\' && !sq && !dq) ? *input + 1 : *input;
         buffer = my_realloc(buffer, CHAR * (strlen(buffer) + 2));
         buffer[strlen(buffer)] = **input;
     }
+    *input = sq || dq ? *input + 1 : *input;
     return buffer;
 }
 
@@ -55,11 +60,15 @@ static char **input_to_array(char *input)
     char **arr = my_malloc(sizeof(char *));
     char *buffer = NULL;
     int size;
+    bool sq = false;
+    bool dq = false;
 
-    *arr = NULL;
     while (*input) {
         for (; *input == ' ' || *input == '\t'; input += 1);
-        buffer = get_str(&input);
+        sq = *input == '\'';
+        dq = *input == '\"';
+        input = (sq || dq) ? input + 1 : input;
+        buffer = get_str(&input, sq, dq);
         size = my_arrlen(arr);
         if (*buffer) {
             arr = realloc(arr, sizeof(char *) * (size + 2));

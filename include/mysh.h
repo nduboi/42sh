@@ -61,6 +61,7 @@ void restart_fds(int in, int out);
 // parsing
 int parse_input(char *input, list_t **list_parse, infos_t *infos);
 bool error_in_variables(char *input);
+bool quotes_errors(char *input);
 bool too_many_parenthesis(char *cmd);
 int add_backtick(char **input_ptr, parsing_t *node, infos_t *infos);
 int add_redir(char **input_ptr, redirs_t *red);
@@ -103,7 +104,7 @@ void *my_memset(void *ptr, int val, size_t len);
 void free_double_array(char **array);
 void free_chained_list(list_t **begin);
 void free_infos(infos_t *infos);
-int count_char_in_str(char *str, char c);
+int count_char_in_str(char *str, char c, int limit);
 char *my_strcat_s(char *str1, char *str2);
 void delete_char(char *str, char c);
 char *my_stock_nbr(int nb);
@@ -117,6 +118,7 @@ char *remove_in_str(char *str, int ind);
 int is_alpha(char c);
 int is_num(char c);
 void update_exit(infos_t *infos);
+bool end_of_var(char *src);
 
 // Custom prompt
 void write_prompt(env_t *env);
@@ -145,11 +147,7 @@ void cut_in_part(char *data, char **part1, char **part2);
 void cut_in_part_brakets(char *data, char **part1, char **part2);
 char *get_local_val(char *var, infos_t *infos);
 
-// Local var
-char *parse_input_local_var(char *input, infos_t *infos);
-
 // Line edition
-
 char *getline_modif(infos_t *list, int *len);
 bool handle_arrow(char ch, int **data_arrow, char **strings,
     infos_t *list);

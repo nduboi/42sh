@@ -5,11 +5,11 @@
 ** count_char
 */
 
-int count_char_in_str(char *str, char c)
+int count_char_in_str(char *str, char c, int limit)
 {
     int result = 0;
 
-    for (int i = 0; str[i]; i++) {
+    for (int i = 0; str[i] && i != limit; i++) {
         if (str[i] == c) {
             result += 1;
         }

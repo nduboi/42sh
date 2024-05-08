@@ -66,7 +66,7 @@ static int handle_without_brackets_env(char **data, int y,
 static int replace_input_env_var(char **data, int y, infos_t *info)
 {
     if ((*data)[y] == '$' && my_strlen(&(*data)[y]) > 1 &&
-        (*data)[y + 1] != ' ') {
+        (*data)[y + 1] != ' ' && count_char_in_str(*data, '\'', y) % 2 == 0) {
         if ((*data)[y + 1] == '{') {
             return handle_brackets_env(data, y, info);
         } else {
