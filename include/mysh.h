@@ -118,6 +118,11 @@ char *remove_in_str(char *str, int ind);
 int is_alpha(char c);
 int is_num(char c);
 void update_exit(infos_t *infos);
+int last_arg_is_bg(char **args);
+int execute_in_bg(char *path, char **args, char **arr_env, infos_t *infos);
+int get_last_int(infos_t *infos);
+void add_a_job_without_mess(char *path, char **args, int pid, infos_t *infos);
+void delete_current(int pid_d, jobs_t **jobs_ptr);
 bool end_of_var(char *src);
 
 // Custom prompt

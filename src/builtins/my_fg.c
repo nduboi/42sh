@@ -9,7 +9,7 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-static void delete_current(int pid_d, jobs_t **jobs_ptr)
+void delete_current(int pid_d, jobs_t **jobs_ptr)
 {
     jobs_t *current = *jobs_ptr;
     jobs_t *prev = current;

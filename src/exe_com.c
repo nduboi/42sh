@@ -147,5 +147,7 @@ int exe_cmd(char **args, infos_t *infos)
         handle_exit_status(WRITE_STATUS, 1);
         return -1;
     }
+    if (last_arg_is_bg(args))
+        return execute_in_bg(path, args, arr_env, infos);
     return execute(path, args, arr_env, infos);
 }

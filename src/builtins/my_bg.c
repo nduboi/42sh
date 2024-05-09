@@ -8,28 +8,6 @@
 #include "mysh.h"
 #include <signal.h>
 
-static void delete_current(int pid_d, jobs_t **jobs_ptr)
-{
-    jobs_t *current = *jobs_ptr;
-    jobs_t *prev = current;
-
-    if (current->pid == pid_d) {
-        *jobs_ptr = current->next;
-        free(current->wd);
-        free(current->command);
-        free(current);
-        return;
-    }
-    current = current->next;
-    while (current->pid != pid_d) {
-        prev = current;
-        current = current->next;
-    }
-    prev->next = current->next;
-    free(current);
-    return;
-}
-
 static int is_valid_arg(char *arg)
 {
     if (arg[0] != '[' || arg[strlen(arg) - 1] != ']')

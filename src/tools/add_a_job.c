@@ -38,7 +38,7 @@ static void put_element_at_end(infos_t *infos, jobs_t *new_element)
     }
 }
 
-static int get_last_int(infos_t *infos)
+int get_last_int(infos_t *infos)
 {
     jobs_t *current = infos->jobs;
     int count = 0;
@@ -71,4 +71,17 @@ void add_a_job(char *path, char **args, int pid, infos_t *infos)
         printf("\nSuspended\n");
         new_element->wd = my_strdup("Suspended");
     }
+}
+
+void add_a_job_without_mess(char *path, char **args, int pid, infos_t *infos)
+{
+    jobs_t *new_element = malloc(sizeof(jobs_t));
+
+    (void) path;
+    new_element->command = concatenete_str(args);
+    new_element->num = get_last_int(infos);
+    new_element->wd = NULL;
+    new_element->pid = pid;
+    put_element_at_end(infos, new_element);
+    infos->can_exit_job = 0;
 }

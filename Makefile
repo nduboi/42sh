@@ -16,7 +16,6 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/builtins/my_setenv.c \
 		src/builtins/add_alias.c \
 		src/builtins/my_alias.c \
-		src/builtins/my_set.c	\
 		src/builtins/my_unset.c	\
 		src/builtins/my_echo.c \
 		src/builtins/my_jobs.c \
@@ -24,25 +23,22 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/builtins/my_env.c \
 		src/builtins/my_cd.c \
 		src/builtins/my_fg.c \
+		src/builtins/my_set.c	\
 		src/builtins/my_bg.c \
 		src/parsing/handle_redirections.c \
 		src/parsing/parentheses_errors.c \
 		src/parsing/handle_backticks.c \
-		src/parsing/handle_globbing.c \
 		src/parsing/variable_errors.c \
 		src/parsing/parsing_errors.c \
 		src/parsing/quotes_errors.c \
 		src/parsing/handle_input.c \
 		src/parsing/parse_input.c \
+		src/parsing/handle_globbing.c \
 		src/tools/environement_cut_part.c \
-		src/tools/handle_arrow_getline.c \
 		src/tools/only_char_in_str.c \
-		src/tools/getline_modifed.c	\
-		src/tools/get_nbr_lambda.c \
 		src/tools/chained_lists.c \
 		src/tools/my_strsignal.c \
 		src/tools/my_stock_nbr.c \
-		src/tools/recall_by_id.c \
 		src/tools/string_fcts.c	\
 		src/tools/delete_char.c \
 		src/tools/my_strcat_s.c \
@@ -57,13 +53,19 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/tools/my_strstr.c \
 		src/tools/num_fcts.c \
 		src/tools/is_delim.c \
+		src/tools/getline_modifed.c	\
+		src/tools/handle_arrow_getline.c	\
+		src/tools/recall_by_id.c	\
+		src/tools/get_nbr_lambda.c \
 		src/tools/add_a_job.c \
-		src/tools/parsing.c \
+		src/tools/parsing.c	\
+		src/tools/last_arg_is_bg.c \
 		src/check_if_is_an_alias.c \
 		src/environement_var.c	\
 		src/exclamation_mark.c \
 		src/parse_local_var.c \
 		src/error_messages.c \
+		src/execute_in_bg.c \
 		src/write_prompt.c \
 		src/add_history.c \
 		src/exit_status.c \
@@ -72,7 +74,7 @@ SRC	=	src/builtins/display_all_alias.c \
 		src/handle_cmd.c \
 		src/handle_fd.c	\
 		src/exe_com.c \
-		src/my_sh.c
+		src/my_sh.c \
 
 TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_my_strcpy.c \

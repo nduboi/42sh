@@ -24,8 +24,12 @@ int my_jobs(char **args, infos_t *info)
 
     (void)args;
     while (temp != NULL) {
-        printf("[%i]  %c %s %s\n", temp->num, check_temp(temp),
-        temp->wd, temp->command);
+        if (temp->wd != NULL)
+            printf("[%i]  %c %s %s\n", temp->num, check_temp(temp),
+            temp->wd, temp->command);
+        else
+            printf("[%i] %c Running %s\n", temp->num, check_temp(temp),
+            temp->command);
         temp = temp->next;
     }
     return (0);
