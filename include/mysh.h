@@ -98,6 +98,11 @@ int my_bg(char **args, infos_t *info);
 char check_temp(jobs_t *temp);
 
 // tools
+int good_number(char *nbr);
+void exit_number(char **args, infos_t *infos);
+int can_exit(infos_t *infos);
+int get_nbr_len(char *str, int i);
+int my_compute_power_rec(int nb, int p);
 void *my_malloc(size_t size);
 void *my_realloc(void *ptr, size_t size);
 void *my_memset(void *ptr, int val, size_t len);
@@ -140,6 +145,9 @@ char *recall_by_id(int id, infos_t *infos);
 char **check_if_is_an_alias(char **args, infos_t *infos);
 
 // Environement var
+void add_node_var(char *var, char *val, infos_t *info);
+int error_cases_local(char *var);
+int change_node(char *var, char *val, infos_t *info);
 char *special_var(char *value);
 char *append_env_value(char *value, infos_t *info);
 int parse_input_env_var(char **data, infos_t *info);

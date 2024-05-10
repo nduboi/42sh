@@ -24,20 +24,6 @@ Test(my_strlen, find_len_of_a_word)
     cr_assert_eq(my_strlen(word), len);
 }
 
-// Test(count_tokens, count_words_of_a_string)
-// {
-//     char string[12] = "Hello World";
-
-//     cr_assert_eq(count_tokens(string, " "), 2);
-// }
-
-// Test(count_tokens, count_words_of_empty_string)
-// {
-//     char string[1] = "";
-
-//     cr_assert_eq(count_tokens(string, " "), 0);
-// }
-
 Test(str_to_word_array, transform_string_into_array)
 {
     char string[12] = "Hello World";

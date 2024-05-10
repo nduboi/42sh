@@ -83,19 +83,38 @@ TEST_SRC	=	tests/test_chained_lists.c \
 				tests/test_string_fcts.c \
 				tests/test_error_messages.c \
 				tests/test_my_strsignal.c \
-				tests/test_my_strstr. \
-				tests/test_history. \
-				tests/test_my_cd. \
-				tests/test_my_echo. \
+				tests/test_my_strstr.c \
+				tests/test_history.c \
+				tests/test_my_cd.c \
+				tests/test_my_echo.c \
 				tests/test_my_env.c	\
-				tests/test_my_setenv. \
-				tests/test_my_unsetenv. \
+				tests/test_my_setenv.c \
+				tests/test_my_unsetenv.c \
 				tests/test_count_char.c	\
-				tests/test_my_exit. \
-				tests/test_parse_input. \
-				tests/test_globbing_function. \
-				tests/test_my_globbings. \
-				tests/test_recall_by_id.c
+				tests/test_my_exit.c	\
+				tests/test_globbing_function.c	\
+				tests/test_my_globbings.c	\
+				tests/test_recall_by_id.c	\
+				tests/test_write_prompt.c 	\
+				tests/test_only_char_in_str.c	\
+				tests/test_parsing.c	\
+				tests/test_my_strcat_s.c	\
+				tests/test_my_stock_nbr.c	\
+				tests/test_my_realloc.c	\
+				tests/test_my_env_data.c	\
+				tests/test_is_delim.c	\
+				tests/test_get_nbr_lambda.c	\
+				tests/test_environement_cut_part.c	\
+				tests/test_delete_char.c	\
+				tests/test_parsing_errors.c	\
+				tests/test_parse_input.c	\
+				tests/test_parentheses_errors.c	\
+				tests/test_handle_redirections.c \
+				tests/test_add_alias.c \
+				tests/test_my_fg.c \
+				tests/test_my_set.c \
+				tests/test_handle_input.c \
+				tests/test_variable_errors.c \
 
 SRC_OBJ	=	$(SRC:%.c=%.o)
 

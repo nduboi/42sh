@@ -7,139 +7,59 @@
 
 #include "mysh.h"
 #include <criterion/criterion.h>
+#include <criterion/redirect.h>
 
-// Test(parse_input, parse_a_simple_cmd)
-// {
-//     char *cmd = my_strdup("ls");
-//     list_t **list = malloc(sizeof(list_t *));
-//     parsing_t *parsing;
+static void redirect_all_std(void)
+{
+    cr_redirect_stdout();
+    cr_redirect_stderr();
+}
 
-//     *list = NULL;
-//     parse_input(cmd, list);
-//     parsing = (*list)->data;
-//     cr_assert_str_eq(parsing->content.command, "ls");
-// }
+Test(parse_input, add_group, .init=redirect_all_std)
+{
+    list_t *list_parse = NULL;
+    infos_t *infos = malloc(sizeof(infos_t));
+    infos->alias = NULL;
+    char *input = "(ls)";
 
-// Test(parse_input, parse_a_piped_cmd)
-// {
-//     char *cmd = my_strdup("ls | cat");
-//     list_t **list = malloc(sizeof(list_t *));
-//     parsing_t *parsing;
+    int result = parse_input(input, &list_parse, infos);
 
-//     *list = NULL;
-//     parse_input(cmd, list);
-//     parsing = (*list)->data;
-//     cr_assert_str_eq(parsing->content.command, "ls ");
-//     cr_assert_eq(parsing->link, PIPE);
-// }
+    cr_assert_eq(result, 4);
+    cr_assert_not_null(list_parse);
+    cr_assert_not_null(list_parse->data);
+    cr_assert_eq(((parsing_t *)(list_parse->data))->type, GRP);
 
-// Test(parse_input, parse_a_or_cmd)
-// {
-//     char *cmd = my_strdup("ls || echo foo");
-//     list_t **list = malloc(sizeof(list_t *));
-//     parsing_t *parsing;
+    free(infos);
+}
 
-//     *list = NULL;
-//     parse_input(cmd, list);
-//     parsing = (*list)->data;
-//     cr_assert_str_eq(parsing->content.command, "ls ");
-//     cr_assert_eq(parsing->link, OR);
-// }
+Test(parse_input, try_add_node_no_input, .init=redirect_all_std)
+{
+    list_t *list_parse = NULL;
+    infos_t *infos = malloc(sizeof(infos_t));
+    infos->alias = NULL;
+    char *input = "";
 
-// Test(parse_input, parse_an_and_cmd)
-// {
-//     char *cmd = my_strdup("ls && echo bar");
-//     list_t **list = malloc(sizeof(list_t *));
-//     parsing_t *parsing;
+    int result = parse_input(input, &list_parse, infos);
 
-//     *list = NULL;
-//     parse_input(cmd, list);
-//     parsing = (*list)->data;
-//     cr_assert_str_eq(parsing->content.command, "ls ");
-//     cr_assert_eq(parsing->link, AND);
-// }
+    cr_assert_eq(result, 0);
 
-// Test(parse_input, parse_a_semi_colon_cmd)
-// {
-//     char *cmd = my_strdup("ls ; echo bar");
-//     list_t **list = malloc(sizeof(list_t *));
-//     parsing_t *parsing;
+    free(infos);
+}
 
-//     *list = NULL;
-//     parse_input(cmd, list);
-//     parsing = (*list)->data;
-//     cr_assert_str_eq(parsing->content.command, "ls ");
-//     cr_assert_eq(parsing->link, SC);
-// }
+Test(parse_input, try_add_node_with_delim, .init=redirect_all_std)
+{
+    list_t *list_parse = NULL;
+    infos_t *infos = malloc(sizeof(infos_t));
+    infos->alias = NULL;
+    char *input = ";";
 
-// Test(parse_input, parse_a_cmd_with_parentheses)
-// {
-//     char *cmd = my_strdup("(echo bar)");
-//     list_t **list = malloc(sizeof(list_t *));
-//     parsing_t *parsing;
+    int result = parse_input(input, &list_parse, infos);
 
-//     *list = NULL;
-//     parse_input(cmd, list);
-//     parsing = (*list)->data;
-//     cr_assert_eq(parsing->type, GRP);
-// }
+    cr_assert_eq(result, 1);
+    cr_assert_not_null(list_parse);
+    cr_assert_not_null(list_parse->data);
+    cr_assert_eq(((parsing_t *)(list_parse->data))->type, CMD);
+    cr_assert_eq(((parsing_t *)(list_parse->data))->link, SC);
 
-// Test(parse_input, parse_a_cmd_with_parentheses_and_pipe)
-// {
-//     char *cmd = my_strdup("(echo bar) | ls");
-//     list_t **list = malloc(sizeof(list_t *));
-//     parsing_t *parsing;
-
-//     *list = NULL;
-//     parse_input(cmd, list);
-//     parsing = (*list)->data;
-//     cr_assert_eq(parsing->type, GRP);
-// }
-
-// Test(parse_input, parse_a_cmd_with_parentheses_and_or)
-// {
-//     char *cmd = my_strdup("(echo bar) || ls");
-//     list_t **list = malloc(sizeof(list_t *));
-//     parsing_t *parsing;
-
-//     *list = NULL;
-//     parse_input(cmd, list);
-//     parsing = (*list)->data;
-//     cr_assert_eq(parsing->link, OR);
-// }
-
-// Test(parse_input, parse_a_cmd_with_parentheses_and_and)
-// {
-//     char *cmd = my_strdup("(echo bar) && ls");
-//     list_t **list = malloc(sizeof(list_t *));
-//     parsing_t *parsing;
-
-//     *list = NULL;
-//     parse_input(cmd, list);
-//     parsing = (*list)->data;
-//     cr_assert_eq(parsing->link, AND);
-// }
-
-// Test(parse_input, parse_a_cmd_with_parentheses_and_sc)
-// {
-//     char *cmd = my_strdup("(echo bar) ; ls");
-//     list_t **list = malloc(sizeof(list_t *));
-//     parsing_t *parsing;
-
-//     *list = NULL;
-//     parse_input(cmd, list);
-//     parsing = (*list)->data;
-//     cr_assert_eq(parsing->link, SC);
-// }
-
-// Test(parse_input, parse_a_simple_cmd_with_single_and)
-// {
-//     char *cmd = my_strdup("ls &");
-//     list_t **list = malloc(sizeof(list_t *));
-//     parsing_t *parsing;
-
-//     *list = NULL;
-//     parse_input(cmd, list);
-//     parsing = (*list)->data;
-//     cr_assert_str_eq(parsing->content.command, "ls &");
-// }
+    free(infos);
+}
