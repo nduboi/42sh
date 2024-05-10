@@ -2338,3 +2338,11 @@ CLEAN=""
 TESTS=
   echo 'echo "!test"'
 [358-END]
+
+[359]
+NAME="test && ||"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls && cd fkdos || alias'
+[359-END]
