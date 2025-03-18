@@ -24,6 +24,7 @@ jobs:
         run: check.sh $(pwd) $(pwd)
 
       - name: Check error
+        shell: bash
         run: |
           while IFS= read -r line; do
             file=$(echo "$line" | cut -d ':' -f 1)
@@ -59,6 +60,7 @@ jobs:
         run: make clean
 
       - name: verif exec
+        shell: bash
         run: |
           IFS=',' read -ra EXEC_ARR <<< "$EXECUTABLES"
           for line in "${EXEC_ARR[@]}"; do

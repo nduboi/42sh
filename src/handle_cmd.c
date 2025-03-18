@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <string.h>
 
-function_t functions[] = {
+const function_t functions[] = {
     {"exit", my_exit},
     {"cd", my_cd},
     {"setenv", my_setenv},

@@ -30,8 +30,6 @@
 
     #define CHAR sizeof(char)
 
-extern function_t functions[];
-
 // string and numerical functions
 void my_strsignal(int wstatus);
 char **str_to_word_array(char *buffer);
