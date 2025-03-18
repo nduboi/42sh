@@ -40,6 +40,13 @@ jobs:
             exit 1
           fi
 
+      - name: Upload codding style report as artifact
+        uses: actions/upload-artifact@v4.6.1
+        with:
+          name: coding-style-reports
+          path: ./coding-style-reports.log
+          compression-level: 0
+
   check_program_compilation:
     runs-on: ubuntu-latest
     container:
@@ -69,3 +76,10 @@ jobs:
               exit 1
             fi
           done
+
+      - name: Upload 42sh as artifact
+        uses: actions/upload-artifact@v4.6.1
+        with:
+          name: 42sh
+          path: ./42sh
+          compression-level: 0
